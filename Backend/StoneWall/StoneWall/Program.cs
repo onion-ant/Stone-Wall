@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using StoneWall.Data;
+
 namespace StoneWall
 {
     public class Program
@@ -9,6 +12,12 @@ namespace StoneWall
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            var connString = builder.Configuration.GetConnectionString("Default");
+            builder.Services.AddDbContext<StoneWallDbContext>(options =>
+            {
+                options.UseMySql(connString,ServerVersion.AutoDetect(connString));
+            });
 
             var app = builder.Build();
 
