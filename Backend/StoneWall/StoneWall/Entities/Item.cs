@@ -7,7 +7,9 @@ namespace StoneWall.Entities
     public class Item
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? TmdbId { get; set; }
+        [Required]
         public ItemType? Type { get; set; }
         public List<ItemStreaming>? Streamings { get; set; }
         [NotMapped]
