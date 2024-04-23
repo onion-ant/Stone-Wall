@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PopulateDatabase.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoneWall.Entities
@@ -13,7 +14,10 @@ namespace StoneWall.Entities
         [ForeignKey("StreamingService")]
         public string? StreamingId { get; set; }
         public StreamingService? Streaming { get; set; }
+        [Required]
         public StreamingType Type { get; set; }
+        [Required]
+        [MaxLength(255)]
         public string? Link { get; set; }
     }
 }

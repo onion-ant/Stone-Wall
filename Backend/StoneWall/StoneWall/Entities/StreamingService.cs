@@ -5,8 +5,13 @@ namespace StoneWall.Entities
     public class StreamingService
     {
         [Key]
+        [MaxLength(50)]
         public string? Id { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string? Name { get; set; }
+        [Required]
+        [MaxLength(255)]
         public string? HomePage { get; set; }
         public List<ItemStreaming>? Items { get; set; }
     }
