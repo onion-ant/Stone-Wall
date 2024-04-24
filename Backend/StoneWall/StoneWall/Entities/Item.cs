@@ -9,11 +9,14 @@ namespace StoneWall.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? TmdbId { get; set; }
-        [Required]
+        [MaxLength(150)]
+        public string? Title { get; set; }
+        [MaxLength(150)]
+        public string? OriginalTitle { get; set; }
+        public double Popularity { get; set; }
         public ItemType? Type { get; set; }
         public List<ItemStreaming>? Streamings { get; set; }
-        [NotMapped]
-        public string? Title { get; set; }
+        List<ItemGenre>? Genres { get; set; }
         [NotMapped]
         public string? Overview { get; set; }
         [NotMapped]
