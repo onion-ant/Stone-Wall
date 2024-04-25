@@ -1,0 +1,64 @@
+.items{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+[id = "0"]{
+  order: 1;
+  border-radius: 50%;
+  animation: Top 1s;
+
+}
+
+[id = "1"]{
+  border-radius:7px;
+  transition: .2s;
+  order: 2;
+  animation: Mid 1s;
+  transform: scale(1.5);
+  z-index: 10;
+}
+
+[id = "2"]{
+  border-radius: 50%;
+  transition: .2s;
+  order: 3;
+  animation: Bottom 1s;
+  z-index: 1;
+}
+
+@keyframes Bottom {
+  from{
+    transform: translateY(-100%) scale(1.5);
+    border-radius:7px;
+  }
+  to{
+    transform: translateY(0) scale(1);
+    border-radius: 50%;
+ }
+}
+
+@keyframes Mid {
+  from{
+    transform: translateY(-100%) scale(1);
+    border-radius: 50%;
+
+  }
+  to{
+    transform: translateY(0) initial;
+    border-radius:7px;
+  }
+}
+
+@keyframes Top {
+  from{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
