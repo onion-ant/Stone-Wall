@@ -1,0 +1,10 @@
+.button{
+  font-family: "Kanit";
+  font-size:18px;
+  font-weight: bolder;
+  padding: 8px 32px;
+  background-color: var(--D2);
+  border-radius: 7px;
+  color: white;
+  border: none;
+}
