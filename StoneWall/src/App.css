@@ -1,0 +1,25 @@
+:root{
+  --D1: #3D1E4C;
+  --D2: #561376;
+  --L1: #9D45C7;
+  --D2O:rgba(86, 19, 118, 0.05);
+  --D1O: rgba(61, 30, 76, 0.15);
+  --D2B: rgba(86, 19, 118, 0.5);
+}
+
+html{
+  font-family: "Kanit";
+}
+
+body{
+  margin: 0;
+}
+
+a:focus{
+  color: var(--L1);
+}
+
+.container{
+  max-width: 1220px;
+  margin: auto;
+}
