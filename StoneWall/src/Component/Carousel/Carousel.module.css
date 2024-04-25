@@ -35,3 +35,8 @@
   text-shadow: 1px 1px var(--D2B);
   font-weight: bolder;
 }
+
+.bosta {
+  display: flex;
+  align-items: center;
+}
