@@ -5,8 +5,8 @@ import styles from './Home.module.css';
 const Home = () => {
   return (
     <div className={styles.background}>
-      <Header />
-      <Carousel />
+        <Header />
+        <Carousel />
     </div>
   );
 };
