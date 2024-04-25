@@ -1,3 +1,22 @@
 .background{
   background: url("../../../Components/StoneWallBackground.svg");
+  position: relative;
+}
+.background::before{
+  content: "";
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  background: url("../../../Components/DetailTop.svg");
+  background-size: cover;
+}
+
+.background::after{
+  content: "";
+  top: 0;
+  height: 100%;
+  width: 20px;
+  position: absolute;
+  background: url("../../../Components/DetailLeft.svg");
+  background-size: cover;
 }
