@@ -10,7 +10,7 @@ const Carousel = () => {
             DESCUBRA O <br />
             MELHOR PARA VOCÊ
           </h1>
-          <div>
+          <div className={styles.bosta}>
             <ServicesCarousel />
           </div>
         </div>
