@@ -1,0 +1,22 @@
+.main{
+  display: flex;
+}
+
+.mainText{
+  font-size: 80px;
+  color: white;
+  position: relative;
+  text-shadow: -2px 2px var(--D2), -2px -2px var(--D2), 2px -2px var(--D2), 2px 2px var(--D2), 6px 5px var(--D2);
+  letter-spacing: 5px;
+  line-height: 80%;
+}
+
+.mainText::before{
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 10px;
+  background-color: var(--D1);
+  bottom: -1px;
+  left: -20px;
+}

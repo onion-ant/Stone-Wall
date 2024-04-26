@@ -33,7 +33,7 @@ const ServicesCarousel = () => {
           id={`${ids[3]}L`}
         />
       </div>
-      <div className={styles.items}>
+      <div className={`${styles.items} ${styles.right}`}>
         <img
           src="../../Components/SquareNetflix.svg"
           alt=""
