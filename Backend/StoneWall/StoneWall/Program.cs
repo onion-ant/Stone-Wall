@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
 using StoneWall.Entities;
+using StoneWall.Services;
 using System.Text.Json.Serialization;
 
 namespace StoneWall
@@ -29,7 +30,7 @@ namespace StoneWall
             {
                 options.UseMySql(connString,ServerVersion.AutoDetect(connString));
             });
-            builder.Services.AddScoped<StreamingService>();
+            builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
 
             var app = builder.Build();
 
