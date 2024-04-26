@@ -13,7 +13,7 @@ namespace StoneWall.Entities
         public Item? Item { get; set; }
         [ForeignKey("StreamingService")]
         public string? StreamingId { get; set; }
-        public StreamingService? Streaming { get; set; }
+        public StreamingServices? Streaming { get; set; }
         [Required]
         public StreamingType Type { get; set; }
         [Required]
