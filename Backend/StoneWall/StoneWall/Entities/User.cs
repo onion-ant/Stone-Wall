@@ -9,10 +9,10 @@ namespace StoneWall.Entities
         [MaxLength(255)]
         public string? Email { get; set; }
         [Required]
-        [MaxLength(60)]
+        [MaxLength(255)]
         public string? Name { get; set; }
         [Required]
-        [MaxLength(100)]
+        [MaxLength(255)]
         public string? Password { get; set; }
     }
 }
