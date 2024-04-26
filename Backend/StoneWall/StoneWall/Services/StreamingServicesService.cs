@@ -17,7 +17,7 @@ namespace StoneWall.Services
             var streamings = await _context.Streaming_Services.AsNoTracking().ToListAsync();
             if (!streamings.Any())
             {
-                throw new Exception("Theres no registered streamings");
+                throw new NotFoundException("Theres no registered streamings");
             }
             return streamings;
         }
@@ -39,7 +39,7 @@ namespace StoneWall.Services
                }).ToListAsync();
             if (!streamingItems.Any())
             {
-                throw new Exception("Theres no registered item from this streaming");
+                throw new NotFoundException("Theres no registered item from this streaming");
             }
             return streamingItems;
         }
