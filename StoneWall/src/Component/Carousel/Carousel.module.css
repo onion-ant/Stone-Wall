@@ -1,9 +1,21 @@
 .carousel{
   /* box-shadow: 500px 60px var(--L1); */
   position: relative;
+  display: flex;
+  padding: 32px;
+  padding-top: 0 ;
+  margin-top: 128px;
+  padding-bottom: 120px;
+  justify-content:center;
 }
 
-.carousel::after{
+.itemsCenter{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.barra::after{
   position: absolute;
   content: "";
   height: 50px;
@@ -13,18 +25,18 @@
   right: 0px;
 }
 
-.barra{
-  padding: 32px;
-  margin-top: 128px;
-  padding-bottom: 120px;
-}
-
 .texto{
   font-size: 64px;
   text-align: center;
+  align-self: center;
   color: var(--D2);
   line-height: 110%;
   max-width: 60%;
   text-shadow: 1px 1px var(--D2B);
   font-weight: bolder;
+}
+
+.bosta {
+  display: flex;
+  align-items: center;
 }
