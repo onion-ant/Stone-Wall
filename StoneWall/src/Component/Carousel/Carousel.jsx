@@ -1,19 +1,21 @@
 import styles from './Carousel.module.css';
+import ServicesCarousel from './ServicesCarousel';
 
 const Carousel = () => {
   return (
-    <section className={styles.carousel}>
-      <div >
-        <div className={`container ${styles.barra}`}>
+    <div className={styles.barra}>
+      <section className={`${styles.carousel} container `}>
+        <div className={`${styles.itemsCenter}`}>
           <h1 className={styles.texto}>
             DESCUBRA O <br />
             MELHOR PARA VOCÊ
           </h1>
+          <div className={styles.bosta}>
+            <ServicesCarousel />
+          </div>
         </div>
-
-        <div></div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
