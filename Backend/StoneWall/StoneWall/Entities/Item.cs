@@ -9,9 +9,9 @@ namespace StoneWall.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int? TmdbId { get; set; }
-        [MaxLength(150)]
+        [MaxLength(255)]
         public string? Title { get; set; }
-        [MaxLength(150)]
+        [MaxLength(255)]
         public string? OriginalTitle { get; set; }
         public double Popularity { get; set; }
         public ItemType? Type { get; set; }
