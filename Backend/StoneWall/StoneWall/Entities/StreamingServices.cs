@@ -2,7 +2,7 @@
 
 namespace StoneWall.Entities
 {
-    public class StreamingService
+    public class StreamingServices
     {
         [Key]
         [MaxLength(255)]
