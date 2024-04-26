@@ -20,7 +20,7 @@ const ServicesCarousel = () => {
   return (
     <>
       <div className={styles.items}>
-        <img src="../../Components/SquarePrime.svg" alt="" id={`${ids[0]}L`} />
+        <img src="../../Components/SquareHboMax.svg" alt="" id={`${ids[0]}L`} />
         <img src="../../Components/SquarePrime.svg" alt="" id={`${ids[1]}L`} />
         <img
           src="../../Components/SquareNetflix.svg"
@@ -46,7 +46,7 @@ const ServicesCarousel = () => {
           id={`${ids2[2]}R`}
         />
         <img
-          src="../../Components/SquareAppleTV.svg"
+          src="../../Components/SquareHboMax.svg"
           alt=""
           id={`${ids2[3]}R`}
         />
