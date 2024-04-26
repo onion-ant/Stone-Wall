@@ -1,42 +1,55 @@
 'use client';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ServicesCarousel.module.css';
 
 const ServicesCarousel = () => {
-  setInterval(changeClass, 2000);
-  function changeClass() {
-    let items = document.getElementById('items');
-    if (items.children[0].id == 2) {
-      items.children[0].id = 0;
-    } else {
-      items.children[0].id++;
-    }
-    if (items.children[1].id == 2) {
-      items.children[1].id = 0;
-    } else {
-      items.children[1].id++;
-    }
-    if (items.children[2].id == 2) {
-      items.children[2].id = 0;
-    } else {
-      items.children[2].id++;
-    }
-    // for (let j = 0; j < 3; j++) {
-    //   let item = items.children[j];
-    //   let val = +item.id;
-    //   if (val == 2) {
-    //     item.id = 0;
-    //   } else {
-    //     item.id = val + 1;
-    //   }
-    // }
-  }
+  const [ids, setIds] = useState([0, 1, 2, 3]);
+  const [ids2, setIds2] = useState([3, 2, 1, 0]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIds((prevIds) => {
+        return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
+      });
+      setIds2((prevIds) => {
+        return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
+      });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
-      <div className={styles.items} id="items">
-        <img src="../../Components/SquarePrime.svg" alt="" id="0" />
-        <img src="../../Components/SquareNetflix.svg" alt="" id="1" />
-        <img src="../../Components/SquareAppleTV.svg" alt="" id="2" />
+      <div className={styles.items}>
+        <img src="../../Components/SquarePrime.svg" alt="" id={`${ids[0]}L`} />
+        <img src="../../Components/SquarePrime.svg" alt="" id={`${ids[1]}L`} />
+        <img
+          src="../../Components/SquareNetflix.svg"
+          alt=""
+          id={`${ids[2]}L`}
+        />
+        <img
+          src="../../Components/SquareAppleTV.svg"
+          alt=""
+          id={`${ids[3]}L`}
+        />
+      </div>
+      <div className={styles.items}>
+        <img
+          src="../../Components/SquareNetflix.svg"
+          alt=""
+          id={`${ids2[0]}R`}
+        />
+        <img src="../../Components/SquarePrime.svg" alt="" id={`${ids2[1]}R`} />
+        <img
+          src="../../Components/SquareAppleTV.svg"
+          alt=""
+          id={`${ids2[2]}R`}
+        />
+        <img
+          src="../../Components/SquareAppleTV.svg"
+          alt=""
+          id={`${ids2[3]}R`}
+        />
       </div>
     </>
   );

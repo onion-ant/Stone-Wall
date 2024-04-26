@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
   position: relative;
   width: 107px;
   height: 107px;
@@ -13,35 +12,82 @@ img {
   transition: top 500ms ease-in-out, transform 500ms ease-in-out;
 }
 
-[id="0"] {
+[id="0R"] {
   border-radius: 50%;
-  animation: Top 500ms;
+  animation: TopR 500ms;
+  z-index: 5;
   top: -140px;
 }
 
-[id="1"] {
+[id="0L"]{
+  border-radius: 50%;
+  animation: Top 500ms;
+  top: -140px;
+  z-index: 1;
+}
+
+
+[id="1R"] {
   border-radius: 7px;
-  animation: Mid 500ms;
+  animation: MidR 500ms;
   transform: scale(1.5);
   z-index: 10;
   top: 0px;
 }
 
-[id="2"] {
+[id="1L"] {
+  border-radius: 7px;
+  animation: Mid 500ms;
+  transform: scale(1.5);
+  z-index: 10;
+  top: 0px;
+
+}
+
+[id="2R"] {
   border-radius: 50%;
-  animation: Bottom 500ms;
+  animation: BottomR 500ms;
   z-index: 1;
   top: 140px
 }
 
-@keyframes Bottom {
+[id="2L"] {
+  border-radius: 50%;
+  animation: Bottom 500ms;
+  z-index: 5;
+  top: 140px
+}
+
+[id="3L"] {
+  border-radius: 50%;
+  animation: MidB 500ms;
+  z-index: 1;
+}
+
+[id="3R"]{
+  border-radius: 50%;
+  animation: MidRB 500ms;
+  z-index: 1;
+}
+@keyframes Top {
   from {
-    transform: scale(1.5);
-    border-radius: 7px;
+    top: 0px;
   }
   to {
-    transform: scale(1);
+    top: -140px;
+  }
+}
+
+@keyframes TopR {
+  from {
+    top: 0px;
+    border-radius: 7px;
+    transform: scale(1.5);
+  }
+  to {
+    top: -140px;
     border-radius: 50%;
+    transform: scale(1);
   }
 }
 
@@ -56,11 +102,52 @@ img {
   }
 }
 
-@keyframes Top {
+@keyframes MidB {
   from {
-    opacity: 0;
+    top: 140px;
   }
   to {
-    opacity: 1;
+    top: 0px;
+  }
+}
+
+@keyframes MidR {
+  from {
+    top: 140px;
+    border-radius: 50%;
+  }
+  to {
+    top: 0px;
+    border-radius: 7px;
+  }
+}
+
+@keyframes MidRB {
+  from {
+    top: -140px;
+  }
+  to {
+    top: 0px;
+  }
+}
+
+@keyframes Bottom {
+  from {
+    transform: scale(1.5);
+    border-radius: 7px;
+  }
+  to {
+    transform: scale(1);
+    border-radius: 50%;
+  }
+}
+
+
+@keyframes BottomR {
+  from {
+    top: 0;
+  }
+  to {
+    top: 140px;
   }
 }

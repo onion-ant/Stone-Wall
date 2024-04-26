@@ -1,4 +1,4 @@
-.carousel{
+.mainMenu{
   /* box-shadow: 500px 60px var(--L1); */
   position: relative;
   display: flex;
@@ -36,7 +36,9 @@
   font-weight: bolder;
 }
 
-.bosta {
+.carousel {
   display: flex;
+  padding: 140px 28px;
   align-items: center;
+  gap: 200px;
 }
