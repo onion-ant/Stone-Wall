@@ -26,7 +26,6 @@ img {
   z-index: 1;
 }
 
-
 [id="1R"] {
   border-radius: 7px;
   animation: MidR 500ms;
@@ -41,7 +40,6 @@ img {
   transform: scale(1.5);
   z-index: 10;
   top: 0px;
-
 }
 
 [id="2R"] {
@@ -149,5 +147,85 @@ img {
   }
   to {
     top: 140px;
+  }
+}
+
+@keyframes Right {
+  from {
+    right: 0;
+    transform: scale(1.5);
+  }
+  to {
+    right: 140px;
+    transform: scale(1);
+  }
+}
+
+@keyframes MidH {
+  from {
+    right: -140px;
+    transform: scale(1);
+  }
+  to {
+    right: 0px;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes MidHB {
+  from {
+    right: 140px;
+  }
+  to {
+    right: 0px;
+  }
+}
+
+@keyframes Left {
+  from {
+    right: 0px;
+  }
+  to {
+    right: -140px;
+  }
+}
+
+@media (max-width: 1200px){
+  .right{
+    display: none;
+  }
+}
+@media (max-width: 800px){
+  [id="0L"]{
+    border-radius: 50%;
+    animation: Left 500ms;
+    right: -140px;
+    top: 0px;
+    z-index: 1;
+  }
+  [id="1L"] {
+    border-radius: 7px;
+    animation: MidH 500ms;
+    transform: scale(1.5);
+    z-index: 10;
+    top: 0px;
+  }
+  [id="2L"] {
+    border-radius: 50%;
+    animation: Right 500ms;
+    z-index: 5;
+    top: 0px;
+    right: 140px;
+    
+  }
+  [id="3L"] {
+    border-radius: 50%;
+    animation: MidHB 500ms;
+    z-index: 1;
+  }
+}
+@media (max-width: 550px){
+  .items{
+    transform: scale(.7);
   }
 }

@@ -4,7 +4,7 @@ import ServicesCarousel from './ServicesCarousel';
 const Carousel = () => {
   return (
     <div className={styles.barra}>
-      <section className={`${styles.mainMenu} container `}>
+      <section className={`${styles.mainMenu} container margin-top`}>
         <div className={`${styles.itemsCenter}`}>
           <h1 className={styles.texto}>
             DESCUBRA O <br />
