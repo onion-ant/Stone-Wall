@@ -18,6 +18,7 @@ namespace StoneWall
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             } 
             );
 
@@ -30,7 +31,9 @@ namespace StoneWall
             {
                 options.UseMySql(connString,ServerVersion.AutoDetect(connString));
             });
+            builder.Services.AddHttpClient();
             builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
+            builder.Services.AddScoped<TmdbService>();
 
             var app = builder.Build();
 
