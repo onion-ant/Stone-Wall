@@ -31,7 +31,9 @@ namespace StoneWall
             {
                 options.UseMySql(connString,ServerVersion.AutoDetect(connString));
             });
+            builder.Services.AddHttpClient();
             builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
+            builder.Services.AddScoped<TmdbService>();
 
             var app = builder.Build();
 
