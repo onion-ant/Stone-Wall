@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
 using StoneWall.Entities;
+using StoneWall.Helpers;
 using StoneWall.Services.Exceptions;
 
 namespace StoneWall.Services
@@ -8,9 +9,11 @@ namespace StoneWall.Services
     public class StreamingServicesService : IStreamingServicesService
     {
         private readonly StoneWallDbContext _context;
-        public StreamingServicesService(StoneWallDbContext context)
+        private readonly int _pageSize;
+        public StreamingServicesService(StoneWallDbContext context,IConfiguration config)
         {
             _context = context;
+            _pageSize = int.Parse(config["PageSize"]);
         }
         public async Task<List<StreamingServices>> GetStreamingsAsync()
         {
@@ -21,7 +24,7 @@ namespace StoneWall.Services
             }
             return streamings;
         }
-        public async Task<List<ItemStreaming>> GetItemsAsync(string streamingId)
+        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber)
         {
             var streamingItems = await _context.Item_Streaming.AsNoTracking().Include(Is => Is.Item).Where(Is => Is.StreamingId == streamingId)
                .Select(Is => new ItemStreaming
@@ -35,13 +38,36 @@ namespace StoneWall.Services
                        Type = Is.Item.Type
                    },
                    Type = Is.Type,
-                   Link = Is.Link
-               }).ToListAsync();
+                   Link = Is.Link,
+               })
+                .OrderByDescending(Is => Is.Item.Popularity)
+                .Skip((pageNumber - 1) * _pageSize)
+                .Take(_pageSize)
+                .ToListAsync();
+            int totalPages = await GetTotalPages(streamingId);
+            if (totalPages < pageNumber)
+            {
+                throw new LastPageException("Maximum page number exceeded");
+            }
             if (!streamingItems.Any())
             {
                 throw new NotFoundException("Theres no registered item from this streaming");
             }
-            return streamingItems;
+
+            var response = new ItemStreamingPaginationHelper()
+            {
+                ItemStreamings = streamingItems,
+                LastPage = totalPages,
+            };
+            return response;
+        }
+
+        private async Task<int> GetTotalPages(string streamingId)
+        {
+            int totalPaginas = (await _context.Item_Streaming
+                .AsNoTracking()
+                .CountAsync(Is => Is.StreamingId == streamingId) + _pageSize - 1)/_pageSize;
+            return totalPaginas;
         }
     }
 }
