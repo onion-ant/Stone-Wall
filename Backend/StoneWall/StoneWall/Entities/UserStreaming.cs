@@ -8,9 +8,9 @@ namespace StoneWall.Entities
     [PrimaryKey(nameof(UserEmail),nameof(StreamingId))]
     public class UserStreaming
     {
-        [ForeignKey("User")]
+        [ForeignKey(nameof(User))]
         public string? UserEmail { get; set; }
-        [ForeignKey("StreamingService")]
+        [ForeignKey(nameof(StreamingServices))]
         public string? StreamingId { get; set; }
         [Range(0, 5)]
         public int Rating { get; set; }
