@@ -55,13 +55,13 @@ namespace StoneWall.Services
                 .Take(_pageSize)
                 .ToListAsync();
             int totalPages = await GetTotalPages(streamingId);
-            if (totalPages < pageNumber)
-            {
-                throw new LastPageException("Maximum page number exceeded");
-            }
             if (!streamingItems.Any())
             {
                 throw new NotFoundException("Theres no registered item from this streaming");
+            }
+            if (totalPages < pageNumber)
+            {
+                throw new LastPageException("Maximum page number exceeded");
             }
 
             var response = new ItemStreamingPaginationHelper()
