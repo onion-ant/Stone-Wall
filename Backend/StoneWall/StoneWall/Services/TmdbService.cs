@@ -18,7 +18,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item)
+        public async Task GetItemAsync(Item Item,string language)
         {
             HttpRequestMessage request;
             if (Item.Type == ItemType.movie)
@@ -26,9 +26,17 @@ namespace StoneWall.Services
                 request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri($"https://api.themoviedb.org/3/movie/{Item.TmdbId}?language=pt-BR&api_key={TmdbKey}")
+                    RequestUri = new Uri($"https://api.themoviedb.org/3/movie/{Item.TmdbId}?language={language}&api_key={TmdbKey}")
                 };
-                var response = await _client.SendAsync(request);
+                HttpResponseMessage response = null;
+                try
+                {
+                    response = await _client.SendAsync(request);
+                }
+                catch(Exception ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.Message);
+                }
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper.overview;
