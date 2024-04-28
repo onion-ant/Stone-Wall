@@ -14,5 +14,6 @@ namespace StoneWall.Entities
         [MaxLength(255)]
         public string? HomePage { get; set; }
         public List<ItemStreaming>? Items { get; set; }
+        public List<Addon>? Addons { get; set; }
     }
 }

@@ -25,18 +25,26 @@ namespace StoneWall.Migrations
             modelBuilder.Entity("StoneWall.Entities.Addon", b =>
                 {
                     b.Property<string>("Id")
+                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("HomePage")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("StreamingService")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("StreamingServicesId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StreamingServicesId");
 
                     b.ToTable("Addons");
                 });
@@ -181,6 +189,13 @@ namespace StoneWall.Migrations
                     b.ToTable("User_Streaming");
                 });
 
+            modelBuilder.Entity("StoneWall.Entities.Addon", b =>
+                {
+                    b.HasOne("StoneWall.Entities.StreamingServices", null)
+                        .WithMany("Addons")
+                        .HasForeignKey("StreamingServicesId");
+                });
+
             modelBuilder.Entity("StoneWall.Entities.ItemGenre", b =>
                 {
                     b.HasOne("StoneWall.Entities.Genre", "Genre")
@@ -226,6 +241,8 @@ namespace StoneWall.Migrations
 
             modelBuilder.Entity("StoneWall.Entities.StreamingServices", b =>
                 {
+                    b.Navigation("Addons");
+
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
