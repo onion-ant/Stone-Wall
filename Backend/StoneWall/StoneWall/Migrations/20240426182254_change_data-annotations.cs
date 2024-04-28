@@ -5,7 +5,7 @@
 namespace StoneWall.Migrations
 {
     /// <inheritdoc />
-    public partial class change_dataanotations : Migration
+    public partial class change_dataannotations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,18 +47,6 @@ namespace StoneWall.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Id",
-                table: "Streaming_Services",
-                type: "varchar(255)",
-                maxLength: 255,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(50)",
-                oldMaxLength: 50)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AlterColumn<string>(
                 name: "Title",
                 table: "Items",
                 type: "varchar(255)",
@@ -81,16 +69,6 @@ namespace StoneWall.Migrations
                 oldType: "varchar(150)",
                 oldMaxLength: 150,
                 oldNullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "StreamingId",
-                table: "Item_Streaming",
-                type: "varchar(255)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(50)")
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
         }

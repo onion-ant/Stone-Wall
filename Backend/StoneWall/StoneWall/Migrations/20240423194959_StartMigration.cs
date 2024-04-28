@@ -30,9 +30,9 @@ namespace StoneWall.Migrations
                 name: "Streaming_Service",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Id = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     HomePage = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -48,7 +48,7 @@ namespace StoneWall.Migrations
                 columns: table => new
                 {
                     TmdbId = table.Column<int>(type: "int", nullable: false),
-                    StreamingId = table.Column<string>(type: "varchar(50)", nullable: false)
+                    StreamingId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Link = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
