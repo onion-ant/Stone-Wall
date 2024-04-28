@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoneWall.Data;
 
@@ -11,9 +12,11 @@ using StoneWall.Data;
 namespace StoneWall.Migrations
 {
     [DbContext(typeof(StoneWallDbContext))]
-    partial class StoneWallDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240428172925_Create_addon")]
+    partial class Create_addon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

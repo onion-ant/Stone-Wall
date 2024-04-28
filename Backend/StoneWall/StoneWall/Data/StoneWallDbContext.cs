@@ -12,6 +12,7 @@ namespace StoneWall.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserStreaming> User_Streaming { get; set; }
+        public DbSet<Addon> Addons { get; set; }
         public StoneWallDbContext(DbContextOptions options) : base(options)
         {
         }
