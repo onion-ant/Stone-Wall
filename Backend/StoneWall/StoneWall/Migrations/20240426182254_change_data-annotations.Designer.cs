@@ -12,10 +12,11 @@ using StoneWall.Data;
 namespace StoneWall.Migrations
 {
     [DbContext(typeof(StoneWallDbContext))]
-    [Migration("20240426182254_change_data-anotations")]
-    partial class change_dataanotations
+    [Migration("20240426182254_change_data-annotations")]
+    partial class change_dataannotations
     {
         /// <inheritdoc />
+        /// 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
