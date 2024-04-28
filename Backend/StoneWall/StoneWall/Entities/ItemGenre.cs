@@ -6,10 +6,10 @@ namespace StoneWall.Entities
     [PrimaryKey(nameof(TmdbId), nameof(GenreId))]
     public class ItemGenre
     {
-        [ForeignKey("Item")]
+        [ForeignKey(nameof(Entities.Item))]
         public int? TmdbId { get; set; }
         public Item? Item { get; set; }
-        [ForeignKey("Genre")]
+        [ForeignKey(nameof(Entities.Genre))]
         public int GenreId { get; set; }
         public Genre? Genre { get; set; }
     }

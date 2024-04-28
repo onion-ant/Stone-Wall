@@ -8,10 +8,10 @@ namespace StoneWall.Entities
     [PrimaryKey(nameof(TmdbId), nameof(StreamingId))]
     public class ItemStreaming
     {
-        [ForeignKey("Item")]
+        [ForeignKey(nameof(Entities.Item))]
         public int? TmdbId { get; set; }
         public Item? Item { get; set; }
-        [ForeignKey("StreamingService")]
+        [ForeignKey(nameof(StreamingServices))]
         public string? StreamingId { get; set; }
         public StreamingServices? Streaming { get; set; }
         [Required]
