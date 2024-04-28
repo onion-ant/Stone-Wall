@@ -4,7 +4,7 @@ namespace StoneWall.Helpers
 {
     public class ItemStreamingPaginationHelper
     {
-        public List<ItemStreaming>? ItemStreamings { get; set; }
+        public List<ItemStreaming>? ItemsStreaming { get; set; }
         public int LastPage { get; set; }
     }
 }

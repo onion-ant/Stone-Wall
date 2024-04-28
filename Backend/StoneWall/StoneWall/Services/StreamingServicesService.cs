@@ -15,6 +15,7 @@ namespace StoneWall.Services
             _context = context;
             _pageSize = int.Parse(config["PageSize"]);
         }
+        
         public async Task<List<StreamingServices>> GetStreamingsAsync()
         {
             var streamings = await _context.Streaming_Services.AsNoTracking().ToListAsync();
@@ -23,6 +24,15 @@ namespace StoneWall.Services
                 throw new NotFoundException("Theres no registered streamings");
             }
             return streamings;
+        }
+        public async Task<List<Addon>> GetAddonsAsync(string streamingId)
+        {
+            var addons = await _context.Addons.AsNoTracking().Where(Ad => Ad.StreamingService == streamingId).ToListAsync();
+            if (!addons.Any())
+            {
+                throw new NotFoundException("This streaming has no addons");
+            }
+            return addons;
         }
         public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber)
         {
@@ -56,7 +66,7 @@ namespace StoneWall.Services
 
             var response = new ItemStreamingPaginationHelper()
             {
-                ItemStreamings = streamingItems,
+                ItemsStreaming = streamingItems,
                 LastPage = totalPages,
             };
             return response;
