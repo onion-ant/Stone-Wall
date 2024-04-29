@@ -61,7 +61,7 @@ namespace StoneWall.Services
             }
             if (totalPages < pageNumber)
             {
-                throw new LastPageException("Maximum page number exceeded");
+                throw new PageException("Maximum page number exceeded");
             }
 
             var response = new ItemStreamingPaginationHelper()
