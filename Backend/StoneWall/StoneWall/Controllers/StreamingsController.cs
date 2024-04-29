@@ -34,13 +34,13 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int page = 1, [FromQuery] string language = "pt-BR")
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int page = 1)
         {
             try
             {
                 var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, page);
 
-                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item, language)).ToList();
+                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
                 await Task.WhenAll(tasks);
 
                 return streamingItems;
