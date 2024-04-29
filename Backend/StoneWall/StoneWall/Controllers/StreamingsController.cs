@@ -49,7 +49,7 @@ namespace StoneWall.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (LastPageException ex)
+            catch (PageException ex)
             {
                 return BadRequest(ex.Message);
             }
