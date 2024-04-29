@@ -1,7 +1,7 @@
 ﻿namespace StoneWall.Services.Exceptions
 {
-    public class LastPageException : ApplicationException
+    public class PageException : ApplicationException
     {
-        public LastPageException(string message) : base(message) { }
+        public PageException(string message) : base(message) { }
     }
 }
