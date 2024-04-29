@@ -18,7 +18,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item,string language)
+        public async Task GetItemAsync(Item Item,string language="pt-BR")
         {
             HttpRequestMessage request;
             if (Item.Type == ItemType.movie)
