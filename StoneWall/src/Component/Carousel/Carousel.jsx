@@ -11,7 +11,8 @@ const Carousel = () => {
             MELHOR PARA VOCÊ
           </h1>
           <div className={styles.carousel}>
-            <ServicesCarousel />
+            <ServicesCarousel direction={false} />
+            <ServicesCarousel direction={true}/>
           </div>
         </div>
       </section>
