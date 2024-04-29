@@ -54,18 +54,5 @@ namespace StoneWall.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("/addons/{streamingId}")]
-        public async Task<ActionResult<List<Addon>>> GetAddons(string streamingId)
-        {
-            try
-            {
-                var addons = await _streamingServicesService.GetAddonsAsync(streamingId);
-                return addons;
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
     }
 }
