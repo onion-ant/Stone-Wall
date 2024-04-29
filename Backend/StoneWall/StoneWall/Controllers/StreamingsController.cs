@@ -14,8 +14,8 @@ namespace StoneWall.Controllers
     public class StreamingsController : ControllerBase
     {
         private readonly IStreamingServicesService _streamingServicesService;
-        private readonly TmdbService _tmdbService;
-        public StreamingsController(IStreamingServicesService streamingService, TmdbService tmdbService)
+        private readonly ITmdbService _tmdbService;
+        public StreamingsController(IStreamingServicesService streamingService, ITmdbService tmdbService)
         {
             _streamingServicesService = streamingService;
             _tmdbService = tmdbService;
