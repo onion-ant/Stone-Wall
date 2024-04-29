@@ -70,10 +70,21 @@ namespace StoneWall.Controllers
         [HttpGet("/compare")]
         public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare([FromQuery]string streamingExclusive, [FromQuery]string streamingExcluded, [FromQuery] int page = 1)
         {
-            var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, page);
-            var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
-            await Task.WhenAll(tasks);
-            return exclusiveItems;
+            try
+            {
+                var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, page);
+                var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
+                await Task.WhenAll(tasks);
+                return exclusiveItems;
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (PageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
