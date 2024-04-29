@@ -67,5 +67,13 @@ namespace StoneWall.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet("/compare")]
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare([FromQuery]string streamingExclusive, [FromQuery]string streamingExcluded, [FromQuery] int page = 1)
+        {
+            var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, page);
+            var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
+            await Task.WhenAll(tasks);
+            return exclusiveItems;
+        }
     }
 }
