@@ -48,11 +48,14 @@
   }
 }
 
-@media (max-width: 800px){
+@media (max-width: 1000px){
   .main{
     display: flex;
     flex-direction: column;
   }
+}
+
+@media (max-width: 800px){
   .mainText{
     font-size: 54px;
     text-wrap:pretty;
