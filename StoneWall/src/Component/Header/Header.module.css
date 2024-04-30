@@ -22,3 +22,18 @@
   gap: 26px;
   align-items: center;
 }
+
+@media (max-width: 800px){
+  .rightSide a{
+    display: none;
+  }
+}
+
+@media (max-width: 550px){
+  .rightSide a{
+    display: none;
+  }
+  .titulo{
+    font-size: 26px;
+  }
+}

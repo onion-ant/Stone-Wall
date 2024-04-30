@@ -15,11 +15,26 @@ body{
   margin: 0;
 }
 
+/* h1{
+  margin: 0px;
+} */
+
 a:focus{
   color: var(--L1);
 }
 
 .container{
   max-width: 1220px;
+  padding: 0px 32px;
   margin: auto;
+}
+
+.margin-top{
+  margin-top: 128px;
+}
+
+@media (max-width: 800) {
+  .margin-top{
+    margin-top: 64px;
+  }
 }
