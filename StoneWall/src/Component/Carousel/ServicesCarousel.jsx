@@ -24,22 +24,22 @@ const ServicesCarousel = ({ direction }) => {
     <>
       <div className={`${styles.items} ${idDirection}`}>
         <img
-          src="../../Components/SquareHboMax.svg"
+          src="../../Assets/SquareHboMax.svg"
           alt=""
           id={`${ids[0]}${idDirection}`}
         />
         <img
-          src="../../Components/SquarePrime.svg"
+          src="../../Assets/SquarePrime.svg"
           alt=""
           id={`${ids[1]}${idDirection}`}
         />
         <img
-          src="../../Components/SquareNetflix.svg"
+          src="../../Assets/SquareNetflix.svg"
           alt=""
           id={`${ids[2]}${idDirection}`}
         />
         <img
-          src="../../Components/SquareAppleTV.svg"
+          src="../../Assets/SquareAppleTV.svg"
           alt=""
           id={`${ids[3]}${idDirection}`}
         />

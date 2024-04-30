@@ -1,14 +1,25 @@
 .main{
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+}
+.main div:nth-child(3){
+  grid-column: 2/3;
+}
+
+.main div:last-child{
+  grid-column: 3/3;
 }
 
 .mainText{
+  text-wrap: nowrap;
   font-size: 80px;
   color: white;
   position: relative;
   text-shadow: -2px 2px var(--D2), -2px -2px var(--D2), 2px -2px var(--D2), 2px 2px var(--D2), 6px 5px var(--D2);
   letter-spacing: 5px;
   line-height: 80%;
+  grid-column: 1/3;
 }
 
 .mainText::before{
@@ -19,4 +30,31 @@
   background-color: var(--D1);
   bottom: -1px;
   left: -20px;
+}
+
+@media (max-width: 1200px){
+  .mainText{
+    grid-column: 1/-1;
+  }
+  .main div{
+    padding-left: 32px;
+    max-width: 500px;
+  }
+  .main div:nth-child(3){
+    grid-column: auto;
+  }
+  .main div:last-child{
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 800px){
+  .main{
+    display: flex;
+    flex-direction: column;
+  }
+  .mainText{
+    font-size: 54px;
+    text-wrap:pretty;
+  }
 }
