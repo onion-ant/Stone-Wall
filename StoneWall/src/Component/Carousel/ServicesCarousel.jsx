@@ -1,16 +1,17 @@
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './ServicesCarousel.module.css';
+import PropTypes from 'prop-types';
 
 const ServicesCarousel = ({ direction }) => {
-  const [idDirection,setidDirection] = useState('');
+  const [idDirection, setidDirection] = useState('');
   const [ids, setIds] = useState([]);
   useEffect(() => {
     if (direction) {
-      setidDirection('U')
+      setidDirection('U');
       setIds([0, 1, 2, 3]);
     } else {
-      setidDirection('D')
+      setidDirection('D');
       setIds([3, 2, 1, 0]);
     }
     const interval = setInterval(() => {
@@ -46,6 +47,10 @@ const ServicesCarousel = ({ direction }) => {
       </div>
     </>
   );
+};
+
+ServicesCarousel.propTypes = {
+  direction: PropTypes.bool,
 };
 
 export default ServicesCarousel;
