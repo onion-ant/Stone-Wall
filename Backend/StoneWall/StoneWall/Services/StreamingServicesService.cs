@@ -78,7 +78,7 @@ namespace StoneWall.Services
         }
         public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int genreId)
         {
-            int totalPages = await GetTotalPages(streamingId);
+            int totalPages = await GetTotalPages(streamingId,genreId:genreId);
             if ((totalPages < pageNumber || pageNumber == 0) && totalPages != 0)
             {
                 throw new PageException("Invalid pageNumber");
@@ -155,20 +155,27 @@ namespace StoneWall.Services
             };
             return response;
         }
-        private async Task<int> GetTotalPages(string streamingId, string? streamingExcluded = null)
+        private async Task<int> GetTotalPages(string streamingId, string? streamingExcluded = null, int? genreId = null)
         {
             int totalPages = 0;
-            if (string.IsNullOrWhiteSpace(streamingId))
+            if (streamingExcluded != null)
             {
                 totalPages = (await _context.Item_Streaming
-                .AsNoTracking()
-                .CountAsync(Is => Is.StreamingId == streamingId) + _pageSize - 1) / _pageSize;
+       .AsNoTracking()
+       .CountAsync(Is => Is.StreamingId == streamingId &&
+               !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId)) + _pageSize - 1) / _pageSize;
+                return totalPages;
+            }
+            else if(genreId != null)
+            {
+                totalPages = (await _context.Item_Streaming
+               .AsNoTracking()
+               .CountAsync(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g=>g.Id==genreId)) + _pageSize - 1) / _pageSize;
                 return totalPages;
             }
             totalPages = (await _context.Item_Streaming
                 .AsNoTracking()
-                .CountAsync(Is => Is.StreamingId == streamingId &&
-                        !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId)) + _pageSize - 1) / _pageSize;
+                .CountAsync(Is => Is.StreamingId == streamingId) + _pageSize - 1) / _pageSize;
             return totalPages;
         }
     }
