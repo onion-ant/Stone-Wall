@@ -42,7 +42,11 @@ namespace StoneWall.Services
             {
                 throw new PageException("Invalid pageNumber");
             }
-            var streamingItems = await _context.Item_Streaming.AsNoTracking().Include(Is => Is.Item).Where(Is => Is.StreamingId == streamingId)
+            var streamingItems = await _context.Item_Streaming
+                .AsNoTracking()
+                .Include(Is => Is.Item)
+                .ThenInclude(It => It.Genres)
+                .Where(Is => Is.StreamingId == streamingId)
                .Select(Is => new ItemStreaming
                {
                    Item = new Item
@@ -51,7 +55,8 @@ namespace StoneWall.Services
                        Title = Is.Item.Title,
                        OriginalTitle = Is.Item.OriginalTitle,
                        Popularity = Is.Item.Popularity,
-                       Type = Is.Item.Type
+                       Type = Is.Item.Type,
+                       Genres = Is.Item.Genres
                    },
                    Type = Is.Type,
                    Link = Is.Link,

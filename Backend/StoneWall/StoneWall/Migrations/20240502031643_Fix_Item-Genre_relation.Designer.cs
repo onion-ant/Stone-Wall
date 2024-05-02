@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoneWall.Data;
 
@@ -11,9 +12,11 @@ using StoneWall.Data;
 namespace StoneWall.Migrations
 {
     [DbContext(typeof(StoneWallDbContext))]
-    partial class StoneWallDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240502031643_Fix_Item-Genre_relation")]
+    partial class Fix_ItemGenre_relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace StoneWall.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("GenreItem", b =>
-                {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemsTmdbId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GenresId", "ItemsTmdbId");
-
-                    b.HasIndex("ItemsTmdbId");
-
-                    b.ToTable("GenreItem");
-                });
 
             modelBuilder.Entity("StoneWall.Entities.Addon", b =>
                 {
@@ -187,21 +175,6 @@ namespace StoneWall.Migrations
                     b.HasKey("UserEmail", "StreamingId");
 
                     b.ToTable("User_Streaming");
-                });
-
-            modelBuilder.Entity("GenreItem", b =>
-                {
-                    b.HasOne("StoneWall.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StoneWall.Entities.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemsTmdbId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("StoneWall.Entities.Addon", b =>

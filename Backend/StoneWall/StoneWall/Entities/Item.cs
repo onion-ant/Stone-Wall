@@ -16,7 +16,7 @@ namespace StoneWall.Entities
         public double Popularity { get; set; }
         public ItemType? Type { get; set; }
         public List<ItemStreaming>? Streamings { get; set; }
-        List<ItemGenre>? Genres { get; set; }
+        public List<Genre>? Genres { get; set; }
         [NotMapped]
         public string? Overview { get; set; }
         [NotMapped]
