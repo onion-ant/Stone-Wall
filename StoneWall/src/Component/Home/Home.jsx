@@ -1,4 +1,4 @@
-import Carousel from '../Carousel/Carousel';
+import CarouselMenu from '../HomeStreamingCarousel/CarouselMenu';
 import Header from '../Header/Header';
 import Movies from '../Movies/Movies';
 import Questions from '../Questions/Questions';
@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <div className={styles.background}>
         <Header />
-        <Carousel />
+        <CarouselMenu />
       </div>
       <Questions />
       <div className={styles.backgroundPurple}>
