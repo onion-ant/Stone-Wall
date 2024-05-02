@@ -88,8 +88,8 @@ namespace StoneWall.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [HttpGet("/compare")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare([FromQuery]string streamingExclusive, [FromQuery]string streamingExcluded, [FromQuery] int page = 1)
+        [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] int page = 1)
         {
             try
             {
