@@ -2,3 +2,7 @@
     background: url("../../../Assets/StoneWallBackgroundPurple.svg");
     height: 1200px;
 }
+
+.movies{
+    display: block;
+}
