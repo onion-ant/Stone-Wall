@@ -76,7 +76,7 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber)
+        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int genreId)
         {
             int totalPages = await GetTotalPages(streamingId);
             if ((totalPages < pageNumber || pageNumber == 0) && totalPages != 0)
@@ -87,7 +87,7 @@ namespace StoneWall.Services
                 .AsNoTracking()
                 .Include(Is => Is.Item)
                 .ThenInclude(It => It.Genres)
-                .Where(Is => Is.StreamingId == streamingId)
+                .Where(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g => g.Id == genreId))
                .Select(Is => new ItemStreaming
                {
                    Item = new Item
