@@ -108,7 +108,7 @@ namespace StoneWall.Services
                 .ToListAsync();
             if (!streamingItems.Any())
             {
-                throw new NotFoundException($"Theres no registered item from {streamingId}");
+                throw new NotFoundException($"Theres no registered item from {streamingId} with this genre");
             }
             var response = new ItemStreamingPaginationHelper()
             {
