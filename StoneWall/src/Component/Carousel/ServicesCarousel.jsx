@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import styles from './ServicesCarousel.module.css';
+import styles from './Carousel.module.css';
 import PropTypes from 'prop-types';
 
-const ServicesCarousel = ({ direction }) => {
+const Carousel = ({ direction, stop, images }) => {
   const [idDirection, setidDirection] = useState('');
   const [ids, setIds] = useState([]);
   useEffect(() => {
@@ -15,42 +15,29 @@ const ServicesCarousel = ({ direction }) => {
       setIds([3, 2, 1, 0]);
     }
     const interval = setInterval(() => {
-      setIds((prevIds) => {
-        return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
-      });
+      if (stop == false) {
+        setIds((prevIds) => {
+          return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
+        });
+      }
     }, 2000);
     return () => clearInterval(interval);
-  }, [direction]);
+  }, [direction, stop, images]);
   return (
     <>
       <div className={`${styles.items} ${idDirection}`}>
-        <img
-          src="../../Assets/SquareHboMax.svg"
-          alt=""
-          id={`${ids[0]}${idDirection}`}
-        />
-        <img
-          src="../../Assets/SquarePrime.svg"
-          alt=""
-          id={`${ids[1]}${idDirection}`}
-        />
-        <img
-          src="../../Assets/SquareNetflix.svg"
-          alt=""
-          id={`${ids[2]}${idDirection}`}
-        />
-        <img
-          src="../../Assets/SquareAppleTV.svg"
-          alt=""
-          id={`${ids[3]}${idDirection}`}
-        />
+        {images.map((image, index) => (
+          <img src={image} key={index} alt="" id={`${ids[index]}${idDirection}`} />
+        ))}
       </div>
     </>
   );
 };
 
-ServicesCarousel.propTypes = {
+Carousel.propTypes = {
   direction: PropTypes.bool,
+  stop: PropTypes.bool,
+  images: PropTypes.array,
 };
 
-export default ServicesCarousel;
+export default Carousel;

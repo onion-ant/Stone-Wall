@@ -1,73 +1,232 @@
-.mainMenu{
-  /* box-shadow: 500px 60px var(--L1); */
-  position: relative;
+.items {
   display: flex;
-  padding: 32px;
-  padding-top: 0 ;
-  padding-bottom: 120px;
-  justify-content:center;
-}
-
-.itemsCenter{
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.barra::after{
-  position: absolute;
-  content: "";
-  height: 50px;
-  width: 70%;
-  background-color: var(--L1);
-  bottom: -10px;
-  right: 0px;
-}
-
-.texto{
-  font-size: 64px;
-  text-align: center;
-  align-self: center;
-  color: var(--D2);
-  line-height: 110%;
-  max-width: 60%;
-  text-shadow: 1px 1px var(--D2B);
-  font-weight: bolder;
-}
-
-.carousel {
-  display: flex;
-  padding: 140px 28px;
+  flex-direction: column;
   align-items: center;
-  gap: 200px;
+  position: relative;
+  width: 107px;
+  height: 107px;
+}
+
+
+img {
+  position: absolute;
+  transition: top 500ms ease-in-out, transform 500ms ease-in-out;
+}
+
+[id="0D"] {
+  border-radius: 50%;
+  animation: TopR 500ms;
+  z-index: 5;
+  top: -140px;
+}
+
+[id="0U"]{
+  border-radius: 50%;
+  animation: Top 500ms;
+  top: -140px;
+  z-index: 1;
+}
+
+[id="1D"] {
+  border-radius: 7px;
+  animation: MidR 500ms;
+  transform: scale(1.5);
+  z-index: 10;
+  top: 0px;
+}
+
+[id="1U"] {
+  border-radius: 7px;
+  animation: Mid 500ms;
+  transform: scale(1.5);
+  z-index: 10;
+  top: 0px;
+}
+
+[id="2D"] {
+  border-radius: 50%;
+  animation: BottomR 500ms;
+  z-index: 1;
+  top: 140px
+}
+
+[id="2U"] {
+  border-radius: 50%;
+  animation: Bottom 500ms;
+  z-index: 5;
+  top: 140px
+}
+
+[id="3U"] {
+  border-radius: 50%;
+  animation: MidB 500ms;
+  z-index: 1;
+}
+
+[id="3D"]{
+  border-radius: 50%;
+  animation: MidRB 500ms;
+  z-index: 1;
+}
+@keyframes Top {
+  from {
+    top: 0px;
+  }
+  to {
+    top: -140px;
+  }
+}
+
+@keyframes TopR {
+  from {
+    top: 0px;
+    border-radius: 7px;
+    transform: scale(1.5);
+  }
+  to {
+    top: -140px;
+    border-radius: 50%;
+    transform: scale(1);
+  }
+}
+
+@keyframes Mid {
+  from {
+    transform: scale(1);
+    border-radius: 50%;
+  }
+  to {
+    transform: scale(1.5);
+    border-radius: 7px;
+  }
+}
+
+@keyframes MidB {
+  from {
+    top: 140px;
+  }
+  to {
+    top: 0px;
+  }
+}
+
+@keyframes MidR {
+  from {
+    top: 140px;
+    border-radius: 50%;
+  }
+  to {
+    top: 0px;
+    border-radius: 7px;
+  }
+}
+
+@keyframes MidRB {
+  from {
+    top: -140px;
+  }
+  to {
+    top: 0px;
+  }
+}
+
+@keyframes Bottom {
+  from {
+    transform: scale(1.5);
+    border-radius: 7px;
+  }
+  to {
+    transform: scale(1);
+    border-radius: 50%;
+  }
+}
+
+
+@keyframes BottomR {
+  from {
+    top: 0;
+  }
+  to {
+    top: 140px;
+  }
+}
+
+@keyframes Right {
+  from {
+    right: 0;
+    transform: scale(1.5);
+  }
+  to {
+    right: 140px;
+    transform: scale(1);
+  }
+}
+
+@keyframes MidH {
+  from {
+    right: -140px;
+    transform: scale(1);
+  }
+  to {
+    right: 0px;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes MidHB {
+  from {
+    right: 140px;
+  }
+  to {
+    right: 0px;
+  }
+}
+
+@keyframes Left {
+  from {
+    right: 0px;
+  }
+  to {
+    right: -140px;
+  }
+}
+
+@media (max-width: 1200px){
+  .items:first-of-type{
+    display: none;
+  }
 }
 @media (max-width: 800px){
-  .texto{
-    margin-top: 0px;
-    font-size: 64px;
-    max-width: 100%;
+  [id="0U"]{
+    border-radius: 50%;
+    animation: Left 500ms;
+    right: -140px;
+    top: 0px;
+    z-index: 1;
   }
-  .mainMenu{
-    padding-bottom: 32px;
+  [id="1U"] {
+    border-radius: 7px;
+    animation: MidH 500ms;
+    transform: scale(1.5);
+    z-index: 10;
+    top: 0px;
   }
-  .itemsCenter{
-    flex-direction: column;
+  [id="2U"] {
+    border-radius: 50%;
+    animation: Right 500ms;
+    z-index: 5;
+    top: 0px;
+    right: 140px;
+    
   }
-  .carousel{
-    justify-content: center;
-    padding: 80px 28px;
-    padding-top: 20px;
+  [id="3U"] {
+    border-radius: 50%;
+    animation: MidHB 500ms;
+    z-index: 1;
   }
 }
-
 @media (max-width: 550px){
-  .carousel{
-    padding-top: 0px;
-  }
-  .texto{
-    font-size: 48px;
-  }
-  .itemsCenter{
-    flex-direction: column;
+  .items{
+    transform: scale(.7);
   }
 }
