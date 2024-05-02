@@ -34,11 +34,32 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int page = 1)
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int pageNumber = 1)
         {
             try
             {
-                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, page);
+                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber);
+
+                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
+                await Task.WhenAll(tasks);
+
+                return streamingItems;
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (PageException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("{streamingId}/{genreId}")]
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItemsByGenre(string streamingId, int genreId, [FromQuery] int pageNumber = 1)
+        {
+            try
+            {
+                var streamingItems = await _streamingServicesService.GetItemsByGenreAsync(streamingId, pageNumber,genreId);
 
                 var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
                 await Task.WhenAll(tasks);
