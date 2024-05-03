@@ -10,11 +10,9 @@ namespace StoneWall.Services
     public class StreamingServicesService : IStreamingServicesService
     {
         private readonly StoneWallDbContext _context;
-        private readonly int _pageSize;
-        public StreamingServicesService(StoneWallDbContext context, IConfiguration config)
+        public StreamingServicesService(StoneWallDbContext context)
         {
             _context = context;
-            _pageSize = int.Parse(config["PageSize"]);
         }
 
         public async Task<List<StreamingServices>> GetStreamingsAsync()
@@ -35,12 +33,16 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber)
+        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset)
         {
-            int totalPages = await GetTotalPages(streamingId);
-            if ((totalPages < pageNumber || pageNumber == 0) && totalPages != 0)
+            if (offset < 1)
             {
-                throw new PageException("Invalid pageNumber");
+                throw new PageException($"Invalid {nameof(offset)}");
+            }
+            int totalPages = await GetTotalPages(streamingId,offset);
+            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
             }
             var streamingItems = await _context.Item_Streaming
                 .AsNoTracking()
@@ -62,8 +64,8 @@ namespace StoneWall.Services
                    Link = Is.Link,
                })
                 .OrderByDescending(Is => Is.Item.Popularity)
-                .Skip((pageNumber - 1) * _pageSize)
-                .Take(_pageSize)
+                .Skip((pageNumber - 1) * offset)
+                .Take(offset)
                 .ToListAsync();
             if (!streamingItems.Any())
             {
@@ -76,12 +78,16 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int genreId)
+        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int offset, int genreId)
         {
-            int totalPages = await GetTotalPages(streamingId,genreId:genreId);
-            if ((totalPages < pageNumber || pageNumber == 0) && totalPages != 0)
+            if (offset < 1)
             {
-                throw new PageException("Invalid pageNumber");
+                throw new PageException($"Invalid {nameof(offset)}");
+            }
+            int totalPages = await GetTotalPages(streamingId, offset, genreId:genreId);
+            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
             }
             var streamingItems = await _context.Item_Streaming
                 .AsNoTracking()
@@ -103,8 +109,8 @@ namespace StoneWall.Services
                    Link = Is.Link,
                })
                 .OrderByDescending(Is => Is.Item.Popularity)
-                .Skip((pageNumber - 1) * _pageSize)
-                .Take(_pageSize)
+                .Skip((pageNumber - 1) * offset)
+                .Take(offset)
                 .ToListAsync();
             if (!streamingItems.Any())
             {
@@ -117,12 +123,16 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber)
+        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber,int offset)
         {
-            int totalPages = await GetTotalPages(streamingExclusive, streamingExcluded);
-            if ((totalPages < pageNumber || pageNumber == 0) && totalPages != 0)
+            if (offset < 1)
             {
-                throw new PageException("Invalid pageNumber");
+                throw new PageException($"Invalid {nameof(offset)}");
+            }
+            int totalPages = await GetTotalPages(streamingExclusive, offset, streamingExcluded);
+            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
             }
             var ExclusiveItems = await _context.Item_Streaming
                     .Where(Is => Is.StreamingId == streamingExclusive &&
@@ -141,8 +151,8 @@ namespace StoneWall.Services
                         Link = Is.Link,
                     })
                     .OrderByDescending(Is => Is.Item.Popularity)
-                    .Skip((pageNumber - 1) * _pageSize)
-                    .Take(_pageSize)
+                    .Skip((pageNumber - 1) * offset)
+                    .Take(offset)
                     .ToListAsync();
             if (!ExclusiveItems.Any())
             {
@@ -155,27 +165,27 @@ namespace StoneWall.Services
             };
             return response;
         }
-        private async Task<int> GetTotalPages(string streamingId, string? streamingExcluded = null, int? genreId = null)
+        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null)
         {
             int totalPages = 0;
             if (streamingExcluded != null)
             {
                 totalPages = (await _context.Item_Streaming
-       .AsNoTracking()
-       .CountAsync(Is => Is.StreamingId == streamingId &&
-               !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId)) + _pageSize - 1) / _pageSize;
+                .AsNoTracking()
+                .CountAsync(Is => Is.StreamingId == streamingId &&
+               !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId)) + offset - 1) / offset;
                 return totalPages;
             }
             else if(genreId != null)
             {
                 totalPages = (await _context.Item_Streaming
                .AsNoTracking()
-               .CountAsync(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g=>g.Id==genreId)) + _pageSize - 1) / _pageSize;
+               .CountAsync(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g=>g.Id==genreId)) + offset - 1) / offset;
                 return totalPages;
             }
             totalPages = (await _context.Item_Streaming
                 .AsNoTracking()
-                .CountAsync(Is => Is.StreamingId == streamingId) + _pageSize - 1) / _pageSize;
+                .CountAsync(Is => Is.StreamingId == streamingId) + offset - 1) / offset;
             return totalPages;
         }
     }
