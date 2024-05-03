@@ -127,7 +127,7 @@ namespace StoneWall.Services
                 query = query
                .Where(Is => Is.Type == streamingType);
             }
-            if (genreId != null)
+            if (genreId != 0)
             {
                 query = query
                .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
