@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PopulateDatabase.Models.Enums;
 using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
@@ -35,7 +34,7 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset, ItemType? itemType)
+        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset, ItemType? itemType,StreamingType? streamingType)
         {
             int totalPages = 0;
             if (offset < 1)
@@ -51,12 +50,16 @@ namespace StoneWall.Services
 
             if (itemType != null)
             {
-                query = _context.Item_Streaming
-               .AsNoTracking()
+                query = query
                .Where(Is => Is.Item.Type == itemType);
             }
+            if (streamingType != null)
+            {
+                query = query
+               .Where(Is => Is.Type == streamingType);
+            }
 
-            totalPages = await GetTotalPages(streamingId, offset, itemType: itemType);
+            totalPages = await GetTotalPages(streamingId, offset, itemType: itemType, streamingType:streamingType);
 
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
@@ -93,7 +96,7 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? itemType)
+        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? itemType, StreamingType? streamingType)
         {
             if (offset < 1)
             {
@@ -109,12 +112,16 @@ namespace StoneWall.Services
 
             if (itemType != null)
             {
-                query = _context.Item_Streaming
-                .AsNoTracking()
+                query = query
                 .Where(Is => Is.Item.Type == itemType);
             }
+            if (streamingType != null)
+            {
+                query = query
+               .Where(Is => Is.Type == streamingType);
+            }
 
-            totalPages = await GetTotalPages(streamingId, offset, genreId: genreId, itemType: itemType);
+            totalPages = await GetTotalPages(streamingId, offset, genreId: genreId, itemType: itemType, streamingType: streamingType);
 
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
@@ -150,7 +157,7 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, ItemType? itemType)
+        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, ItemType? itemType, StreamingType? streamingType)
         {
             if (offset < 1)
             {
@@ -168,11 +175,16 @@ namespace StoneWall.Services
 
             if (itemType != null)
             {
-                query = _context.Item_Streaming
+                query = query
                 .Where(Is => Is.Item.Type == itemType);
             }
+            if (streamingType != null)
+            {
+                query = query
+               .Where(Is => Is.Type == streamingType);
+            }
 
-            totalPages = await GetTotalPages(streamingExclusive, streamingExcluded: streamingExcluded, offset: offset, itemType: itemType);
+            totalPages = await GetTotalPages(streamingExclusive, streamingExcluded: streamingExcluded, offset: offset, itemType: itemType, streamingType: streamingType);
 
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
@@ -209,12 +221,16 @@ namespace StoneWall.Services
             };
             return response;
         }
-        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null, ItemType? itemType = null)
+        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null, ItemType? itemType = null, StreamingType? streamingType = null)
         {
             IQueryable<ItemStreaming> query = _context.Item_Streaming.AsNoTracking().Where(Is => Is.StreamingId == streamingId);
             if (itemType != null)
             {
                 query = query.Where(Is => Is.Item.Type == itemType);
+            }
+            if (streamingType != null)
+            {
+                query =query.Where(Is => Is.Type == streamingType);
             }
             if (streamingExcluded != null)
             {
