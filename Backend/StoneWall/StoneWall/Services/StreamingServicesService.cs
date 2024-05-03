@@ -185,7 +185,7 @@ namespace StoneWall.Services
             {
                 query = query.Where(Is => !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId));
             }
-            if (genreId != null)
+            if (genreId != 0)
             {
                 query = query.Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }

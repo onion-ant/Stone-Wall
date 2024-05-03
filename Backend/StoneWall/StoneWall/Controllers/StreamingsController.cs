@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
 using StoneWall.Entities;
+using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
@@ -34,32 +35,11 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
-                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber);
-
-                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
-                await Task.WhenAll(tasks);
-
-                return streamingItems;
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (PageException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("{streamingId}/{genreId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItemsByGenre(string streamingId, int genreId, [FromQuery] int pageNumber = 1)
-        {
-            try
-            {
-                var streamingItems = await _streamingServicesService.GetItemsByGenreAsync(streamingId, pageNumber,genreId);
+                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber, offset, genreId, itemType, streamingType);
 
                 var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
                 await Task.WhenAll(tasks);
@@ -89,11 +69,11 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] int page = 1)
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
-                var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, page);
+                var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, pageNumber, offset, genreId, itemType, streamingType);
                 var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
                 await Task.WhenAll(tasks);
                 return exclusiveItems;
