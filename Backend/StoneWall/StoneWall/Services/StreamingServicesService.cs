@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PopulateDatabase.Models.Enums;
 using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
@@ -34,37 +35,53 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset, ItemType? type)
+        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset, ItemType? itemType)
         {
             int totalPages = 0;
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
             }
+
             IQueryable<ItemStreaming>? query = null;
-            if (type != null)
+
+            query = _context.Item_Streaming
+            .AsNoTracking()
+            .Where(Is => Is.StreamingId == streamingId);
+
+            if (itemType != null)
             {
-                totalPages = await GetTotalPages(streamingId, offset,type:type);
                 query = _context.Item_Streaming
                .AsNoTracking()
-               .Where(Is => Is.StreamingId == streamingId && Is.Item.Type == type);
+               .Where(Is => Is.Item.Type == itemType);
             }
-            else
-            {
-                totalPages = await GetTotalPages(streamingId, offset);
-                query = _context.Item_Streaming
-               .AsNoTracking()
-               .Where(Is => Is.StreamingId == streamingId);
-            }
+
+            totalPages = await GetTotalPages(streamingId, offset, itemType: itemType);
+
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
             }
+
             var streamingItems = await query
+                .Select(Is => new ItemStreaming
+                {
+                    Item = new Item
+                    {
+                        TmdbId = Is.Item.TmdbId,
+                        Title = Is.Item.Title,
+                        OriginalTitle = Is.Item.OriginalTitle,
+                        Popularity = Is.Item.Popularity,
+                        Type = Is.Item.Type,
+                    },
+                    Type = Is.Type,
+                    Link = Is.Link,
+                })
                 .OrderByDescending(Is => Is.Item.Popularity)
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
                 .ToListAsync();
+
             if (!streamingItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item from {streamingId}");
@@ -76,28 +93,29 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? type)
+        public async Task<ItemStreamingPaginationHelper> GetItemsByGenreAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? itemType)
         {
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
             }
             int totalPages = 0;
+
             IQueryable<ItemStreaming>? query = null;
-            if (type != null)
+
+            query = _context.Item_Streaming
+            .AsNoTracking()
+            .Where(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g => g.Id == genreId));
+
+            if (itemType != null)
             {
-                totalPages = await GetTotalPages(streamingId, offset, genreId: genreId, type: type);
                 query = _context.Item_Streaming
                 .AsNoTracking()
-                .Where(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g => g.Id == genreId) && Is.Item.Type == type);
+                .Where(Is => Is.Item.Type == itemType);
             }
-            else
-            {
-                totalPages = await GetTotalPages(streamingId, offset, genreId: genreId);
-                query = _context.Item_Streaming
-                .AsNoTracking()
-                .Where(Is => Is.StreamingId == streamingId && Is.Item.Genres.Any(g => g.Id == genreId));
-            }
+
+            totalPages = await GetTotalPages(streamingId, offset, genreId: genreId, itemType: itemType);
+
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
@@ -120,6 +138,7 @@ namespace StoneWall.Services
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
                 .ToListAsync();
+
             if (!streamingItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item from {streamingId} with this genre");
@@ -131,34 +150,30 @@ namespace StoneWall.Services
             };
             return response;
         }
-        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset,ItemType? type)
+        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, ItemType? itemType)
         {
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
             }
             int totalPages = 0;
-            IQueryable<ItemStreaming>? query = null;
-            if (type != null)
+
+            var excludedTmdbIds = await _context.Item_Streaming
+            .Where(Is2 => Is2.StreamingId == streamingExcluded)
+            .Select(Is2 => Is2.Item.TmdbId)
+            .ToListAsync();
+
+            IQueryable<ItemStreaming>? query = query = _context.Item_Streaming
+            .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId));
+
+            if (itemType != null)
             {
-                totalPages = await GetTotalPages(streamingExclusive,streamingExcluded:streamingExcluded, offset: offset, type: type);
-                var excludedTmdbIds = await _context.Item_Streaming
-                .Where(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.Type == type)
-                .Select(Is2 => Is2.Item.TmdbId)
-                .ToListAsync();
                 query = _context.Item_Streaming
-                .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId) && Is.Item.Type == type);
+                .Where(Is => Is.Item.Type == itemType);
             }
-            else
-            {
-                totalPages = await GetTotalPages(streamingExclusive, streamingExcluded: streamingExcluded, offset: offset, type: type);
-                var excludedTmdbIds = await _context.Item_Streaming
-                .Where(Is2 => Is2.StreamingId == streamingExcluded)
-                .Select(Is2 => Is2.Item.TmdbId)
-                .ToListAsync();
-                query = _context.Item_Streaming
-                .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId));
-            }
+
+            totalPages = await GetTotalPages(streamingExclusive, streamingExcluded: streamingExcluded, offset: offset, itemType: itemType);
+
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
@@ -182,6 +197,7 @@ namespace StoneWall.Services
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
                 .ToListAsync();
+
             if (!exclusiveItems.Any())
             {
                 throw new NotFoundException($"Theres no items in {streamingExclusive} that dont have in the {streamingExcluded}");
@@ -193,31 +209,20 @@ namespace StoneWall.Services
             };
             return response;
         }
-        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null, ItemType? type = null)
+        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null, ItemType? itemType = null)
         {
             IQueryable<ItemStreaming> query = _context.Item_Streaming.AsNoTracking().Where(Is => Is.StreamingId == streamingId);
-            if (type != null)
+            if (itemType != null)
             {
-                if (streamingExcluded != null)
-                {
-                    query = query.Where(Is => !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId)
-                    && Is.Item.Type == type);
-                }
-                else if (genreId != null)
-                {
-                    query = query.Where(Is => Is.Item.Genres.Any(g => g.Id == genreId) && Is.Item.Type == type);
-                }
+                query = query.Where(Is => Is.Item.Type == itemType);
             }
-            else
+            if (streamingExcluded != null)
             {
-                if (streamingExcluded != null)
-                {
-                    query = query.Where(Is => !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId));
-                }
-                else if (genreId != null)
-                {
-                    query = query.Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
-                }
+                query = query.Where(Is => !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId));
+            }
+            if (genreId != null)
+            {
+                query = query.Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }
 
             int count = await query.CountAsync();
