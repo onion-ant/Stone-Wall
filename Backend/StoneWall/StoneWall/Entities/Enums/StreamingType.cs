@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PopulateDatabase.Models.Enums
+namespace StoneWall.Entities.Enums
 {
     public enum StreamingType
     {

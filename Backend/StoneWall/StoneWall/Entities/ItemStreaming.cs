@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PopulateDatabase.Models.Enums;
+using StoneWall.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
