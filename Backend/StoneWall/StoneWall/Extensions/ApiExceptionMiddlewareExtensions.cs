@@ -6,7 +6,7 @@ namespace StoneWall.Extensions
 {
     public static class ApiExceptionMiddlewareExtensions
     {
-        public static void ConfigureException(this IApplicationBuilder app)
+        public static void ConfigureExceptionHandler(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(appError =>
             {

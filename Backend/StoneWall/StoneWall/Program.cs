@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
 using StoneWall.Entities;
+using StoneWall.Extensions;
 using StoneWall.Services;
 using System.Text.Json.Serialization;
 
@@ -42,6 +43,7 @@ namespace StoneWall
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.ConfigureExceptionHandler();
             }
 
             app.UseHttpsRedirection();
