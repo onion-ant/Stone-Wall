@@ -42,9 +42,7 @@ namespace StoneWall.Services
                 throw new PageException($"Invalid {nameof(offset)}");
             }
 
-            IQueryable<ItemStreaming>? query = null;
-
-            query = _context.Item_Streaming
+            IQueryable<ItemStreaming> query = _context.Item_Streaming
             .AsNoTracking()
             .Where(Is => Is.StreamingId == streamingId);
 
@@ -64,7 +62,7 @@ namespace StoneWall.Services
                .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }
 
-            totalPages = await GetTotalPages(streamingId, offset, itemType: itemType, streamingType: streamingType, genreId: genreId);
+            totalPages = await GetTotalPages(query, offset);
 
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
@@ -114,7 +112,7 @@ namespace StoneWall.Services
             .Select(Is2 => Is2.Item.TmdbId)
             .ToListAsync();
 
-            IQueryable<ItemStreaming>? query = query = _context.Item_Streaming
+            IQueryable<ItemStreaming> query = _context.Item_Streaming
             .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId));
 
             if (itemType != null)
@@ -133,7 +131,7 @@ namespace StoneWall.Services
                .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }
 
-            totalPages = await GetTotalPages(streamingExclusive, streamingExcluded: streamingExcluded, offset: offset, itemType: itemType, streamingType: streamingType, genreId: genreId);
+            totalPages = await GetTotalPages(query, offset);
 
             if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
             {
@@ -170,26 +168,8 @@ namespace StoneWall.Services
             };
             return response;
         }
-        private async Task<int> GetTotalPages(string streamingId, int offset, string? streamingExcluded = null, int? genreId = null, ItemType? itemType = null, StreamingType? streamingType = null)
+        private async Task<int> GetTotalPages(IQueryable<ItemStreaming> query,int offset)
         {
-            IQueryable<ItemStreaming> query = _context.Item_Streaming.AsNoTracking().Where(Is => Is.StreamingId == streamingId);
-            if (itemType != null)
-            {
-                query = query.Where(Is => Is.Item.Type == itemType);
-            }
-            if (streamingType != null)
-            {
-                query = query.Where(Is => Is.Type == streamingType);
-            }
-            if (streamingExcluded != null)
-            {
-                query = query.Where(Is => !_context.Item_Streaming.Any(Is2 => Is2.StreamingId == streamingExcluded && Is2.Item.TmdbId == Is.Item.TmdbId));
-            }
-            if (genreId != 0)
-            {
-                query = query.Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
-            }
-
             int count = await query.CountAsync();
             int totalPages = (count + offset - 1) / offset;
 
