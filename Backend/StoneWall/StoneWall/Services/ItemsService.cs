@@ -40,7 +40,7 @@ namespace StoneWall.Services
 
             if (item == null)
             {
-                throw new NotFoundException("");
+                throw new NotFoundException($"Theres no items with the id:{tmdbId}");
             }
             return item;
         }
