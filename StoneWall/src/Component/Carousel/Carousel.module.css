@@ -8,7 +8,7 @@
   width: 107px;
   position: relative;
 }
-img {
+.Streaming img {
   position: absolute;
   transition: top 500ms ease-in-out, transform 500ms ease-in-out;
 }
@@ -93,38 +93,7 @@ img {
   }
   }
 
-@keyframes RightPoster{ 
-  from{
-    right: 75px;
-    transform: scale(1.5);
-    z-index: 10;
-  }
-  to{
-    transform: scale(1);
-    right: -205px;
-    z-index: 5;
-  }
-}
 
-@keyframes LeftPoster{ 
-  from{
-    right: -205px;
-  }
-  to{
-    right: 355px;
-  }
-}
-
-@keyframes MidPoster{
-  from{
-    right: 355px;
-    transform: scale(1);
-  }
-  to{
-    right: 75px;
-    transform: scale(1.5);
-  }
-}
 
 @keyframes Top {
   from {

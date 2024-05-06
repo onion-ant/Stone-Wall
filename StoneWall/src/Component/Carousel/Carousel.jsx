@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import styles from './Carousel.module.css';
 import PropTypes from 'prop-types';
 
-const Carousel = ({ direction, stop, images, type }) => {
+const Carousel = ({ direction, images, type }) => {
   const [ids, setIds] = useState([]);
   const [idDirection, setidDirection] = useState('');
   useEffect(() => {
@@ -19,18 +19,16 @@ const Carousel = ({ direction, stop, images, type }) => {
       setIds(val.reverse());
     }
     const interval = setInterval(() => {
-      if (stop == false) {
-        setIds((prevIds) => {
-          if (images.length === 3) {
-            return [prevIds[1], prevIds[2], prevIds[0]];
-          } else if (images.length === 4) {
-            return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
-          }
-        });
-      }
+      setIds((prevIds) => {
+        if (images.length === 3) {
+          return [prevIds[1], prevIds[2], prevIds[0]];
+        } else if (images.length === 4) {
+          return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
+        }
+      });
     }, 2000);
     return () => clearInterval(interval);
-  }, [direction, stop, images, type]);
+  }, [direction, images, type]);
   return (
     <>
       <div className={`${styles.items} ${styles[type]} ${idDirection}`}>

@@ -24,13 +24,11 @@ const CarouselMenu = () => {
           <div className={styles.carousel}>
             <Carousel
               direction={false}
-              stop={false}
               images={images}
               type={'Streaming'}
             />
             <Carousel
               direction={true}
-              stop={false}
               images={images}
               type={'Streaming'}
             />
