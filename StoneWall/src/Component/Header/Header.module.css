@@ -1,40 +1,84 @@
-.header{
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 32px 32px 0px 32px;
 }
 
-.titulo{
+.button {
+  display: none;
+}
+
+.titulo {
   padding-left: 16px;
   font-size: 36px;
   font-weight: bolder;
   text-decoration: none;
 }
 
-.link{
+.link {
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
 }
 
-.rightSide{
+.rightSide {
   display: flex;
-  gap: 26px;
+  gap: 15px;
   align-items: center;
 }
 
-@media (max-width: 800px){
-  .rightSide a{
+@media (max-width: 800px) {
+  .rightSide {
     display: none;
+    position: absolute;
+    background: white;
+    width: 160px;
+    z-index: 200;
+    padding: 60px 0 20px 0;
+    box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+    z-index: 5;
+  }
+  .rightSide.active {
+    display: flex;
+    flex-direction: column;
+    right: 0px;
+    top: 25px;
+    animation: show-right 0.3s forwards;
+  }
+  .button {
+    position: relative;
+    font-family: 'Kanit';
+    color: white;
+    font-size: 18px;
+    font-weight: bolder;
+    line-height: 80%;
+    padding: 10px 15px;
+    display: flex;
+    border: none;
+    border-radius: 7px;
+    background-color: var(--D2);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .button::before {
+    content: '';
+    display: inline-block;
+    height: 2px;
+    width: 15px;
+    background: #fff;
+    box-shadow: 0 4px #fff, 0 -4px #fff;
+    transition: transform 0.3s;
+    margin-right: 4px;
   }
 }
-
-@media (max-width: 550px){
-  .rightSide a{
-    display: none;
-  }
-  .titulo{
+.button.active{
+  background-color: var(--L1);
+}
+@media (max-width: 550px) {
+  .titulo {
     font-size: 26px;
   }
 }

@@ -1,8 +1,9 @@
 import CarouselMenu from '../HomeStreamingCarousel/CarouselMenu';
 import Header from '../Header/Header';
-import Movies from '../Movies/Movies';
+import CarouselSection from '../StreamingItensCarousel/CarouselSection'
 import Questions from '../Questions/Questions';
 import styles from './Home.module.css';
+
 
 const Home = () => {
   return (
@@ -13,7 +14,7 @@ const Home = () => {
       </div>
       <Questions />
       <div className={styles.backgroundPurple}>
-        <Movies />
+        <CarouselSection />
       </div>
     </>
   );
