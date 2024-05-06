@@ -35,6 +35,7 @@ namespace StoneWall
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
             builder.Services.AddScoped<ITmdbService,TmdbService>();
+            builder.Services.AddScoped<IItemsService, ItemsService>();
 
             var app = builder.Build();
 
