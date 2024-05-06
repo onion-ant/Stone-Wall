@@ -4,8 +4,8 @@ import styles from './Carousel.module.css';
 import PropTypes from 'prop-types';
 
 const Carousel = ({ direction, stop, images, type }) => {
-  const [idDirection, setidDirection] = useState('');
   const [ids, setIds] = useState([]);
+  const [idDirection, setidDirection] = useState('');
   useEffect(() => {
     let val = [];
     for (let i = 0; i < images.length; i++) {
@@ -21,9 +21,9 @@ const Carousel = ({ direction, stop, images, type }) => {
     const interval = setInterval(() => {
       if (stop == false) {
         setIds((prevIds) => {
-          if(images.length === 3){
+          if (images.length === 3) {
             return [prevIds[1], prevIds[2], prevIds[0]];
-          } else if(images.length === 4){
+          } else if (images.length === 4) {
             return [prevIds[1], prevIds[2], prevIds[3], prevIds[0]];
           }
         });
@@ -39,7 +39,7 @@ const Carousel = ({ direction, stop, images, type }) => {
             src={image}
             key={index}
             alt=""
-            id={`${ids[index]}${idDirection}`}
+            className={`${ids[index]}${idDirection}`}
           />
         ))}
       </div>
