@@ -34,5 +34,19 @@ namespace StoneWall.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet("{tmdbId}")]
+        public async Task<ActionResult<Item>> GetDetails(int tmdbId)
+        {
+            try
+            {
+                var item = await _itemsService.GetDetailsAsync(tmdbId);
+                await _tmdbService.GetItemAsync(item);
+                return item;
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }
