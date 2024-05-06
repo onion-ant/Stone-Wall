@@ -19,8 +19,6 @@ const Movies = () => {
         });
       }, 2000);
   });
-  console.log(current);
-
   return (
     <div className={styles.background}>
       <div
