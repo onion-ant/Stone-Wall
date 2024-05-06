@@ -14,6 +14,37 @@ namespace StoneWall.Services
         {
             _context = context;
         }
+
+        public async Task<Item> GetDetailsAsync(int tmdbId)
+        {
+            var item = await _context.Items.AsNoTracking().Select(It=>new Item()
+            {
+                TmdbId = It.TmdbId,
+                Title = It.Title,
+                OriginalTitle = It.OriginalTitle,
+                Popularity = It.Popularity,
+                Type = It.Type,
+                Streamings = It.Streamings.Select(s=>new ItemStreaming()
+                {
+                    StreamingId = s.StreamingId,
+                    Type = s.Type,
+                    Link = s.Link,
+                }).ToList(),
+                Genres = It.Genres.Select(g => new Genre()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                }).ToList()
+            }).FirstOrDefaultAsync(It => It.TmdbId == tmdbId);
+                                
+
+            if (item == null)
+            {
+                throw new NotFoundException("");
+            }
+            return item;
+        }
+
         public async Task<ItemPaginationHelper> GetItemsAsync(int pageNumber, int offset, int genreId, int atLeast, ItemType? itemType)
         {
             int totalPages = 0;
@@ -52,9 +83,13 @@ namespace StoneWall.Services
                         OriginalTitle = It.OriginalTitle,
                         Popularity = It.Popularity,
                         Type = It.Type,
-                        Streamings = It.Streamings
-                    }
-                )
+                        Streamings = It.Streamings.Select(s => new ItemStreaming()
+                        {
+                        StreamingId = s.StreamingId,
+                        Type = s.Type,
+                        Link = s.Link,
+                        }).ToList()
+                    })
                 .OrderByDescending(It => It.Popularity)
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
