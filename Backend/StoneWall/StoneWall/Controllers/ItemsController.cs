@@ -19,5 +19,20 @@ namespace StoneWall.Controllers
             _itemsService = itemsService;
             _tmdbService = tmdbService;
         }
+        [HttpGet]
+        public async Task<ActionResult<ItemPaginationHelper>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] ItemType? itemType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        {
+            try
+            {
+                var items = await _itemsService.GetItemsAsync(pageNumber,offset,genreId,atLeast,itemType);
+                var tasks = items.Items.Select(item => _tmdbService.GetItemAsync(item)).ToList();
+                await Task.WhenAll(tasks);
+                return items;
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }
