@@ -33,6 +33,13 @@ namespace StoneWall
                 options.UseMySql(connString,ServerVersion.AutoDetect(connString));
             });
             builder.Services.AddHttpClient();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
             builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
             builder.Services.AddScoped<ITmdbService,TmdbService>();
             builder.Services.AddScoped<IItemsService, ItemsService>();
@@ -49,6 +56,7 @@ namespace StoneWall
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthorization();
             app.MapControllers();
 
