@@ -1,138 +1,181 @@
-.background{
-    background: url("../../../Assets/StoneWallBackgroundPurple.svg");
-    display: flex;
+.background {
+  background: url('../../../Assets/StoneWallBackgroundPurple.svg');
+  display: flex;
 }
-.movies img{
-    max-width: 100%;
-    height: 450px;
-    width: 300px;
-    position: absolute;
-    transition: top 500ms ease-in-out, transform 500ms ease-in-out;
-    border-radius: 7px;
+.movies img {
+  max-width: 100%;
+  height: 450px;
+  width: 300px;
+  position: absolute;
+  transition: top 500ms ease-in-out, transform 500ms ease-in-out;
+  border-radius: 7px;
 }
-.movies{
-    height: 450px;
-    width: 300px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 120px;
-    margin-bottom: 120px;
+.movies {
+  height: 450px;
+  width: 300px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 120px;
+  margin-bottom: 120px;
 }
-[class~=carousel_item_0]{
-    right: 140px;
-    animation: LeftPoster 500ms;
-    filter: blur(1.5px);
+[class~='carousel_item_0'] {
+  right: 140px;
+  animation: LeftPoster 500ms;
+  filter: blur(1.5px);
 }
-[class~=carousel_item_1]{
+[class~='carousel_item_1'] {
+  right: 0px;
+  z-index: 10;
+  transform: scale(1.2);
+  animation: MidPoster 500ms;
+  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.75);
+}
+[class~='carousel_item_2'] {
+  right: -140px;
+  animation: RightPoster 500ms;
+  filter: blur(1.5px);
+}
+
+@keyframes RightPoster {
+  from {
     right: 0px;
-    z-index: 10;
     transform: scale(1.2);
-    animation: MidPoster 500ms;
-    box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
-}
-[class~=carousel_item_2]{
+    z-index: 10;
+  }
+  to {
+    transform: scale(1);
     right: -140px;
-    animation: RightPoster 500ms;
-    filter: blur(1.5px);
+    z-index: 5;
+  }
+}
+@keyframes RightPosterUD {
+  from {
+    top: 0px;
+    transform: scale(1.2);
+    z-index: 10;
+  }
+  to {
+    transform: scale(1);
+    top: -220px;
+    z-index: 5;
+  }
 }
 
-@keyframes RightPoster{ 
-    from{
-      right: 0px;
-      transform: scale(1.2);
-      z-index: 10;
-    }
-    to{
-      transform: scale(1);
-      right: -140px;
-      z-index: 5;
-    }
+@keyframes LeftPoster {
+  from {
+    right: -140px;
   }
-  @keyframes RightPosterUD{ 
-    from{
-      top: 0px;
-      transform: scale(1.2);
-      z-index: 10;
-    }
-    to{
-      transform: scale(1);
-      top: -220px;
-      z-index: 5;
-    }
+  to {
+    right: 140px;
   }
-  
-  @keyframes LeftPoster{ 
-    from{
-      right: -140px;
-    }
-    to{
-      right: 140px;
-    }
-  }
-
-  @keyframes LeftPosterUD{ 
-    from{
-      top: -220px;
-    }
-    to{
-      top: 220px;
-    }
-  }
-  
-  @keyframes MidPoster{
-    from{
-      right: 140px;
-      transform: scale(1);
-    }
-    to{
-      right: 0px;
-      transform: scale(1.2);
-    }
-  }
-
-  @keyframes MidPosterUD{
-    from{
-      top: 220px;
-      transform: scale(1);
-    }
-    to{
-      top: 0px;
-      transform: scale(1.2);
-    }
-  }
-
-.items{
-    margin-top: 120px;
 }
 
-@media (max-width: 800px){
-  .movies{
-    height: 400px;
-    width: 250px;
+@keyframes LeftPosterUD {
+  from {
+    top: -220px;
+  }
+  to {
+    top: 220px;
+  }
+}
+
+@keyframes MidPoster {
+  from {
+    right: 140px;
+    transform: scale(1);
+  }
+  to {
+    right: 0px;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes MidPosterUD {
+  from {
+    top: 220px;
+    transform: scale(1);
+  }
+  to {
+    top: 0px;
+    transform: scale(1.2);
+  }
+}
+
+.items {
+  margin-top: 120px;
+}
+
+@media (max-width: 800px) {
+  .movies {
     margin-top: 240px;
     margin-bottom: 240px;
   }
-  .movies img{
+  .movies img {
     max-width: 100%;
-    height: 400px;
-    width: 250px;
+    height: 450px;
+    width: 300px;
   }
-  [class~=carousel_item_0]{
+  [class~='carousel_item_0'] {
     right: 0px;
     top: 220px;
     animation: LeftPosterUD 500ms;
   }
-  [class~=carousel_item_1]{
-      right: 0px;
-      top: 0px;
-      animation: MidPosterUD 500ms;
+  [class~='carousel_item_1'] {
+    right: 0px;
+    top: 0px;
+    animation: MidPosterUD 500ms;
   }
-  [class~=carousel_item_2]{
-      right: 0px;
-      top: -220px;
-      animation: RightPosterUD 500ms;
+  [class~='carousel_item_2'] {
+    right: 0px;
+    top: -220px;
+    animation: RightPosterUD 500ms;
+  }
+}
+@keyframes RightPosterUDL {
+  from {
+    top: 0px;
+    transform: scale(1);
+    z-index: 10;
+  }
+  to {
+    transform: scale(0.8);
+    top: -220px;
+    z-index: 5;
+  }
+}
+@keyframes MidPosterUDL {
+  from {
+    top: 220px;
+    transform: scale(0.8);
+  }
+  to {
+    top: 0px;
+    transform: scale(1);
+  }
+}
+@keyframes LeftPosterUDL {
+  from {
+    top: -220px;
+  }
+  to {
+    top: 220px;
+  }
+}
+
+@media (max-width: 400px) {
+  [class~='carousel_item_0'] {
+    transform: scale(0.8);
+    animation: LeftPosterUDL 500ms;
+  }
+  [class~='carousel_item_1'] {
+    transform: scale(1);
+    animation: MidPosterUDL 500ms;
+  }
+  [class~='carousel_item_2'] {
+    transform: scale(0.8);
+    animation: RightPosterUDL 500ms;
   }
 }
