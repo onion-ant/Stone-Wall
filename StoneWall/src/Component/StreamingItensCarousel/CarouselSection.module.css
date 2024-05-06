@@ -4,15 +4,15 @@
 }
 .movies img{
     max-width: 100%;
-    height: 600px;
-    width: 400px;
+    height: 450px;
+    width: 300px;
     position: absolute;
     transition: top 500ms ease-in-out, transform 500ms ease-in-out;
     border-radius: 7px;
 }
 .movies{
-    height: 600px;
-    width: 400px;
+    height: 450px;
+    width: 300px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     position: relative;
@@ -51,6 +51,18 @@
       z-index: 5;
     }
   }
+  @keyframes RightPosterUD{ 
+    from{
+      top: 0px;
+      transform: scale(1.2);
+      z-index: 10;
+    }
+    to{
+      transform: scale(1);
+      top: -220px;
+      z-index: 5;
+    }
+  }
   
   @keyframes LeftPoster{ 
     from{
@@ -58,6 +70,15 @@
     }
     to{
       right: 140px;
+    }
+  }
+
+  @keyframes LeftPosterUD{ 
+    from{
+      top: -220px;
+    }
+    to{
+      top: 220px;
     }
   }
   
@@ -72,6 +93,46 @@
     }
   }
 
+  @keyframes MidPosterUD{
+    from{
+      top: 220px;
+      transform: scale(1);
+    }
+    to{
+      top: 0px;
+      transform: scale(1.2);
+    }
+  }
+
 .items{
     margin-top: 120px;
+}
+
+@media (max-width: 800px){
+  .movies{
+    height: 400px;
+    width: 250px;
+    margin-top: 240px;
+    margin-bottom: 240px;
+  }
+  .movies img{
+    max-width: 100%;
+    height: 400px;
+    width: 250px;
+  }
+  [class~=carousel_item_0]{
+    right: 0px;
+    top: 220px;
+    animation: LeftPosterUD 500ms;
+  }
+  [class~=carousel_item_1]{
+      right: 0px;
+      top: 0px;
+      animation: MidPosterUD 500ms;
+  }
+  [class~=carousel_item_2]{
+      right: 0px;
+      top: -220px;
+      animation: RightPosterUD 500ms;
+  }
 }

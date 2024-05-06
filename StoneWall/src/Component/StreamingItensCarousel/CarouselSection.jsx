@@ -39,7 +39,11 @@ const Movies = () => {
             src={image}
             key={index}
             alt=""
-            className={`carousel_item_` + current[index]}
+            className={
+              autoPlay == false && current[index] == 1
+                ? `carousel_item_` + current[index] + ' carousel_paused'
+                : `carousel_item_` + current[index]
+            }
           />
         ))}
       </div>
