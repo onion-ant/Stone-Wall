@@ -18,7 +18,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item,string language="pt-BR")
+        public async Task GetItemAsync(Item Item, string language = "pt-BR")
         {
             HttpRequestMessage request;
             if (Item.Type == ItemType.movie)
@@ -33,14 +33,14 @@ namespace StoneWall.Services
                 {
                     response = await _client.SendAsync(request);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await Console.Out.WriteLineAsync(ex.Message);
                 }
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper.overview;
-                Item.PosterPath = "https://image.tmdb.org/t/p/original/" + itemJsonHelper.poster_path;
+                Item.PosterPath = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + itemJsonHelper.poster_path;
                 Item.ReleaseYear = int.Parse(itemJsonHelper.release_date.Split('-')[0]);
             }
             else
@@ -54,7 +54,7 @@ namespace StoneWall.Services
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper.overview;
-                Item.PosterPath = "https://image.tmdb.org/t/p/original/" + itemJsonHelper.poster_path;
+                Item.PosterPath = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + itemJsonHelper.poster_path;
                 Item.ReleaseYear = int.Parse(itemJsonHelper.first_air_date.Split('-')[0]);
                 Item.LastAirYear = int.Parse(itemJsonHelper.last_air_date.Split('-')[0]);
             }

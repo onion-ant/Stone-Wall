@@ -1,35 +1,47 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './CarouselSection.module.css';
 
-const Movies = () => {
-  const [images] = React.useState([
-    '../../Assets/TestAssets/2uY8aYmc86UL4N86D2spkWzYKOd.jpg',
-    '../../Assets/TestAssets/e8pI4XkYgUMuSJ8cEFbJE18wc4e.jpg',
-    '../../Assets/TestAssets/fZJSBHJKNR7Xz3CiEsAawd7bbDh.jpg',
-  ]);
+const CarouselSection = () => {
   const [autoPlay, setAutoPlay] = React.useState(true);
   const [current, setCurrent] = React.useState([1, 2, 0]);
-  let timeOut = null;
+  const [images, setImages] = React.useState([]);
+  const intervalRef = React.useRef(null);
+
+  const incrementCounter = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrent((prevIds) => {
+        return [prevIds[1], prevIds[2], prevIds[0]];
+      });
+    }, 2000);
+  };
+  const resetCounter = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  };
   React.useEffect(() => {
-    timeOut =
-      autoPlay &&
-      setTimeout(() => {
-        setCurrent((prevIds) => {
-          return [prevIds[1], prevIds[2], prevIds[0]];
-        });
-      }, 2000);
-  });
+    fetch('https://picsum.photos/200/300').then((x) => {
+      setImages((previous) => [...previous, x.url]);
+    });
+    fetch('https://picsum.photos/200/300').then((x) => {
+      setImages((previous) => [...previous, x.url]);
+    });
+    fetch('https://picsum.photos/200/300').then((x) => {
+      setImages((previous) => [...previous, x.url]);
+    });
+    incrementCounter();
+  }, []);
   return (
     <div className={styles.background}>
       <div
         className={`${styles.movies} container'`}
         onMouseEnter={() => {
+          resetCounter();
           setAutoPlay(false);
-          clearTimeout(timeOut);
         }}
         onMouseLeave={() => {
+          incrementCounter();
           setAutoPlay(true);
-          clearTimeout(timeOut);
         }}
       >
         {images.map((image, index) => (
@@ -49,4 +61,8 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+CarouselSection.propTypes = {
+  images: PropTypes.array,
+};
+
+export default CarouselSection;
