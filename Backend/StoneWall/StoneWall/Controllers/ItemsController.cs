@@ -25,7 +25,7 @@ namespace StoneWall.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] ItemType? itemType, [FromQuery] string? sizeParams = "original", [FromQuery] string? language = "pt-BR", [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] string? genreId, [FromQuery] int atLeast, [FromQuery] ItemType? itemType, [FromQuery] string? sizeParams = "original", [FromQuery] string? language = "pt-BR", [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {

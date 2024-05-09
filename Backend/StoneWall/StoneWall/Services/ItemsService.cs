@@ -28,7 +28,7 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<PagedList<Item>> GetItemsAsync(int pageNumber, int offset, int genreId, int atLeast, ItemType? itemType)
+        public async Task<PagedList<Item>> GetItemsAsync(int pageNumber, int offset, string? genreId, int atLeast, ItemType? itemType)
         {
             if (offset < 1)
             {
@@ -45,7 +45,7 @@ namespace StoneWall.Services
                 query = query
                .Where(It => It.Type == itemType);
             }
-            if (genreId != 0)
+            if (genreId != null)
             {
                 query = query
                .Where(It => It.Genres.Any(g => g.Id == genreId));

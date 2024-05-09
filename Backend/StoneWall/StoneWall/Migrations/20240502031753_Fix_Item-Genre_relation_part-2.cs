@@ -14,7 +14,7 @@ namespace StoneWall.Migrations
                 name: "GenreItem",
                 columns: table => new
                 {
-                    GenresId = table.Column<int>(type: "int", nullable: false),
+                    GenresId = table.Column<int>(type: "varchar(50)", nullable: false),
                     ItemsTmdbId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
