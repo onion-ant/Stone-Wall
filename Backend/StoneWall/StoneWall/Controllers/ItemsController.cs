@@ -20,12 +20,12 @@ namespace StoneWall.Controllers
             _tmdbService = tmdbService;
         }
         [HttpGet]
-        public async Task<ActionResult<ItemPaginationHelper>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] ItemType? itemType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<ItemPaginationHelper>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] ItemType? itemType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var items = await _itemsService.GetItemsAsync(pageNumber,offset,genreId,atLeast,itemType);
-                var tasks = items.Items.Select(item => _tmdbService.GetItemAsync(item)).ToList();
+                var tasks = items.Items.Select(item => _tmdbService.GetItemAsync(item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
                 return items;
             }
@@ -33,19 +33,27 @@ namespace StoneWall.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502,ex.Message);
+            }
         }
         [HttpGet("{tmdbId}")]
-        public async Task<ActionResult<Item>> GetDetails(int tmdbId)
+        public async Task<ActionResult<Item>> GetDetails(int tmdbId, [FromQuery] string? sizeParams, [FromQuery] string? language)
         {
             try
             {
                 var item = await _itemsService.GetDetailsAsync(tmdbId);
-                await _tmdbService.GetItemAsync(item);
+                await _tmdbService.GetItemAsync(item,language,sizeParams);
                 return item;
             }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
     }
