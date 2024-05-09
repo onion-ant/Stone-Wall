@@ -35,13 +35,13 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber, offset, genreId, itemType, streamingType);
 
-                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
+                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
 
                 return streamingItems;
@@ -53,6 +53,10 @@ namespace StoneWall.Controllers
             catch (PageException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
         [HttpGet("/addons/{streamingId}")]
@@ -67,14 +71,18 @@ namespace StoneWall.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
+            }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, pageNumber, offset, genreId, itemType, streamingType);
-                var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item)).ToList();
+                var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
                 return exclusiveItems;
             }
@@ -85,6 +93,10 @@ namespace StoneWall.Controllers
             catch (PageException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
     }
