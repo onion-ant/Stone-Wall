@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
+using StoneWall.DTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
@@ -16,18 +18,21 @@ namespace StoneWall.Controllers
     {
         private readonly IStreamingServicesService _streamingServicesService;
         private readonly ITmdbService _tmdbService;
-        public StreamingsController(IStreamingServicesService streamingService, ITmdbService tmdbService)
+        private readonly IMapper _mapper;
+        public StreamingsController(IStreamingServicesService streamingService, ITmdbService tmdbService,IMapper mapper)
         {
             _streamingServicesService = streamingService;
             _tmdbService = tmdbService;
+            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StreamingServices>>> Get()
+        public async Task<ActionResult<IEnumerable<StreamingDTO>>> Get()
         {
             try
             {
                 var streamings = await _streamingServicesService.GetStreamingsAsync();
-                return Ok(streamings);
+                var streamingsDto = streamings.Select(streaming => _mapper.Map<StreamingDTO>(streaming)).ToArray();
+                return Ok(streamingsDto);
             }
             catch (NotFoundException ex)
             {
@@ -60,12 +65,13 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/addons/{streamingId}")]
-        public async Task<ActionResult<IEnumerable<Addon>>> GetAddons(string streamingId)
+        public async Task<ActionResult<IEnumerable<AddonDTO>>> GetAddons(string streamingId)
         {
             try
             {
                 var addons = await _streamingServicesService.GetAddonsAsync(streamingId);
-                return Ok(addons);
+                var addonsDto = addons.Select(addon=>_mapper.Map<AddonDTO>(addon)).ToArray();
+                return Ok(addonsDto);
             }
             catch (NotFoundException ex)
             {

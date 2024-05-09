@@ -6,8 +6,6 @@ namespace StoneWall.DTOs
     public record StreamingDTO(
         string Id,
         string Name,
-        string HomePage,
-        List<ItemStreamingDTO> Items,
-        List<AddonDTO> Addons
+        string HomePage
     );
 }
