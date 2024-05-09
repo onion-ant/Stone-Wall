@@ -27,7 +27,7 @@ namespace StoneWall.Controllers
             try
             {
                 var streamings = await _streamingServicesService.GetStreamingsAsync();
-                return streamings;
+                return Ok(streamings);
             }
             catch (NotFoundException ex)
             {
@@ -56,12 +56,12 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/addons/{streamingId}")]
-        public async Task<ActionResult<List<Addon>>> GetAddons(string streamingId)
+        public async Task<ActionResult<IEnumerable<Addon>>> GetAddons(string streamingId)
         {
             try
             {
                 var addons = await _streamingServicesService.GetAddonsAsync(streamingId);
-                return addons;
+                return Ok(addons);
             }
             catch (NotFoundException ex)
             {

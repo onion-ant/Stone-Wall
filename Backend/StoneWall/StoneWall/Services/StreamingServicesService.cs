@@ -18,7 +18,7 @@ namespace StoneWall.Services
 
         public async Task<IEnumerable<StreamingServices>> GetStreamingsAsync()
         {
-            var streamings = await _context.Streaming_Services.AsNoTracking().ToListAsync();
+            var streamings = await _context.Streaming_Services.AsNoTracking().ToArrayAsync();
             if (!streamings.Any())
             {
                 throw new NotFoundException("Theres no registered streamings");
@@ -27,7 +27,7 @@ namespace StoneWall.Services
         }
         public async Task<IEnumerable<Addon>> GetAddonsAsync(string streamingId)
         {
-            var addons = await _context.Addons.AsNoTracking().Where(Ad => Ad.StreamingService == streamingId).ToListAsync();
+            var addons = await _context.Addons.AsNoTracking().Where(Ad => Ad.StreamingService == streamingId).ToArrayAsync();
             if (!addons.Any())
             {
                 throw new NotFoundException("This streaming has no addons");
@@ -86,7 +86,7 @@ namespace StoneWall.Services
                 .OrderByDescending(Is => Is.Item.Popularity)
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
-                .ToListAsync();
+                .ToArrayAsync();
 
             if (!streamingItems.Any())
             {
@@ -110,7 +110,7 @@ namespace StoneWall.Services
             var excludedTmdbIds = await _context.Item_Streaming
             .Where(Is2 => Is2.StreamingId == streamingExcluded)
             .Select(Is2 => Is2.Item.TmdbId)
-            .ToListAsync();
+            .ToArrayAsync();
 
             IQueryable<ItemStreaming> query = _context.Item_Streaming
             .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId));
@@ -155,7 +155,7 @@ namespace StoneWall.Services
                 .OrderByDescending(Is => Is.Item.Popularity)
                 .Skip((pageNumber - 1) * offset)
                 .Take(offset)
-                .ToListAsync();
+                .ToArrayAsync();
 
             if (!exclusiveItems.Any())
             {
