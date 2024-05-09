@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # appsettings
 appsettings.Development.json
+/Backend/StoneWall/StoneWall/appsettings.json
