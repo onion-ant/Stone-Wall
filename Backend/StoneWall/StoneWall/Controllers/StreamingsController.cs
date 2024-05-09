@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using StoneWall.Data;
 using StoneWall.DTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
+using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
 
@@ -40,16 +42,26 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> GetItems(string streamingId, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> GetItems(string streamingId, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber, offset, genreId, itemType, streamingType);
-
-                var tasks = streamingItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
+                var tasks = streamingItems.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
+                var metadata = new
+                {
+                    streamingItems.TotalCount,
+                    streamingItems.PageSize,
+                    streamingItems.CurrentPage,
+                    streamingItems.TotalPages,
+                    streamingItems.HasNext,
+                    streamingItems.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                var streamingItemsDto = streamingItems.Select(sI => _mapper.Map<ItemStreamingDTO>(sI));
 
-                return streamingItems;
+                return Ok(streamingItemsDto);
             }
             catch (NotFoundException ex)
             {
@@ -83,14 +95,25 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<ItemStreamingPaginationHelper>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] int genreId, [FromQuery] ItemType? itemType, [FromQuery] StreamingType? streamingType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, pageNumber, offset, genreId, itemType, streamingType);
-                var tasks = exclusiveItems.ItemsStreaming.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
+                var tasks = exclusiveItems.Select(item => _tmdbService.GetItemAsync(item.Item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
-                return exclusiveItems;
+                var metadata = new
+                {
+                    exclusiveItems.TotalCount,
+                    exclusiveItems.PageSize,
+                    exclusiveItems.CurrentPage,
+                    exclusiveItems.TotalPages,
+                    exclusiveItems.HasNext,
+                    exclusiveItems.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                var exclusiveItemsDto = exclusiveItems.Select(item => _mapper.Map<ItemStreamingDTO>(item));
+                return Ok(exclusiveItemsDto);
             }
             catch (NotFoundException ex)
             {

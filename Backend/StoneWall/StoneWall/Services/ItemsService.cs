@@ -18,25 +18,7 @@ namespace StoneWall.Services
 
         public async Task<Item> GetDetailsAsync(int tmdbId)
         {
-            var item = await _context.Items.AsNoTracking().Select(It=>new Item()
-            {
-                TmdbId = It.TmdbId,
-                Title = It.Title,
-                OriginalTitle = It.OriginalTitle,
-                Popularity = It.Popularity,
-                Type = It.Type,
-                Streamings = It.Streamings.Select(s=>new ItemStreaming()
-                {
-                    StreamingId = s.StreamingId,
-                    Type = s.Type,
-                    Link = s.Link,
-                }).ToList(),
-                Genres = It.Genres.Select(g => new Genre()
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                }).ToList()
-            }).FirstOrDefaultAsync(It => It.TmdbId == tmdbId);
+            var item = await _context.Items.AsNoTracking().Include(It=>It.Genres).Include(It=>It.Streamings).FirstOrDefaultAsync(It=>It.TmdbId==tmdbId);
                                 
 
             if (item == null)
@@ -71,7 +53,7 @@ namespace StoneWall.Services
             var items = query
                 .OrderByDescending(It => It.Popularity)
                 .AsQueryable();
-            var pagedItems = await PagedList<Item>.ToPagedList(items,pageNumber,offset);
+            var pagedItems = await PagedList<Item>.ToPagedListAsync(items,pageNumber,offset);
 
             if ((pagedItems.TotalPages < pageNumber || pageNumber < 1) && pagedItems.TotalPages != 0)
             {

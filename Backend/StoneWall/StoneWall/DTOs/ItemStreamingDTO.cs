@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace StoneWall.DTOs
 {
     public record ItemStreamingDTO(
-        string StreamingId,
+        Item item,
         StreamingType Type,
         string Link
     );
