@@ -37,7 +37,8 @@ namespace StoneWall.Services
 
             IQueryable<Item> query = _context.Items
             .AsNoTracking()
-            .Where(It => It.Streamings.Count >= atLeast);
+            .Where(It => It.Streamings.Count >= atLeast)
+            .Include(It => It.Streamings);
 
             if (itemType != null)
             {

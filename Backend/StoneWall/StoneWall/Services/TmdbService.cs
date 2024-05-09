@@ -20,7 +20,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item,string language="pt-BR",string sizeParams = "original")
+        public async Task GetItemAsync(Item Item,string language,string sizeParams)
         {
             string url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie/" : "https://api.themoviedb.org/3/tv/";
             try
@@ -30,7 +30,7 @@ namespace StoneWall.Services
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper!.overview;
-                Item.PosterPath = $"https://image.tmdb.org/t/p/{sizeParams}" + itemJsonHelper.poster_path;
+                Item.PosterPath = $"https://image.tmdb.org/t/p/{sizeParams}/" + itemJsonHelper.poster_path;
                 if (itemJsonHelper.release_date != null)
                 {
                     Item.ReleaseYear = ParseYear(itemJsonHelper.release_date);
