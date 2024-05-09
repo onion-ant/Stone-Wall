@@ -64,6 +64,21 @@ namespace StoneWall.Services
             }
 
             var streamingItems = query
+                .Select(Is => new ItemStreaming()
+                {
+                    Item = new Item()
+                    {
+                        TmdbId = Is.Item.TmdbId,
+                        Genres = Is.Item.Genres,
+                        Streamings = Is.Item.Streamings,
+                        OriginalTitle = Is.Item.OriginalTitle,
+                        Title = Is.Item.Title,
+                        Type = Is.Item.Type,
+                        Popularity = Is.Item.Popularity,
+                    },
+                    Type = Is.Type,
+                    Link = Is.Link,
+                })
                 .OrderByDescending(Is => Is.Item.Popularity)
                 .AsQueryable();
             var streamingItemsPaged = await PagedList<ItemStreaming>.ToPagedListAsync(streamingItems,pageNumber,offset);
@@ -112,6 +127,21 @@ namespace StoneWall.Services
             }
 
             var exclusiveItems =  query
+                .Select(Is => new ItemStreaming()
+                {
+                    Item = new Item()
+                    {
+                        TmdbId = Is.Item.TmdbId,
+                        Genres = Is.Item.Genres,
+                        Streamings = Is.Item.Streamings,
+                        OriginalTitle = Is.Item.OriginalTitle,
+                        Title = Is.Item.Title,
+                        Type = Is.Item.Type,
+                        Popularity = Is.Item.Popularity,
+                    },
+                    Type = Is.Type,
+                    Link = Is.Link,
+                })
                 .OrderByDescending(Is => Is.Item.Popularity)
                 .AsQueryable();
             var exclusiveItemsPaged = await PagedList<ItemStreaming>.ToPagedListAsync(exclusiveItems, pageNumber, offset);

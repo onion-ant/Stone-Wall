@@ -11,6 +11,7 @@ using StoneWall.Helpers;
 using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
+using System.Linq;
 
 namespace StoneWall.Controllers
 {
@@ -59,6 +60,7 @@ namespace StoneWall.Controllers
                     streamingItems.HasPrevious
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
                 var streamingItemsDto = streamingItems.Select(sI => _mapper.Map<ItemStreamingDTO>(sI));
 
                 return Ok(streamingItemsDto);
@@ -112,7 +114,7 @@ namespace StoneWall.Controllers
                     exclusiveItems.HasPrevious
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-                var exclusiveItemsDto = exclusiveItems.Select(item => _mapper.Map<ItemStreamingDTO>(item));
+                var exclusiveItemsDto = exclusiveItems.Select(exI => _mapper.Map<ItemStreamingDTO>(exI));
                 return Ok(exclusiveItemsDto);
             }
             catch (NotFoundException ex)
