@@ -3,6 +3,7 @@ using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
+using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 
 namespace StoneWall.Services
@@ -45,9 +46,8 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<ItemPaginationHelper> GetItemsAsync(int pageNumber, int offset, int genreId, int atLeast, ItemType? itemType)
+        public async Task<PagedList<Item>> GetItemsAsync(int pageNumber, int offset, int genreId, int atLeast, ItemType? itemType)
         {
-            int totalPages = 0;
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
@@ -68,50 +68,21 @@ namespace StoneWall.Services
                .Where(It => It.Genres.Any(g => g.Id == genreId));
             }
 
-            totalPages = await GetTotalPages(query, offset);
+            var items = query
+                .OrderByDescending(It => It.Popularity)
+                .AsQueryable();
+            var pagedItems = await PagedList<Item>.ToPagedList(items,pageNumber,offset);
 
-            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
+            if ((pagedItems.TotalPages < pageNumber || pageNumber < 1) && pagedItems.TotalPages != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
             }
 
-            var items = await query
-                .Select(It => new Item
-                    {
-                        TmdbId = It.TmdbId,
-                        Title = It.Title,
-                        OriginalTitle = It.OriginalTitle,
-                        Popularity = It.Popularity,
-                        Type = It.Type,
-                        Streamings = It.Streamings.Select(s => new ItemStreaming()
-                        {
-                        StreamingId = s.StreamingId,
-                        Type = s.Type,
-                        Link = s.Link,
-                        }).ToList()
-                    })
-                .OrderByDescending(It => It.Popularity)
-                .Skip((pageNumber - 1) * offset)
-                .Take(offset)
-                .ToListAsync();
-
-            if (!items.Any())
+            if (!pagedItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
-            var response = new ItemPaginationHelper()
-            {
-                Items = items,
-                LastPage = totalPages,
-            };
-            return response;
-        }
-        private async Task<int> GetTotalPages(IQueryable<Item> query, int offset)
-        {
-            int count = await query.CountAsync();
-            int totalPages = (count + offset - 1) / offset;
-
-            return totalPages;
+            return pagedItems;
         }
     }
 }

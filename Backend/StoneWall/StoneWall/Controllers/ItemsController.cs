@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using StoneWall.DTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
@@ -24,18 +25,33 @@ namespace StoneWall.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<ItemPaginationHelper>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] ItemType? itemType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] int genreId, [FromQuery] int atLeast, [FromQuery] string? sizeParams, [FromQuery] string? language, [FromQuery] ItemType? itemType, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
         {
             try
             {
                 var items = await _itemsService.GetItemsAsync(pageNumber,offset,genreId,atLeast,itemType);
-                var tasks = items.Items.Select(item => _tmdbService.GetItemAsync(item,language,sizeParams)).ToList();
+                var tasks = items.Select(item => _tmdbService.GetItemAsync(item,language,sizeParams)).ToList();
                 await Task.WhenAll(tasks);
-                return items;
+                var metadata = new
+                {
+                    items.TotalCount,
+                    items.PageSize,
+                    items.CurrentPage,
+                    items.TotalPages,
+                    items.HasNext,
+                    items.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                var itemsDto = items.Select(item=>_mapper.Map<ItemDTO>(item));
+                return Ok(items);
             }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (PageException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (ExternalApiException ex)
             {
