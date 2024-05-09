@@ -22,7 +22,7 @@ const CarouselSection = () => {
   };
   React.useEffect(() => {
     fetch(
-      'https://localhost:7282/Items?atLeast=3&sizeParams=w600_and_h900_bestv2&pageNumber=1&offset=3',
+      'https://localhost:7282/Items?atLeast=0&sizeParams=w600_and_h900_bestv2&pageNumber=1&offset=3',
     )
       .then((x) => x.json())
       .then((xs) => {
@@ -88,7 +88,7 @@ const CarouselSection = () => {
                         src={`../../Assets/${x.streamingId}Square.svg`}
                         alt=""
                       />
-                      <p>{x.type}</p>
+                      <p>{x.type.toUpperCase()}</p>
                     </div>
                   ))}
                 </div>

@@ -7,9 +7,9 @@ const CarouselMenu = () => {
   useEffect(() => {
     setImages([
       '../../Assets/hboSquare.svg',
-      '../../Assets/primeSquare.svg',
+      '../../Assets/primeSquareWhite.svg',
       '../../Assets/netflixSquare.svg',
-      '../../Assets/appleSquare.svg',
+      '../../Assets/appleSquareWhite.svg',
     ]);
   }, []);
 
