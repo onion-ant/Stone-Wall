@@ -22,7 +22,7 @@ namespace StoneWall.Migrations
                 columns: table => new
                 {
                     TmdbId = table.Column<int>(type: "int", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
+                    GenreId = table.Column<int>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {

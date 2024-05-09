@@ -8,10 +8,10 @@ namespace StoneWall.Entities.Enums
 {
     public enum StreamingType
     {
-        addon,
-        buy,
-        free,
-        rent,
-        subscription
+        addon = 1,
+        buy = 2,
+        free = 3,
+        rent = 4,
+        subscription = 5
     }
 }

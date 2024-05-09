@@ -2,7 +2,7 @@
 {
     public enum ItemType
     {
-        series,
-        movie
+        series = 1,
+        movie = 2
     }
 }

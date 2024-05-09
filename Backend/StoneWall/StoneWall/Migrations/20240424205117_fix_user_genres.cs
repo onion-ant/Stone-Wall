@@ -31,7 +31,7 @@ namespace StoneWall.Migrations
                 name: "Genres",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "varchar(50)", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -82,7 +82,7 @@ namespace StoneWall.Migrations
                 columns: table => new
                 {
                     TmdbId = table.Column<int>(type: "int", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
+                    GenreId = table.Column<int>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
