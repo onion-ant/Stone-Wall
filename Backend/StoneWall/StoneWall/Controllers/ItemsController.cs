@@ -33,6 +33,10 @@ namespace StoneWall.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502,ex.Message);
+            }
         }
         [HttpGet("{tmdbId}")]
         public async Task<ActionResult<Item>> GetDetails(int tmdbId, [FromQuery] string? sizeParams, [FromQuery] string? language)
@@ -46,6 +50,10 @@ namespace StoneWall.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
     }

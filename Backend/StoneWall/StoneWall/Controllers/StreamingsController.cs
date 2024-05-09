@@ -54,6 +54,10 @@ namespace StoneWall.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
+            }
         }
         [HttpGet("/addons/{streamingId}")]
         public async Task<ActionResult<List<Addon>>> GetAddons(string streamingId)
@@ -66,6 +70,10 @@ namespace StoneWall.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
@@ -85,6 +93,10 @@ namespace StoneWall.Controllers
             catch (PageException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (ExternalApiException ex)
+            {
+                return StatusCode(502, ex.Message);
             }
         }
     }
