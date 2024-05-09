@@ -1,44 +1,8 @@
 .background {
   background: url('../../../Assets/StoneWallBackgroundPurple.svg');
   display: flex;
+  justify-content: center;
 }
-.movies img {
-  max-width: 100%;
-  height: 450px;
-  width: 300px;
-  position: absolute;
-  transition: top 500ms ease-in-out, transform 500ms ease-in-out;
-  border-radius: 7px;
-}
-.movies {
-  height: 450px;
-  width: 300px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 120px;
-  margin-bottom: 120px;
-}
-[class~='carousel_item_0'] {
-  right: 140px;
-  animation: LeftPoster 500ms;
-  filter: blur(1.5px);
-}
-[class~='carousel_item_1'] {
-  right: 0px;
-  z-index: 10;
-  transform: scale(1.2);
-  animation: MidPoster 500ms;
-  box-shadow: 0px 0px 50px 5px rgba(0, 0, 0, 0.75);
-}
-[class~='carousel_item_2'] {
-  right: -140px;
-  animation: RightPoster 500ms;
-  filter: blur(1.5px);
-}
-
 @keyframes RightPoster {
   from {
     right: 0px;
@@ -47,7 +11,7 @@
   }
   to {
     transform: scale(1);
-    right: -140px;
+    right: -220px;
     z-index: 5;
   }
 }
@@ -66,10 +30,10 @@
 
 @keyframes LeftPoster {
   from {
-    right: -140px;
+    right: -220px;
   }
   to {
-    right: 140px;
+    right: 220px;
   }
 }
 
@@ -84,7 +48,7 @@
 
 @keyframes MidPoster {
   from {
-    right: 140px;
+    right: 220px;
     transform: scale(1);
   }
   to {
@@ -104,36 +68,6 @@
   }
 }
 
-.items {
-  margin-top: 120px;
-}
-
-@media (max-width: 800px) {
-  .movies {
-    margin-top: 240px;
-    margin-bottom: 240px;
-  }
-  .movies img {
-    max-width: 100%;
-    height: 450px;
-    width: 300px;
-  }
-  [class~='carousel_item_0'] {
-    right: 0px;
-    top: 220px;
-    animation: LeftPosterUD 500ms;
-  }
-  [class~='carousel_item_1'] {
-    right: 0px;
-    top: 0px;
-    animation: MidPosterUD 500ms;
-  }
-  [class~='carousel_item_2'] {
-    right: 0px;
-    top: -220px;
-    animation: RightPosterUD 500ms;
-  }
-}
 @keyframes RightPosterUDL {
   from {
     top: 0px;
@@ -165,17 +99,85 @@
   }
 }
 
+.movies {
+  margin-top: 120px;
+  height: 600px;
+  width: 400px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.movies > * {
+  transition: left 500ms ease-in-out, transform 500ms ease-in-out;
+}
+
+[class~='cardItems_N_0'] {
+  right: 220px;
+  filter: blur(1.5px);
+  animation: LeftPoster 500ms;
+}
+
+[class~='cardItems_N_1'] {
+  right: 0px;
+  z-index: 10;
+  transform: scale(1.2);
+  animation: MidPoster 500ms;
+}
+
+[class~='cardItems_N_2'] {
+  right: -220px;
+  filter: blur(1.5px);
+  animation: RightPoster 500ms;
+}
+
+[class~='streamingsItem'] {
+  align-self: flex-end;
+  width: 100%;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--D2);
+  border-radius: 7px;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+[class~='carousel_paused'] > [class~='streamingsItem'] {
+  display: grid;
+}
+
+.streaming > img {
+  align-self: center;
+  height: 64px;
+  width: 64px;
+  box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.25);
+}
+.streaming {
+  height: 64px;
+  display: flex;
+}
+
+.streaming:nth-child(odd) {
+  flex-direction: row-reverse;
+  justify-items: end;
+}
+
+[class~='cardItems'] {
+  height: 600px;
+  width: 400px;
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 7px;
+  display: flex;
+}
+
+[class~='cardItems'] img {
+  border-radius: 7px;
+}
+
+@media (max-width: 800px) {
+}
 @media (max-width: 400px) {
-  [class~='carousel_item_0'] {
-    transform: scale(0.8);
-    animation: LeftPosterUDL 500ms;
-  }
-  [class~='carousel_item_1'] {
-    transform: scale(1);
-    animation: MidPosterUDL 500ms;
-  }
-  [class~='carousel_item_2'] {
-    transform: scale(0.8);
-    animation: RightPosterUDL 500ms;
-  }
 }

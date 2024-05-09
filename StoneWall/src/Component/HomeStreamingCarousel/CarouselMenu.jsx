@@ -6,10 +6,10 @@ const CarouselMenu = () => {
   const [images, setImages] = React.useState([]);
   useEffect(() => {
     setImages([
-      '../../Assets/SquareHboMax.svg',
-      '../../Assets/SquarePrime.svg',
-      '../../Assets/SquareNetflix.svg',
-      '../../Assets/SquareAppleTV.svg',
+      '../../Assets/hboSquare.svg',
+      '../../Assets/primeSquare.svg',
+      '../../Assets/netflixSquare.svg',
+      '../../Assets/appleSquare.svg',
     ]);
   }, []);
 
@@ -22,16 +22,8 @@ const CarouselMenu = () => {
             MELHOR PARA VOCÊ
           </h1>
           <div className={styles.carousel}>
-            <Carousel
-              direction={false}
-              images={images}
-              type={'Streaming'}
-            />
-            <Carousel
-              direction={true}
-              images={images}
-              type={'Streaming'}
-            />
+            <Carousel direction={false} images={images} type={'Streaming'} />
+            <Carousel direction={true} images={images} type={'Streaming'} />
           </div>
         </div>
       </section>

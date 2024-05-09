@@ -1,52 +1,92 @@
 import React from 'react';
 import styles from './CarouselSection.module.css';
 
-const Movies = () => {
-  const [images] = React.useState([
-    '../../Assets/TestAssets/2uY8aYmc86UL4N86D2spkWzYKOd.jpg',
-    '../../Assets/TestAssets/e8pI4XkYgUMuSJ8cEFbJE18wc4e.jpg',
-    '../../Assets/TestAssets/fZJSBHJKNR7Xz3CiEsAawd7bbDh.jpg',
-  ]);
+const CarouselSection = () => {
   const [autoPlay, setAutoPlay] = React.useState(true);
+  const [error, setError] = React.useState(true);
+  const [streamings, setStreamings] = React.useState();
   const [current, setCurrent] = React.useState([1, 2, 0]);
-  let timeOut = null;
+  const [images, setImages] = React.useState([]);
+  const intervalRef = React.useRef(null);
+
+  const incrementCounter = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrent((prevIds) => {
+        return [prevIds[1], prevIds[2], prevIds[0]];
+      });
+    }, 2000);
+  };
+  const resetCounter = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  };
   React.useEffect(() => {
-    timeOut =
-      autoPlay &&
-      setTimeout(() => {
-        setCurrent((prevIds) => {
-          return [prevIds[1], prevIds[2], prevIds[0]];
-        });
-      }, 2000);
-  });
+    fetch('https://localhost:7282/Items?offset=3&atLeast=3')
+      .then((x) => x.json())
+      .then((xs) => {
+        setStreamings(
+          xs.items.map((x) => {
+            return x.streamings;
+          }),
+        );
+        setImages(
+          xs.items.map((x) => {
+            return x.posterPath;
+          }),
+        );
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
+      });
+    incrementCounter();
+  }, []);
+  console.log(streamings);
   return (
-    <div className={styles.background}>
-      <div
-        className={`${styles.movies} container'`}
-        onMouseEnter={() => {
-          setAutoPlay(false);
-          clearTimeout(timeOut);
-        }}
-        onMouseLeave={() => {
-          setAutoPlay(true);
-          clearTimeout(timeOut);
-        }}
-      >
-        {images.map((image, index) => (
-          <img
-            src={image}
-            key={index}
-            alt=""
-            className={
-              autoPlay == false && current[index] == 1
-                ? `carousel_item_` + current[index] + ' carousel_paused'
-                : `carousel_item_` + current[index]
-            }
-          />
-        ))}
-      </div>
-    </div>
+    <>
+      {!error && (
+        <div className={styles.background}>
+          <div
+            className={`${styles.movies} container'`}
+            onMouseEnter={() => {
+              resetCounter();
+              setAutoPlay(false);
+            }}
+            onMouseLeave={() => {
+              incrementCounter();
+              setAutoPlay(true);
+            }}
+          >
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className={
+                  autoPlay == false && current[index] == 1
+                    ? `cardItems cardItems_N_` +
+                      current[index] +
+                      ' carousel_paused'
+                    : `cardItems cardItems_N_` + current[index]
+                }
+                style={{ backgroundImage: `url(${image})` }}
+              >
+                <div className={'streamingsItem'}>
+                  {streamings[0].map((x, indexStreaming) => (
+                    <div key={indexStreaming} className={styles.streaming}>
+                      <img
+                        src={`../../Assets/${x.streamingId}Square.svg`}
+                        alt=""
+                      />
+                      <p>{x.type}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
-export default Movies;
+export default CarouselSection;
