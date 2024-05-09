@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './CarouselSection.module.css';
 
 const CarouselSection = () => {
   const [autoPlay, setAutoPlay] = React.useState(true);
-  const [error, setError] = React.useState();
+  const [error, setError] = React.useState(true);
+  const [streamings, setStreamings] = React.useState();
   const [current, setCurrent] = React.useState([1, 2, 0]);
   const [images, setImages] = React.useState([]);
   const intervalRef = React.useRef(null);
@@ -21,9 +21,14 @@ const CarouselSection = () => {
     intervalRef.current = null;
   };
   React.useEffect(() => {
-    fetch('https://localhost:7282/Items?offset=3')
+    fetch('https://localhost:7282/Items?offset=3&atLeast=3')
       .then((x) => x.json())
       .then((xs) => {
+        setStreamings(
+          xs.items.map((x) => {
+            return x.streamings;
+          }),
+        );
         setImages(
           xs.items.map((x) => {
             return x.posterPath;
@@ -32,10 +37,11 @@ const CarouselSection = () => {
         setError(false);
       })
       .catch(() => {
-        setError(true); // <== this **WILL** be invoked on exception
+        setError(true);
       });
     incrementCounter();
   }, []);
+  console.log(streamings);
   return (
     <>
       {!error && (
@@ -52,16 +58,29 @@ const CarouselSection = () => {
             }}
           >
             {images.map((image, index) => (
-              <img
-                src={image}
+              <div
                 key={index}
-                alt=""
                 className={
                   autoPlay == false && current[index] == 1
-                    ? `carousel_item_` + current[index] + ' carousel_paused'
-                    : `carousel_item_` + current[index]
+                    ? `cardItems cardItems_N_` +
+                      current[index] +
+                      ' carousel_paused'
+                    : `cardItems cardItems_N_` + current[index]
                 }
-              />
+                style={{ backgroundImage: `url(${image})` }}
+              >
+                <div className={'streamingsItem'}>
+                  {streamings[0].map((x, indexStreaming) => (
+                    <div key={indexStreaming} className={styles.streaming}>
+                      <img
+                        src={`../../Assets/${x.streamingId}Square.svg`}
+                        alt=""
+                      />
+                      <p>{x.type}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
