@@ -3,6 +3,7 @@ using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
+using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Linq;
 
@@ -34,9 +35,8 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<ItemStreamingPaginationHelper> GetItemsAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? itemType, StreamingType? streamingType)
+        public async Task<PagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber, int offset, int genreId, ItemType? itemType, StreamingType? streamingType)
         {
-            int totalPages = 0;
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
@@ -44,7 +44,8 @@ namespace StoneWall.Services
 
             IQueryable<ItemStreaming> query = _context.Item_Streaming
             .AsNoTracking()
-            .Where(Is => Is.StreamingId == streamingId);
+            .Where(Is => Is.StreamingId == streamingId)
+            .Include(Is => Is.Item);
 
             if (itemType != null)
             {
@@ -62,50 +63,43 @@ namespace StoneWall.Services
                .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }
 
-            totalPages = await GetTotalPages(query, offset);
-
-            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
-            {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
-            }
-
-            var streamingItems = await query
-                .Select(Is => new ItemStreaming
+            var streamingItems = query
+                .Select(Is => new ItemStreaming()
                 {
-                    Item = new Item
+                    Item = new Item()
                     {
                         TmdbId = Is.Item.TmdbId,
-                        Title = Is.Item.Title,
+                        Genres = Is.Item.Genres,
+                        Streamings = Is.Item.Streamings,
                         OriginalTitle = Is.Item.OriginalTitle,
-                        Popularity = Is.Item.Popularity,
+                        Title = Is.Item.Title,
                         Type = Is.Item.Type,
+                        Popularity = Is.Item.Popularity,
                     },
                     Type = Is.Type,
                     Link = Is.Link,
                 })
                 .OrderByDescending(Is => Is.Item.Popularity)
-                .Skip((pageNumber - 1) * offset)
-                .Take(offset)
-                .ToArrayAsync();
+                .AsQueryable();
+            var streamingItemsPaged = await PagedList<ItemStreaming>.ToPagedListAsync(streamingItems,pageNumber,offset);
 
-            if (!streamingItems.Any())
+            if ((streamingItemsPaged.TotalPages < pageNumber || pageNumber < 1) && streamingItemsPaged.TotalPages != 0)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
+            }
+
+            if (!streamingItemsPaged.Any())
             {
                 throw new NotFoundException($"Theres no registered item from {streamingId}");
             }
-            var response = new ItemStreamingPaginationHelper()
-            {
-                ItemsStreaming = streamingItems,
-                LastPage = totalPages,
-            };
-            return response;
+            return streamingItemsPaged;
         }
-        public async Task<ItemStreamingPaginationHelper> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, int genreId, ItemType? itemType, StreamingType? streamingType)
+        public async Task<PagedList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, int genreId, ItemType? itemType, StreamingType? streamingType)
         {
             if (offset < 1)
             {
                 throw new PageException($"Invalid {nameof(offset)}");
             }
-            int totalPages = 0;
 
             var excludedTmdbIds = await _context.Item_Streaming
             .Where(Is2 => Is2.StreamingId == streamingExcluded)
@@ -113,7 +107,8 @@ namespace StoneWall.Services
             .ToArrayAsync();
 
             IQueryable<ItemStreaming> query = _context.Item_Streaming
-            .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId));
+            .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId))
+            .Include(Is => Is.Item);
 
             if (itemType != null)
             {
@@ -131,42 +126,36 @@ namespace StoneWall.Services
                .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
             }
 
-            totalPages = await GetTotalPages(query, offset);
-
-            if ((totalPages < pageNumber || pageNumber < 1) && totalPages != 0)
-            {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
-            }
-
-            var exclusiveItems = await query
-                .Select(Is => new ItemStreaming
+            var exclusiveItems =  query
+                .Select(Is => new ItemStreaming()
                 {
-                    Item = new Item
+                    Item = new Item()
                     {
                         TmdbId = Is.Item.TmdbId,
-                        Title = Is.Item.Title,
+                        Genres = Is.Item.Genres,
+                        Streamings = Is.Item.Streamings,
                         OriginalTitle = Is.Item.OriginalTitle,
+                        Title = Is.Item.Title,
+                        Type = Is.Item.Type,
                         Popularity = Is.Item.Popularity,
-                        Type = Is.Item.Type
                     },
                     Type = Is.Type,
                     Link = Is.Link,
                 })
                 .OrderByDescending(Is => Is.Item.Popularity)
-                .Skip((pageNumber - 1) * offset)
-                .Take(offset)
-                .ToArrayAsync();
+                .AsQueryable();
+            var exclusiveItemsPaged = await PagedList<ItemStreaming>.ToPagedListAsync(exclusiveItems, pageNumber, offset);
 
-            if (!exclusiveItems.Any())
+            if ((exclusiveItemsPaged.TotalPages < pageNumber || pageNumber < 1) && exclusiveItemsPaged.TotalPages != 0)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
+            }
+
+            if (!exclusiveItemsPaged.Any())
             {
                 throw new NotFoundException($"Theres no items in {streamingExclusive} that dont have in the {streamingExcluded}");
             }
-            var response = new ItemStreamingPaginationHelper()
-            {
-                ItemsStreaming = exclusiveItems,
-                LastPage = totalPages,
-            };
-            return response;
+            return exclusiveItemsPaged;
         }
         private async Task<int> GetTotalPages(IQueryable<ItemStreaming> query,int offset)
         {

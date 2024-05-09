@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StoneWall.Data;
+using StoneWall.DTOs.Mappings;
 using StoneWall.Entities;
 using StoneWall.Extensions;
 using StoneWall.Services;
@@ -40,6 +41,7 @@ namespace StoneWall
                     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
+            builder.Services.AddAutoMapper(typeof(ItemDTOMappingProfile));
             builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
             builder.Services.AddScoped<ITmdbService,TmdbService>();
             builder.Services.AddScoped<IItemsService, ItemsService>();

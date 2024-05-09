@@ -30,7 +30,7 @@ namespace StoneWall.Services
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper!.overview;
-                Item.PosterPath = $"https://image.tmdb.org/t/p/{sizeParams}/" + itemJsonHelper.poster_path;
+                Item.PosterPath = $"https://image.tmdb.org/t/p/{sizeParams}" + itemJsonHelper.poster_path;
                 if (itemJsonHelper.release_date != null)
                 {
                     Item.ReleaseYear = ParseYear(itemJsonHelper.release_date);
