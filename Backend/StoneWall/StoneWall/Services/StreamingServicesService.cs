@@ -16,7 +16,7 @@ namespace StoneWall.Services
             _context = context;
         }
 
-        public async Task<List<StreamingServices>> GetStreamingsAsync()
+        public async Task<IEnumerable<StreamingServices>> GetStreamingsAsync()
         {
             var streamings = await _context.Streaming_Services.AsNoTracking().ToListAsync();
             if (!streamings.Any())
@@ -25,7 +25,7 @@ namespace StoneWall.Services
             }
             return streamings;
         }
-        public async Task<List<Addon>> GetAddonsAsync(string streamingId)
+        public async Task<IEnumerable<Addon>> GetAddonsAsync(string streamingId)
         {
             var addons = await _context.Addons.AsNoTracking().Where(Ad => Ad.StreamingService == streamingId).ToListAsync();
             if (!addons.Any())
