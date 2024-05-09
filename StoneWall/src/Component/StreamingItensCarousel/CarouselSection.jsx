@@ -21,16 +21,19 @@ const CarouselSection = () => {
     intervalRef.current = null;
   };
   React.useEffect(() => {
-    fetch('https://localhost:7282/Items?offset=3&atLeast=3')
+    fetch(
+      'https://localhost:7282/Items?atLeast=3&sizeParams=w600_and_h900_bestv2&pageNumber=1&offset=3',
+    )
       .then((x) => x.json())
       .then((xs) => {
+        console.log(xs);
         setStreamings(
-          xs.items.map((x) => {
+          xs.map((x) => {
             return x.streamings;
           }),
         );
         setImages(
-          xs.items.map((x) => {
+          xs.map((x) => {
             return x.posterPath;
           }),
         );
@@ -41,7 +44,7 @@ const CarouselSection = () => {
       });
     incrementCounter();
   }, []);
-  console.log(streamings);
+  // console.log(streamings);
   return (
     <>
       {!error && (
@@ -51,6 +54,15 @@ const CarouselSection = () => {
             onMouseEnter={() => {
               resetCounter();
               setAutoPlay(false);
+            }}
+            onTouchStart={() => {
+              if (autoPlay) {
+                setAutoPlay(false);
+                resetCounter();
+              } else {
+                incrementCounter();
+                setAutoPlay(true);
+              }
             }}
             onMouseLeave={() => {
               incrementCounter();

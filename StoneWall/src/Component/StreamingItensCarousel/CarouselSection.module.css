@@ -7,24 +7,32 @@
   from {
     right: 0px;
     transform: scale(1.2);
-    z-index: 10;
   }
   to {
     transform: scale(1);
     right: -220px;
-    z-index: 5;
   }
 }
+
+@keyframes RightPosterL {
+  from {
+    right: 0px;
+    transform: scale(1.2);
+  }
+  to {
+    transform: scale(1);
+    right: -180px;
+  }
+}
+
 @keyframes RightPosterUD {
   from {
     top: 0px;
     transform: scale(1.2);
-    z-index: 10;
   }
   to {
     transform: scale(1);
     top: -220px;
-    z-index: 5;
   }
 }
 
@@ -34,6 +42,15 @@
   }
   to {
     right: 220px;
+  }
+}
+
+@keyframes LeftPosterL {
+  from {
+    right: -180px;
+  }
+  to {
+    right: 180px;
   }
 }
 
@@ -57,14 +74,25 @@
   }
 }
 
-@keyframes MidPosterUD {
+@keyframes MidPosterL {
   from {
-    top: 220px;
+    right: 180px;
     transform: scale(1);
   }
   to {
-    top: 0px;
+    right: 0px;
     transform: scale(1.2);
+  }
+}
+
+@keyframes MidPosterUDL {
+  from {
+    top: 220px;
+    transform: scale(0.8);
+  }
+  to {
+    top: 0px;
+    transform: scale(1);
   }
 }
 
@@ -72,12 +100,10 @@
   from {
     top: 0px;
     transform: scale(1);
-    z-index: 10;
   }
   to {
     transform: scale(0.8);
     top: -220px;
-    z-index: 5;
   }
 }
 @keyframes MidPosterUDL {
@@ -90,7 +116,7 @@
     transform: scale(1);
   }
 }
-@keyframes LeftPosterUDL {
+@keyframes LeftPosterUD {
   from {
     top: -220px;
   }
@@ -100,7 +126,7 @@
 }
 
 .movies {
-  margin-top: 120px;
+  margin: 120px 0px;
   height: 600px;
   width: 400px;
   position: relative;
@@ -113,6 +139,7 @@
 }
 
 [class~='cardItems_N_0'] {
+  z-index: 1;
   right: 220px;
   filter: blur(1.5px);
   animation: LeftPoster 500ms;
@@ -126,6 +153,7 @@
 }
 
 [class~='cardItems_N_2'] {
+  z-index: 5;
   right: -220px;
   filter: blur(1.5px);
   animation: RightPoster 500ms;
@@ -136,11 +164,11 @@
   width: 100%;
   display: none;
   grid-template-columns: 1fr 1fr;
-  background-color: var(--D2);
+  /* background-color: var(--D2); */
   border-radius: 7px;
   justify-content: center;
-  gap: 20px;
-  padding-top: 20px;
+  gap: 10px;
+  padding: 20px 0px;
 }
 
 [class~='carousel_paused'] > [class~='streamingsItem'] {
@@ -149,13 +177,19 @@
 
 .streaming > img {
   align-self: center;
-  height: 64px;
-  width: 64px;
+  height: 48px;
+  width: 48px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.25);
 }
+
+.streaming > p {
+}
+
 .streaming {
   height: 64px;
   display: flex;
+  background-color: var(--L1);
+  border-radius: 7px;
 }
 
 .streaming:nth-child(odd) {
@@ -177,7 +211,67 @@
   border-radius: 7px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
+  .movies {
+    height: 450px;
+    width: 300px;
+  }
+  [class~='cardItems'] {
+    height: 450px;
+    width: 300px;
+  }
+  [class~='cardItems_N_0'] {
+    right: 180px;
+    animation: LeftPosterL 500ms;
+  }
+
+  [class~='cardItems_N_1'] {
+    animation: MidPosterL 500ms;
+  }
+
+  [class~='cardItems_N_2'] {
+    right: -180px;
+    animation: RightPosterL 500ms;
+  }
 }
-@media (max-width: 400px) {
+@media (max-width: 700px) {
+  .movies {
+    margin: 240px 0px;
+  }
+  [class~='cardItems_N_0'] {
+    top: 220px;
+    right: 0px;
+    animation: LeftPosterUD 500ms;
+  }
+
+  [class~='cardItems_N_1'] {
+    transform: scale(1.2);
+    animation: MidPosterUD 500ms;
+  }
+
+  [class~='cardItems_N_2'] {
+    top: -220px;
+    right: 0px;
+    animation: RightPosterUD 500ms;
+  }
+}
+@media (max-width: 450px) {
+  [class~='cardItems_N_0'] {
+    top: 220px;
+    right: 0px;
+    transform: scale(0.8);
+    animation: LeftPosterUDL 500ms;
+  }
+
+  [class~='cardItems_N_1'] {
+    transform: scale(1);
+    animation: MidPosterUDL 500ms;
+  }
+
+  [class~='cardItems_N_2'] {
+    top: -220px;
+    right: 0px;
+    transform: scale(0.8);
+    animation: RightPosterUDL 500ms;
+  }
 }
