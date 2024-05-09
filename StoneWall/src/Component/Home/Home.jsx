@@ -4,11 +4,10 @@ import Header from '../Header/Header';
 import CarouselSection from '../StreamingItensCarousel/CarouselSection';
 import Questions from '../Questions/Questions';
 import styles from './Home.module.css';
+import Footer from '../Footer/Footer';
 
 const Home = () => {
-  React.useEffect(() => {
-    
-  }, []);
+  React.useEffect(() => {}, []);
   return (
     <>
       <div className={styles.background}>
@@ -19,6 +18,7 @@ const Home = () => {
       <div className={styles.backgroundPurple}>
         <CarouselSection />
       </div>
+      <Footer />
     </>
   );
 };

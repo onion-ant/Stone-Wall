@@ -1,0 +1,14 @@
+.footerDiv {
+  height: 100px;
+  background-color: var(--D1);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.FooterText {
+  margin: 0;
+  font-weight: bold;
+  font-size: 24px;
+  color: var(--L1);
+}
