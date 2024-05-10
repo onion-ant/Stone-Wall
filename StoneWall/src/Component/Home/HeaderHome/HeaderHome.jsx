@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import styles from './HeaderHome.module.css';
 
 const HeaderHome = () => {
-  const ref = React.useRef(null);
-  const refButton = React.useRef(null);
+  const ref = React.useRef(false);
+  const refButton = React.useRef(false);
   React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -35,7 +35,7 @@ const HeaderHome = () => {
         STONEWALL
       </Link>
       <div className={`${styles.rightSide}`} ref={ref}>
-        <Link to={'/'} className={styles.link}>
+        <Link to={'/Analise'} className={styles.link}>
           Analise
         </Link>
         <Link to={'/'} className={styles.link}>

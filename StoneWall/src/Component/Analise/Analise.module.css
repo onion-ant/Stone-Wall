@@ -1,0 +1,137 @@
+.background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  text-align: center;
+  font-family: 'Kanit';
+}
+
+.analise {
+  position: absolute;
+  font-size: 300px;
+  z-index: -1;
+  font-weight: 900;
+  color: rgba(188, 174, 195, 1);
+  text-shadow: 10px 10px 0px rgba(61, 30, 76, 0.1);
+  user-select: none;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  position: absolute;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 128px;
+  font-weight: 900;
+  -webkit-text-stroke: 1px var(--D2);
+  color: white;
+  text-shadow: 10px 10px 0px var(--D2);
+}
+
+.innerOptions {
+  position: absolute;
+  display: none;
+  opacity: 0;
+}
+
+.innerOptions > a {
+  text-shadow: 5px 5px 0px var(--D2);
+}
+
+.filmes > .innerOptions {
+  bottom: -160px;
+}
+
+.musicas > .innerOptions {
+  bottom: -100px;
+}
+
+.jogos > .innerOptions {
+  bottom: -100px;
+}
+
+.innerOptions > a {
+  font-size: 36px;
+  -webkit-text-stroke: 1px var(--D2);
+  text-decoration: none;
+  color: white;
+}
+
+[class~='active'] > .innerOptions {
+  display: grid;
+  opacity: 1;
+  animation: show-up 0.5s forwards;
+}
+
+@keyframes show-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.filmes {
+  top: 180px;
+  animation: filmesOut 0.5s;
+}
+
+[class~='active'].filmes {
+  top: 20px;
+  animation: filmesIn 0.5s;
+}
+
+@keyframes filmesIn {
+  from {
+    top: 180px;
+  }
+  to {
+    top: 20px;
+  }
+}
+
+@keyframes filmesOut {
+  from {
+    top: 20px;
+  }
+  to {
+    top: 180px;
+  }
+}
+
+.jogos {
+  bottom: 180px;
+  animation: jogosOut 0.5s;
+}
+
+[class~='getDown'].jogos {
+  bottom: 80px;
+  animation: jogosIn 0.5s;
+}
+
+@keyframes jogosIn {
+  from {
+    bottom: 180px;
+  }
+  to {
+    bottom: 80px;
+  }
+}
+
+@keyframes jogosOut {
+  from {
+    bottom: 80px;
+  }
+  to {
+    bottom: 180px;
+  }
+}
