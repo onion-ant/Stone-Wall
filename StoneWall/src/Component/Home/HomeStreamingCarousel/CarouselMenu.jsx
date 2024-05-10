@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './CarouselMenu.module.css';
-import Carousel from '../Carousel/Carousel';
+import Carousel from '../../Carousel/Carousel';
 
 const CarouselMenu = () => {
   const [images, setImages] = React.useState([]);

@@ -1,8 +1,8 @@
 import React from 'react';
-import CarouselMenu from '../HomeStreamingCarousel/CarouselMenu';
+import CarouselMenu from './HomeStreamingCarousel/CarouselMenu';
 import Header from '../Header/Header';
-import CarouselSection from '../StreamingItensCarousel/CarouselSection';
-import Questions from '../Questions/Questions';
+import CarouselSection from './StreamingItensCarousel/CarouselSection';
+import Questions from './Questions/Questions';
 import styles from './Home.module.css';
 import Footer from '../Footer/Footer';
 

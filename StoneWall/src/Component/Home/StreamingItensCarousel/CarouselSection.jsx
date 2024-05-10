@@ -22,11 +22,10 @@ const CarouselSection = () => {
   };
   React.useEffect(() => {
     fetch(
-      'https://localhost:7282/Items?atLeast=0&sizeParams=w600_and_h900_bestv2&pageNumber=1&offset=3',
+      'https://localhost:7282/Items?atLeast=3&sizeParams=w600_and_h900_bestv2&pageNumber=1&offset=3',
     )
       .then((x) => x.json())
       .then((xs) => {
-        console.log(xs);
         setStreamings(
           xs.map((x) => {
             return x.streamings;
@@ -44,7 +43,6 @@ const CarouselSection = () => {
       });
     incrementCounter();
   }, []);
-  // console.log(streamings);
   return (
     <>
       {!error && (

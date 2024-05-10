@@ -85,14 +85,12 @@
   }
 }
 
-@keyframes MidPosterUDL {
+@keyframes LeftPosterUDL {
   from {
-    top: 220px;
-    transform: scale(0.8);
+    top: -220px;
   }
   to {
-    top: 0px;
-    transform: scale(1);
+    top: 220px;
   }
 }
 
