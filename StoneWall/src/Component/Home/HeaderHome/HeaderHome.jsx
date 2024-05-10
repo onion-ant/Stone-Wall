@@ -1,10 +1,9 @@
 import React from 'react';
-import Button from '../Button/Button';
+import Button from '../../Button/Button';
 import { Link } from 'react-router-dom';
-import styles from './Header.module.css';
+import styles from './HeaderHome.module.css';
 
-
-const Header = () => {
+const HeaderHome = () => {
   const ref = React.useRef(null);
   const refButton = React.useRef(null);
   React.useEffect(() => {
@@ -51,4 +50,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderHome;
