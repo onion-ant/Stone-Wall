@@ -5,6 +5,7 @@ using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
 using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
+using X.PagedList;
 
 namespace StoneWall.Services
 {
@@ -28,7 +29,7 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<PagedList<Item>> GetItemsAsync(int offset, int pageNumber, ItemParameters itemParams)
+        public async Task<IPagedList<Item>> GetItemsAsync(int offset, int pageNumber, ItemParameters itemParams)
         {
             if (offset < 1)
             {
@@ -38,7 +39,8 @@ namespace StoneWall.Services
             IQueryable<Item> query = _context.Items
             .AsNoTracking()
             .Where(It => It.Streamings.Count >= itemParams.atLeast)
-            .Include(It => It.Streamings);
+            .Include(It => It.Streamings)
+            .OrderByDescending(It => It.Popularity);
 
             if (itemParams.itemType != null)
             {
@@ -51,12 +53,9 @@ namespace StoneWall.Services
                .Where(It => It.Genres.Any(g => g.Id == itemParams.genreId));
             }
 
-            var items = query
-                .OrderByDescending(It => It.Popularity)
-                .AsQueryable();
-            var pagedItems = await PagedList<Item>.ToPagedListAsync(items, pageNumber, offset);
+            var pagedItems = await query.ToPagedListAsync(pageNumber, offset);
 
-            if ((pagedItems.TotalPages < pageNumber || pageNumber < 1) && pagedItems.TotalPages != 0)
+            if ((pagedItems.PageCount < pageNumber || pageNumber < 1) && pagedItems.PageCount != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
             }

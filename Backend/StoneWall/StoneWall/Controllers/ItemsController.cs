@@ -35,12 +35,12 @@ namespace StoneWall.Controllers
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
-                    items.TotalCount,
+                    items.Count,
                     items.PageSize,
-                    items.CurrentPage,
-                    items.TotalPages,
-                    items.HasNext,
-                    items.HasPrevious
+                    items.PageNumber,
+                    items.PageCount,
+                    items.HasNextPage,
+                    items.HasPreviousPage
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
                 var itemsDto = items.Select(item=>_mapper.Map<ItemDTO>(item));
