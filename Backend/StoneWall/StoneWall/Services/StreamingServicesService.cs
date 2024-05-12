@@ -157,12 +157,5 @@ namespace StoneWall.Services
             }
             return exclusiveItemsPaged;
         }
-        private async Task<int> GetTotalPages(IQueryable<ItemStreaming> query,int offset)
-        {
-            int count = await query.CountAsync();
-            int totalPages = (count + offset - 1) / offset;
-
-            return totalPages;
-        }
     }
 }
