@@ -35,7 +35,7 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<PagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber, int offset, string? genreId, ItemType? itemType, StreamingType? streamingType)
+        public async Task<PagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams)
         {
             if (offset < 1)
             {
@@ -47,20 +47,20 @@ namespace StoneWall.Services
             .Where(Is => Is.StreamingId == streamingId)
             .Include(Is => Is.Item);
 
-            if (itemType != null)
+            if (itemParams.itemType != null)
             {
                 query = query
-               .Where(Is => Is.Item.Type == itemType);
+               .Where(Is => Is.Item.Type == itemParams.itemType);
             }
             if (streamingType != null)
             {
                 query = query
                .Where(Is => Is.Type == streamingType);
             }
-            if (genreId != null)
+            if (itemParams.genreId != null)
             {
                 query = query
-               .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
+               .Where(Is => Is.Item.Genres.Any(g => g.Id == itemParams.genreId));
             }
 
             var streamingItems = query
@@ -94,7 +94,7 @@ namespace StoneWall.Services
             }
             return streamingItemsPaged;
         }
-        public async Task<PagedList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, string? genreId, ItemType? itemType, StreamingType? streamingType)
+        public async Task<PagedList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams)
         {
             if (offset < 1)
             {
@@ -110,20 +110,20 @@ namespace StoneWall.Services
             .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId))
             .Include(Is => Is.Item);
 
-            if (itemType != null)
+            if (itemParams.itemType != null)
             {
                 query = query
-                .Where(Is => Is.Item.Type == itemType);
+                .Where(Is => Is.Item.Type == itemParams.itemType);
             }
             if (streamingType != null)
             {
                 query = query
                .Where(Is => Is.Type == streamingType);
             }
-            if (genreId != null)
+            if (itemParams.genreId != null)
             {
                 query = query
-               .Where(Is => Is.Item.Genres.Any(g => g.Id == genreId));
+               .Where(Is => Is.Item.Genres.Any(g => g.Id == itemParams.genreId));
             }
 
             var exclusiveItems =  query

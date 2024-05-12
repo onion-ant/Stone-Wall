@@ -28,7 +28,7 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<PagedList<Item>> GetItemsAsync(int pageNumber, int offset, string? genreId, int atLeast, ItemType? itemType)
+        public async Task<PagedList<Item>> GetItemsAsync(int offset, int pageNumber, ItemParameters itemParams)
         {
             if (offset < 1)
             {
@@ -37,24 +37,24 @@ namespace StoneWall.Services
 
             IQueryable<Item> query = _context.Items
             .AsNoTracking()
-            .Where(It => It.Streamings.Count >= atLeast)
+            .Where(It => It.Streamings.Count >= itemParams.atLeast)
             .Include(It => It.Streamings);
 
-            if (itemType != null)
+            if (itemParams.itemType != null)
             {
                 query = query
-               .Where(It => It.Type == itemType);
+               .Where(It => It.Type == itemParams.itemType);
             }
-            if (genreId != null)
+            if (itemParams.genreId != null)
             {
                 query = query
-               .Where(It => It.Genres.Any(g => g.Id == genreId));
+               .Where(It => It.Genres.Any(g => g.Id == itemParams.genreId));
             }
 
             var items = query
                 .OrderByDescending(It => It.Popularity)
                 .AsQueryable();
-            var pagedItems = await PagedList<Item>.ToPagedListAsync(items,pageNumber,offset);
+            var pagedItems = await PagedList<Item>.ToPagedListAsync(items, pageNumber, offset);
 
             if ((pagedItems.TotalPages < pageNumber || pageNumber < 1) && pagedItems.TotalPages != 0)
             {

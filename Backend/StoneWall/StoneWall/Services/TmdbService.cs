@@ -3,6 +3,7 @@ using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
+using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Net.Http.Json;
 using System.Text;
@@ -20,17 +21,21 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item,string language,string sizeParams)
+        public async Task GetItemAsync(Item Item,TmdbParameters tmdbParams)
         {
             string url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie/" : "https://api.themoviedb.org/3/tv/";
             try
             {
-                var request = RequestBuilder(Item.TmdbId, language, url);
+                var request = RequestBuilder(Item.TmdbId, tmdbParams.language, url);
                 var response = await _client.SendAsync(request);
+                if( !response.IsSuccessStatusCode )
+                {
+                    throw new ExternalApiException("Invalid item");
+                }
                 string? body = await response.Content.ReadAsStringAsync();
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper!.overview;
-                Item.PosterPath = $"https://image.tmdb.org/t/p/{sizeParams}/" + itemJsonHelper.poster_path;
+                Item.PosterPath = $"https://image.tmdb.org/t/p/{tmdbParams.sizeParams}/" + itemJsonHelper.poster_path;
                 if (itemJsonHelper.release_date != null)
                 {
                     Item.ReleaseYear = ParseYear(itemJsonHelper.release_date);

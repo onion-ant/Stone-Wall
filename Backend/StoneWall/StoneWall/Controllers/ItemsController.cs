@@ -6,6 +6,7 @@ using StoneWall.DTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
+using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
 
@@ -25,12 +26,12 @@ namespace StoneWall.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] string? genreId, [FromQuery] int atLeast, [FromQuery] ItemType? itemType, [FromQuery] string? sizeParams = "original", [FromQuery] string? language = "pt-BR", [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] int offset = 6, [FromQuery] int pageNumber = 1)
         {
             try
             {
-                var items = await _itemsService.GetItemsAsync(pageNumber,offset,genreId,atLeast,itemType);
-                var tasks = items.Select(item => _tmdbService.GetItemAsync(item,language,sizeParams)).ToList();
+                var items = await _itemsService.GetItemsAsync(offset, pageNumber, itemParams);
+                var tasks = items.Select(item => _tmdbService.GetItemAsync(item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
@@ -59,12 +60,12 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{tmdbId}")]
-        public async Task<ActionResult<ItemDTO>> GetDetails(int tmdbId, [FromQuery] string? sizeParams = "original" , [FromQuery] string? language = "pt-BR")
+        public async Task<ActionResult<ItemDTO>> GetDetails(int tmdbId, [FromQuery] TmdbParameters tmdbParams)
         {
             try
             {
                 var item = await _itemsService.GetDetailsAsync(tmdbId);
-                await _tmdbService.GetItemAsync(item,language,sizeParams);
+                await _tmdbService.GetItemAsync(item,tmdbParams);
                 var itemDto = _mapper.Map<ItemDTO>(item);
                 return itemDto;
             }
