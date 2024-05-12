@@ -52,12 +52,12 @@ namespace StoneWall.Controllers
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
-                    streamingItems.TotalCount,
+                    streamingItems.Count,
                     streamingItems.PageSize,
-                    streamingItems.CurrentPage,
-                    streamingItems.TotalPages,
-                    streamingItems.HasNext,
-                    streamingItems.HasPrevious
+                    streamingItems.PageNumber,
+                    streamingItems.PageCount,
+                    streamingItems.HasNextPage,
+                    streamingItems.HasPreviousPage
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -106,12 +106,12 @@ namespace StoneWall.Controllers
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
-                    exclusiveItems.TotalCount,
+                    exclusiveItems.Count,
                     exclusiveItems.PageSize,
-                    exclusiveItems.CurrentPage,
-                    exclusiveItems.TotalPages,
-                    exclusiveItems.HasNext,
-                    exclusiveItems.HasPrevious
+                    exclusiveItems.PageNumber,
+                    exclusiveItems.PageCount,
+                    exclusiveItems.HasNextPage,
+                    exclusiveItems.HasPreviousPage
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
                 var exclusiveItemsDto = exclusiveItems.Select(exI => _mapper.Map<ItemStreamingDTO>(exI));

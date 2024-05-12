@@ -35,6 +35,10 @@ namespace StoneWall.Services
             {
                 throw new PageException($"Invalid {nameof(offset)}");
             }
+            if (pageNumber < 1)
+            {
+                throw new PageException($"Invalid {nameof(pageNumber)}");
+            }
 
             IQueryable<Item> query = _context.Items
             .AsNoTracking()
@@ -55,7 +59,7 @@ namespace StoneWall.Services
 
             var pagedItems = await query.ToPagedListAsync(pageNumber, offset);
 
-            if ((pagedItems.PageCount < pageNumber || pageNumber < 1) && pagedItems.PageCount != 0)
+            if (pagedItems.PageCount < pageNumber && pagedItems.PageCount != 0)
             {
                 throw new PageException($"Invalid {nameof(pageNumber)}");
             }
