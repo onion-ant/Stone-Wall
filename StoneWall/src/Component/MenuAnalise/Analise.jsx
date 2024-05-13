@@ -8,7 +8,6 @@ const Analise = () => {
   const [musicas, setMusicas] = useState(true);
   return (
     <div className={styles.background}>
-      <p className={styles.analise}>ANALISAR</p>
       <div
         className={`${styles.options} ${styles.filmes} ${
           filmes ? '' : 'active'
@@ -21,7 +20,7 @@ const Analise = () => {
       >
         FILMES/SÉRIES
         <div className={styles.innerOptions}>
-          <Link to="/">Analisar Streaming</Link>
+          <Link to="/Streaming">Analisar Streaming</Link>
           <Link to="/">Comparar Streamings</Link>
           <Link to="/">Buscar Filme</Link>
         </div>

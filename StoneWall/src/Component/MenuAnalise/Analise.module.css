@@ -3,17 +3,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  height: 900px;
   position: relative;
   text-align: center;
   font-family: 'Kanit';
+  background-image: url('../../../Assets/StoneWallBackground.svg');
 }
 
-.analise {
-  position: absolute;
-  font-size: 300px;
-  z-index: -1;
+.background::before {
+  content: 'ANALISAR';
+  font-size: 2000%;
+  text-wrap: wrap;
   font-weight: 900;
   color: rgba(188, 174, 195, 1);
   text-shadow: 10px 10px 0px rgba(61, 30, 76, 0.1);
@@ -22,6 +22,7 @@
 
 .options {
   display: flex;
+  user-select: none;
   justify-content: center;
   align-items: end;
   position: absolute;
@@ -38,10 +39,6 @@
   position: absolute;
   display: none;
   opacity: 0;
-}
-
-.innerOptions > a {
-  text-shadow: 5px 5px 0px var(--D2);
 }
 
 .filmes > .innerOptions {
@@ -61,6 +58,7 @@
   -webkit-text-stroke: 1px var(--D2);
   text-decoration: none;
   color: white;
+  text-shadow: 5px 5px 0px var(--D2);
 }
 
 [class~='active'] > .innerOptions {
@@ -133,5 +131,34 @@
   }
   to {
     bottom: 180px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .analise {
+    font-size: 214px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .options {
+    font-size: 80px;
+    min-width: 400px;
+    text-shadow: 5px 5px 0px var(--D2);
+  }
+}
+@media (max-width: 600px) {
+  .options {
+    font-size: 48px;
+  }
+  .innerOptions > a {
+    font-size: 24px;
+    text-shadow: 3px 3px 0px var(--D2);
+  }
+}
+@media (max-width: 500px) {
+  .options {
+    font-size: 32px;
+    min-width: 300px;
   }
 }

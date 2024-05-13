@@ -8,20 +8,22 @@ const HeaderHome = () => {
   const refButton = React.useRef(false);
   React.useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        refButton.current.contains(event.target) &&
-        !ref.current.classList.contains(styles.active)
-      ) {
-        ref.current.classList.add(styles.active);
-        refButton.current.classList.add(styles.active);
-      } else if (
-        (!ref.current.contains(event.target) &&
-          !refButton.current.contains(event.target)) ||
-        (refButton.current.contains(event.target) &&
-          ref.current.classList.contains(styles.active))
-      ) {
-        ref.current.classList.remove(styles.active);
-        refButton.current.classList.remove(styles.active);
+      if (ref.current != null && refButton.current != null) {
+        if (
+          refButton.current.contains(event.target) &&
+          !ref.current.classList.contains(styles.active)
+        ) {
+          ref.current.classList.add(styles.active);
+          refButton.current.classList.add(styles.active);
+        } else if (
+          (!ref.current.contains(event.target) &&
+            !refButton.current.contains(event.target)) ||
+          (refButton.current.contains(event.target) &&
+            ref.current.classList.contains(styles.active))
+        ) {
+          ref.current.classList.remove(styles.active);
+          refButton.current.classList.remove(styles.active);
+        }
       }
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);

@@ -1,0 +1,40 @@
+p {
+  margin: 0;
+}
+
+.menu {
+  width: 200px;
+  height: 100dvh;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  gap: 20px;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.menu > p {
+  padding: 0px 20px;
+  margin-top: 32px;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--D2);
+}
+.menuItens {
+  height: 100%;
+}
+
+.itemsMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemsMenu > a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  -webkit-text-stroke: 1px var(--D2);
+  text-shadow: 3px 3px 0px var(--D2);
+}
