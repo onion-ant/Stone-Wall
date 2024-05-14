@@ -1,17 +1,17 @@
-:root{
-  --D1: #3D1E4C;
+:root {
+  --D1: #3d1e4c;
   --D2: #561376;
-  --L1: #9D45C7;
-  --D2O:rgba(86, 19, 118, 0.05);
+  --L1: #9d45c7;
+  --D2O: rgba(86, 19, 118, 0.05);
   --D1O: rgba(61, 30, 76, 0.15);
   --D2B: rgba(86, 19, 118, 0.5);
 }
 
-html{
-  font-family: "Kanit";
+html {
+  font-family: 'Kanit', sans-serif;
 }
 
-body{
+body {
   margin: 0;
 }
 
@@ -19,22 +19,22 @@ body{
   margin: 0px;
 } */
 
-a:focus{
+a:focus {
   color: var(--L1);
 }
 
-.container{
+.container {
   max-width: 1220px;
   padding: 0px 32px;
   margin: auto;
 }
 
-.margin-top{
+.margin-top {
   margin-top: 128px;
 }
 
 @media (max-width: 800) {
-  .margin-top{
+  .margin-top {
     margin-top: 64px;
   }
 }
