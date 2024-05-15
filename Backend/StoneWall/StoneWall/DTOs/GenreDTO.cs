@@ -3,7 +3,7 @@
 namespace StoneWall.DTOs
 {
     public record GenreDTO(
-        int Id,
+        string Id,
         string Name
     );
 }

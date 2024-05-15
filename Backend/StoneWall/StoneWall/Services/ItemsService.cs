@@ -19,7 +19,22 @@ namespace StoneWall.Services
 
         public async Task<Item> GetDetailsAsync(int tmdbId)
         {
-            var item = await _context.Items.AsNoTracking().Include(It=>It.Genres).Include(It=>It.Streamings).FirstOrDefaultAsync(It=>It.TmdbId==tmdbId);
+            var item = await _context.Items.AsNoTracking()
+            .Select(It => new Item()
+                {
+                Title = It.Title,
+                Genres = It.Genres.Select(g=>new Genre()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                }).ToList(),
+                OriginalTitle = It.OriginalTitle,
+                Popularity = It.Popularity,
+                Streamings = It.Streamings,
+                Type = It.Type,
+                TmdbId  = It.TmdbId,
+                })
+            .FirstOrDefaultAsync(It => It.TmdbId == tmdbId);
                                 
 
             if (item == null)
