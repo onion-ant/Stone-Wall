@@ -20,6 +20,8 @@ namespace StoneWall.Entities
         [NotMapped]
         public string? Overview { get; set; }
         [NotMapped]
+        public string? BackdropPath { get; set; }
+        [NotMapped]
         public string? PosterPath { get; set; }
         [NotMapped]
         public int ReleaseYear { get; set; }
