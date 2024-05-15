@@ -82,7 +82,7 @@ namespace StoneWall.Services
             if (itemParams.name != null)
             {
                 query = query
-               .Where(It => It.Item.Title.ToLower().StartsWith(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().StartsWith(itemParams.name.ToLower()));
+               .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
 
             var streamingItemsPaged = await query.ToPagedListAsync(pageNumber,offset);
@@ -152,7 +152,7 @@ namespace StoneWall.Services
             if (itemParams.name != null)
             {
                 query = query
-               .Where(It => It.Item.Title.ToLower().StartsWith(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().StartsWith(itemParams.name.ToLower()));
+               .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
 
             var exclusiveItemsPaged = await query.ToPagedListAsync(pageNumber, offset);
