@@ -13,6 +13,7 @@ namespace StoneWall.DTOs
         List<GenreDTO> Genres,
         string? Overview,
         string? PosterPath,
+        string? BackdropPath,
         int ReleaseYear,
         int LastAirYear,
         int SeasonsCount

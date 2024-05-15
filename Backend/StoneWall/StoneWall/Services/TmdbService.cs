@@ -36,6 +36,7 @@ namespace StoneWall.Services
                 TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
                 Item.Overview = itemJsonHelper!.overview;
                 Item.PosterPath = $"https://image.tmdb.org/t/p/{tmdbParams.sizeParams}/" + itemJsonHelper.poster_path;
+                Item.BackdropPath = $"https://image.tmdb.org/t/p/{tmdbParams.sizeParams}/" + itemJsonHelper.backdrop_path;
                 if (itemJsonHelper.release_date != null)
                 {
                     Item.ReleaseYear = ParseYear(itemJsonHelper.release_date);
