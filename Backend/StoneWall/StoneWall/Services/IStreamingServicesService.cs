@@ -3,6 +3,7 @@ using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
 using StoneWall.Pagination;
+using X.PagedList;
 
 namespace StoneWall.Services
 {
@@ -10,7 +11,7 @@ namespace StoneWall.Services
     {
         public Task<IEnumerable<StreamingServices>> GetStreamingsAsync();
         public Task<IEnumerable<Addon>> GetAddonsAsync(string streamingId);
-        public Task<PagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber,int offset,string? genreId, ItemType? itemType, StreamingType? streamingType);
-        public Task<PagedList<ItemStreaming>> CompareStreamings(string streamingExclusivo, string strimingExcluido, int pageNumber, int offset, string? genreId, ItemType? itemType, StreamingType? streamingType);
+        public Task<IPagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber,int offset, StreamingType? streamingType, ItemParameters itemParams);
+        public Task<IPagedList<ItemStreaming>> CompareStreamings(string streamingExclusivo, string strimingExcluido, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams);
     }
 }

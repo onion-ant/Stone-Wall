@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using StoneWall.Data;
 using StoneWall.DTOs.Mappings;
 using StoneWall.Entities;
@@ -19,7 +20,7 @@ namespace StoneWall
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             } 
             );

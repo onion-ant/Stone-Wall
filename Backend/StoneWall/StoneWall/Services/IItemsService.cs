@@ -2,12 +2,13 @@
 using StoneWall.Entities.Enums;
 using StoneWall.Helpers;
 using StoneWall.Pagination;
+using X.PagedList;
 
 namespace StoneWall.Services
 {
     public interface IItemsService
     {
-        public Task<PagedList<Item>> GetItemsAsync(int pageNumber, int offset, string? genreId, int atLeast, ItemType? itemType);
+        public Task<IPagedList<Item>> GetItemsAsync(int offset, int pageNumber,ItemParameters itemParams);
         public Task<Item> GetDetailsAsync(int tmdbId);
     }
 }
