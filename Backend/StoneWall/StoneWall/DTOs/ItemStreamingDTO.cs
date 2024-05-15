@@ -7,6 +7,8 @@ namespace StoneWall.DTOs
 {
     public record ItemStreamingDTO(
         ItemDTO item,
+        string StreamingId,
+        int TmdbId,
         StreamingType Type,
         string Link
     );
