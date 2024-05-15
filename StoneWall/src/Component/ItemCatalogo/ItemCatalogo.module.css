@@ -1,3 +1,6 @@
 .itemCatalogo {
   max-width: 200px;
 }
+.containerItemCat {
+  position: relative;
+}

@@ -24,3 +24,11 @@
 .itemCatalogo {
   max-width: 200px;
 }
+
+.modal {
+  position: absolute;
+  height: 100dvh;
+  width: 100dvw;
+  background-color: rgb(0, 0, 0, 0.8);
+  z-index: 2000;
+}
