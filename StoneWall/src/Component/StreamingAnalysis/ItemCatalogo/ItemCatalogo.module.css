@@ -2,5 +2,9 @@
   max-width: 200px;
 }
 .containerItemCat {
+  display: flex;
+  max-width: 1200px;
+  gap: 10px;
+  flex-wrap: wrap;
   position: relative;
 }

@@ -2,6 +2,7 @@
   background-image: url('../../../Assets/StoneWallBackground.svg');
   display: flex;
   position: relative;
+  overflow-y: hidden;
 }
 
 .background::before {
@@ -14,7 +15,7 @@
 }
 
 .catalogo {
-  /* display: flex; */
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -26,7 +27,10 @@
 }
 
 .modal {
-  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
   height: 100dvh;
   width: 100dvw;
   background-color: rgb(0, 0, 0, 0.8);

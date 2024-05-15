@@ -1,14 +1,11 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './StreamingAnalysis.module.css';
-import SideMenu from '../SideMenu/SideMenu';
-import ItemCatalogo from '../ItemCatalogo/ItemCatalogo';
-import ModalCatalogo from '../ModalCatalogo/ModalCatalogo';
-import UserContext from '../../UserContext';
+import SideMenu from './SideMenu/SideMenu';
+import ItemCatalogo from './ItemCatalogo/ItemCatalogo';
+import ModalCatalogo from './ModalCatalogo/ModalCatalogo';
 
 const StreamingAnalysis = () => {
-  const [json, setJson] = useState('');
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+
   const [tmdbId, setTmdbId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef();
@@ -18,26 +15,16 @@ const StreamingAnalysis = () => {
     setIsOpen(isOpen);
   }
   function handleOutsideModalClick(event) {
+    event.stopPropagation();
     if (modalRef.current) {
-      if (event.target != modalRef.current.firstChild && isOpen == true) {
+      if (
+        !modalRef.current.firstChild.contains(event.target) &&
+        isOpen == true
+      ) {
         setIsOpen(false);
       }
     }
   }
-  useEffect(() => {
-    try {
-      fetch(
-        'https://localhost:7282/Streamings/apple?streamingType=subscription&sizeParams=w300_and_h450_bestv2&language=pt-BR&pageNumber=1&offset=10',
-      )
-        .then((response) => response.json())
-        .then((json) => setJson(json));
-      setLoading(false);
-    } catch (er) {
-      setError(true);
-      setJson(er);
-      throw new Error(er.message);
-    }
-  }, []);
   return (
     <div className={styles.background} onClick={handleOutsideModalClick}>
       <SideMenu />
@@ -46,13 +33,12 @@ const StreamingAnalysis = () => {
           <ModalCatalogo tmdbId={tmdbId} sendData={handleDataFromChild} />
         </div>
       )}
-      <div className={`${styles.catalogo}`}>
-        <ItemCatalogo
-          json={json}
-          sendData={handleDataFromChild}
-          open={isOpen}
-        />
-      </div>
+        <div className={`${styles.catalogo}`}>
+          <ItemCatalogo
+            sendData={handleDataFromChild}
+            open={isOpen}
+          />
+        </div>
     </div>
   );
 };
