@@ -74,7 +74,7 @@ namespace StoneWall.Services
             if(itemParams.name != null)
             {
                 query = query
-               .Where(It => It.Title.ToLower().StartsWith(itemParams.name.ToLower()) || It.OriginalTitle.ToLower().StartsWith(itemParams.name.ToLower()));
+               .Where(It => It.Title.ToLower().Contains(itemParams.name.ToLower()) || It.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
 
             var pagedItems = await query.ToPagedListAsync(pageNumber, offset);
