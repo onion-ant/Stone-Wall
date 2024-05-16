@@ -36,11 +36,11 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<IPagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams)
+        public async Task<CursorList<ItemStreaming>> GetItemsAsync(string streamingId, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams)
         {
-            if (offset < 1)
+            if (limit < 1)
             {
-                throw new PageException($"Invalid {nameof(offset)}");
+                throw new PageException($"Invalid {nameof(limit)}");
             }
 
             IQueryable<ItemStreaming> query = _context.Item_Streaming
@@ -59,8 +59,7 @@ namespace StoneWall.Services
                     Type = Is.Item.Type,
                     Popularity = Is.Item.Popularity,
                 },
-                Type = Is.Type,
-                Link = Is.Link,
+                Type = Is.Type
             })
             .OrderByDescending(Is => Is.Item.Popularity);
 
@@ -79,29 +78,36 @@ namespace StoneWall.Services
                 query = query
                .Where(Is => Is.Item.Genres.Any(g => g.Id == itemParams.genreId));
             }
-
-            var streamingItemsPaged = await query.ToPagedListAsync(pageNumber,offset);
-
-            if ((streamingItemsPaged.PageCount < pageNumber || pageNumber < 1) && streamingItemsPaged.PageCount != 0)
+            if (itemParams.name != null)
             {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
+                query = query
+               .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
+            if(cursor != null)
+            {
+                double popularityCursor = double.Parse(cursor.Split(';')[0]);
+                int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
+                query = query
+                .Where(It => It.Item.Popularity < popularityCursor);
+            }
+
+            var streamingItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
+
+            string nextCursor = streamingItemsPaged.Last().Item.Popularity.ToString() + ';' + streamingItemsPaged.Last().Item.TmdbId;
+
+            streamingItemsPaged.NextCursor = nextCursor;
 
             if (!streamingItemsPaged.Any())
             {
-                throw new NotFoundException($"Theres no registered item from {streamingId}");
+                throw new NotFoundException($"Theres no registered item with this options");
             }
             return streamingItemsPaged;
         }
-        public async Task<IPagedList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams)
+        public async Task<CursorList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams)
         {
-            if (offset < 1)
+            if (limit < 1)
             {
-                throw new PageException($"Invalid {nameof(offset)}");
-            }
-            if (pageNumber < 1)
-            {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
+                throw new PageException($"Invalid {nameof(limit)}");
             }
 
             var excludedTmdbIds = await _context.Item_Streaming
@@ -144,17 +150,28 @@ namespace StoneWall.Services
                 query = query
                .Where(Is => Is.Item.Genres.Any(g => g.Id == itemParams.genreId));
             }
-
-            var exclusiveItemsPaged = await query.ToPagedListAsync(pageNumber, offset);
-
-            if (exclusiveItemsPaged.PageCount < pageNumber && exclusiveItemsPaged.PageCount != 0)
+            if (itemParams.name != null)
             {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
+                query = query
+               .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
+            if (cursor != null)
+            {
+                double popularityCursor = double.Parse(cursor.Split(';')[0]);
+                int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
+                query = query
+                .Where(It => It.Item.Popularity < popularityCursor);
+            }
+
+            var exclusiveItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
+
+            string nextCursor = exclusiveItemsPaged.Last().Item.Popularity.ToString() + ';' + exclusiveItemsPaged.Last().Item.TmdbId;
+
+            exclusiveItemsPaged.NextCursor = nextCursor;
 
             if (!exclusiveItemsPaged.Any())
             {
-                throw new NotFoundException($"Theres no items in {streamingExclusive} that dont have in the {streamingExcluded}");
+                throw new NotFoundException($"Theres no registered item with this options");
             }
             return exclusiveItemsPaged;
         }

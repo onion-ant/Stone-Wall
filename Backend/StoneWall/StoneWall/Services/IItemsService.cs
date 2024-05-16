@@ -8,7 +8,7 @@ namespace StoneWall.Services
 {
     public interface IItemsService
     {
-        public Task<IPagedList<Item>> GetItemsAsync(int offset, int pageNumber,ItemParameters itemParams);
+        public Task<CursorList<Item>> GetItemsAsync(int limit, string? cursor,ItemParameters itemParams);
         public Task<Item> GetDetailsAsync(int tmdbId);
     }
 }

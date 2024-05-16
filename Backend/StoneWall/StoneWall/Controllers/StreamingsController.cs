@@ -43,21 +43,19 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] int offset = 6, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor,[FromQuery] int offset = 6)
         {
             try
             {
-                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, pageNumber, offset, streamingType, itemParams);
+                var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, cursor, offset, streamingType, itemParams);
                 var tasks = streamingItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
+                    streamingItems.NextCursor,
                     streamingItems.Count,
-                    streamingItems.PageSize,
-                    streamingItems.PageNumber,
-                    streamingItems.PageCount,
-                    streamingItems.HasNextPage,
-                    streamingItems.HasPreviousPage
+                    streamingItems.Limit,
+                    streamingItems.HasNext
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
@@ -97,21 +95,19 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbParameters tmdbParams,[FromQuery] ItemParameters itemParams, [FromQuery] int pageNumber = 1, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbParameters tmdbParams,[FromQuery] ItemParameters itemParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
         {
             try
             {
-                var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, pageNumber, offset, streamingType, itemParams);
+                var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, cursor, offset, streamingType, itemParams);
                 var tasks = exclusiveItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
+                    exclusiveItems.NextCursor,
                     exclusiveItems.Count,
-                    exclusiveItems.PageSize,
-                    exclusiveItems.PageNumber,
-                    exclusiveItems.PageCount,
-                    exclusiveItems.HasNextPage,
-                    exclusiveItems.HasPreviousPage
+                    exclusiveItems.Limit,
+                    exclusiveItems.HasNext
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
                 var exclusiveItemsDto = exclusiveItems.Select(exI => _mapper.Map<ItemStreamingDTO>(exI));

@@ -26,21 +26,19 @@ namespace StoneWall.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] int offset = 6, [FromQuery] int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<ItemDTO>>> Get([FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
         {
             try
             {
-                var items = await _itemsService.GetItemsAsync(offset, pageNumber, itemParams);
+                var items = await _itemsService.GetItemsAsync(offset, cursor, itemParams);
                 var tasks = items.Select(item => _tmdbService.GetItemAsync(item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
                 var metadata = new
                 {
+                    items.NextCursor,
                     items.Count,
-                    items.PageSize,
-                    items.PageNumber,
-                    items.PageCount,
-                    items.HasNextPage,
-                    items.HasPreviousPage
+                    items.Limit,
+                    items.HasNext
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
                 var itemsDto = items.Select(item=>_mapper.Map<ItemDTO>(item));
