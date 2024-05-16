@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Component/Home/Home';
 import Analise from './Component/MenuAnalise/Analise';
-import StreamingAnalysis from './Component/StreamingAnalysis/StreamingAnalysis';
+import StreamingRepresentation from './Component/StreamingRepresentation/StreamingRepresentation.jsx';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Analise" element={<Analise />} />
-          <Route path="/Streaming" element={<StreamingAnalysis />} />
+          <Route path="/Streaming" element={<StreamingRepresentation />} />
         </Routes>
       </BrowserRouter>
     </>

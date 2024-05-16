@@ -4,8 +4,7 @@ import SideMenu from './SideMenu/SideMenu';
 import ItemCatalogo from './ItemCatalogo/ItemCatalogo';
 import ModalCatalogo from './ModalCatalogo/ModalCatalogo';
 
-const StreamingAnalysis = () => {
-
+const StreamingRepresentation = () => {
   const [tmdbId, setTmdbId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef();
@@ -13,6 +12,9 @@ const StreamingAnalysis = () => {
   function handleDataFromChild(tmdbId, isOpen) {
     setTmdbId(tmdbId);
     setIsOpen(isOpen);
+  }
+  function closeModal() {
+    setIsOpen(false);
   }
   function handleOutsideModalClick(event) {
     event.stopPropagation();
@@ -30,17 +32,18 @@ const StreamingAnalysis = () => {
       <SideMenu />
       {isOpen && (
         <div ref={modalRef} className={styles.modal}>
-          <ModalCatalogo tmdbId={tmdbId} sendData={handleDataFromChild} />
-        </div>
-      )}
-        <div className={`${styles.catalogo}`}>
-          <ItemCatalogo
+          <ModalCatalogo
+            tmdbId={tmdbId}
             sendData={handleDataFromChild}
-            open={isOpen}
+            onClose={closeModal}
           />
         </div>
+      )}
+      <div className={`${styles.catalogo}`}>
+        <ItemCatalogo sendData={handleDataFromChild} />
+      </div>
     </div>
   );
 };
 
-export default StreamingAnalysis;
+export default StreamingRepresentation;

@@ -1,7 +1,7 @@
 import styles from './ModalCatalogo.module.css';
 import useFetch from '../../useFetch';
 
-const ModalCatalogo = ({ tmdbId }) => {
+const ModalCatalogo = ({ tmdbId, onClose }) => {
   const {
     data: json,
     loading,
@@ -16,16 +16,25 @@ const ModalCatalogo = ({ tmdbId }) => {
           <img src={json.backdropPath} alt="" className={styles.imagemModal} />
           <div className={styles.modalTexts}>
             <h1 className={styles.filmName}>{json.title}</h1>
+            <button
+              className={styles.buttonClose}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              X
+            </button>
+            <p>{json.overview}</p>
             <div className={styles.streamingItems}>
               {json.streamings.map((x, indexStreaming) => (
-                <div key={indexStreaming} className={styles.streaming}>
+                <div key={indexStreaming} className={styles.singleStreaming}>
                   <a href={x.link}>
                     <img
                       src={`../../Assets/${x.streamingId}Square.svg`}
                       alt=""
                     />
+                    <p>{x.type.toUpperCase()}</p>
                   </a>
-                  <p>{x.type.toUpperCase()}</p>
                 </div>
               ))}
             </div>

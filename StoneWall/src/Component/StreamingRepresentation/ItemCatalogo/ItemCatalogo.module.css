@@ -1,0 +1,20 @@
+.itemCatalogo {
+  max-width: 200px;
+}
+.containerItemCat {
+  display: flex;
+  max-width: 1200px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  position: relative;
+  justify-content: space-around;
+}
+.containerItemCat > img {
+  border-radius: 7px;
+}
+
+@media (max-width: 500px) {
+  .itemCatalogo {
+    max-width: 300px;
+  }
+}
