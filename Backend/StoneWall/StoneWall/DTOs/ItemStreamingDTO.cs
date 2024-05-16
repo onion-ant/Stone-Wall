@@ -9,7 +9,6 @@ namespace StoneWall.DTOs
         ItemDTO item,
         string StreamingId,
         int TmdbId,
-        StreamingType Type,
-        string Link
+        StreamingType Type
     );
 }
