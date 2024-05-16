@@ -93,14 +93,15 @@ namespace StoneWall.Services
 
             var streamingItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
 
-            string nextCursor = streamingItemsPaged.Last().Item.Popularity.ToString() + ';' + streamingItemsPaged.Last().Item.TmdbId;
-
-            streamingItemsPaged.NextCursor = nextCursor;
-
             if (!streamingItemsPaged.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
+
+            string nextCursor = streamingItemsPaged.Last().Item.Popularity.ToString() + ';' + streamingItemsPaged.Last().Item.TmdbId;
+
+            streamingItemsPaged.NextCursor = nextCursor;
+
             return streamingItemsPaged;
         }
         public async Task<CursorList<ItemStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams)
@@ -165,14 +166,16 @@ namespace StoneWall.Services
 
             var exclusiveItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
 
-            string nextCursor = exclusiveItemsPaged.Last().Item.Popularity.ToString() + ';' + exclusiveItemsPaged.Last().Item.TmdbId;
-
-            exclusiveItemsPaged.NextCursor = nextCursor;
 
             if (!exclusiveItemsPaged.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
+
+            string nextCursor = exclusiveItemsPaged.Last().Item.Popularity.ToString() + ';' + exclusiveItemsPaged.Last().Item.TmdbId;
+
+            exclusiveItemsPaged.NextCursor = nextCursor;
+
             return exclusiveItemsPaged;
         }
     }

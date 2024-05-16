@@ -82,14 +82,15 @@ namespace StoneWall.Services
 
             var pagedItems = await CursorList<Item>.ToCursorListAsync(query,limit);
 
-            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
-
-            pagedItems.NextCursor = nextCursor;
-
             if (!pagedItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
+
+            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
+
+            pagedItems.NextCursor = nextCursor;
+
             return pagedItems;
         }
     }
