@@ -11,7 +11,7 @@ namespace StoneWall.Services
     {
         public Task<IEnumerable<StreamingServices>> GetStreamingsAsync();
         public Task<IEnumerable<Addon>> GetAddonsAsync(string streamingId);
-        public Task<IPagedList<ItemStreaming>> GetItemsAsync(string streamingId, int pageNumber,int offset, StreamingType? streamingType, ItemParameters itemParams);
-        public Task<IPagedList<ItemStreaming>> CompareStreamings(string streamingExclusivo, string strimingExcluido, int pageNumber, int offset, StreamingType? streamingType, ItemParameters itemParams);
+        public Task<CursorList<ItemStreaming>> GetItemsAsync(string streamingId, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams);
+        public Task<CursorList<ItemStreaming>> CompareStreamings(string streamingExclusivo, string strimingExcluido, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams);
     }
 }

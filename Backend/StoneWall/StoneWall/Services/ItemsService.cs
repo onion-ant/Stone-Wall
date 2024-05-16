@@ -44,15 +44,11 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<IPagedList<Item>> GetItemsAsync(int offset, int pageNumber, ItemParameters itemParams)
+        public async Task<CursorList<Item>> GetItemsAsync(int limit, string? cursor, ItemParameters itemParams)
         {
-            if (offset < 1)
+            if (limit < 1)
             {
-                throw new PageException($"Invalid {nameof(offset)}");
-            }
-            if (pageNumber < 1)
-            {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
+                throw new PageException($"Invalid {nameof(limit)}");
             }
 
             IQueryable<Item> query = _context.Items
@@ -76,13 +72,19 @@ namespace StoneWall.Services
                 query = query
                .Where(It => It.Title.ToLower().Contains(itemParams.name.ToLower()) || It.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
-
-            var pagedItems = await query.ToPagedListAsync(pageNumber, offset);
-
-            if (pagedItems.PageCount < pageNumber && pagedItems.PageCount != 0)
+            if(cursor != null)
             {
-                throw new PageException($"Invalid {nameof(pageNumber)}");
+                double popularityCursor = double.Parse(cursor.Split(';')[0]);
+                int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
+                query = query
+                .Where(It => It.Popularity < popularityCursor);
             }
+
+            var pagedItems = await CursorList<Item>.ToCursorListAsync(query,limit);
+
+            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
+
+            pagedItems.NextCursor = nextCursor;
 
             if (!pagedItems.Any())
             {
