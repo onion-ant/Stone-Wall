@@ -40,7 +40,8 @@
   /* width: 64px; */
   height: 64px;
   text-decoration: none;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  cursor: pointer;
 }
 .singleStreaming > a > img {
   width: 100%;

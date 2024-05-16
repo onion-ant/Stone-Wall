@@ -16,6 +16,28 @@ p {
   /* justify-content: center; */
 }
 
+.buttonMenu {
+  display: none;
+  background: var(--D2);
+  padding: 25px;
+  border: none;
+  border-radius: 7px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonMenu::before {
+  display: inline-block;
+  position: absolute;
+  content: '';
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background: white;
+  box-shadow: 0 6px #fff, 0 -6px #fff;
+}
+
 .menu > p {
   padding: 0px 40px;
   margin-top: 32px;
@@ -31,6 +53,7 @@ p {
   height: 100dvh;
   background-image: url('../../../Assets/FullItem.svg');
   background-size: cover;
+  pointer-events: none;
 }
 .menuItens {
   height: 100%;
@@ -55,6 +78,7 @@ p {
 
 @media (max-width: 900px) {
   .menu {
+    background-color: var(--L1);
     flex-direction: row;
     width: 100dvw;
     height: 100px;
@@ -74,5 +98,26 @@ p {
   }
   .menu > p {
     margin: 0px;
+  }
+}
+
+@media (max-width: 700px) {
+  .itemsMenu {
+    /* flex-direction: column;
+    gap: 0px; */
+    display: none;
+  }
+  .buttonMenu {
+    display: flex;
+  }
+  .menu {
+    padding: 0px 40px;
+    flex-direction: row;
+    width: -webkit-fill-available;
+    /* padding: 0px 20px 0px 20px; */
+    /* padding-right: 20px; */
+  }
+  .menu > p {
+    padding: 0px;
   }
 }

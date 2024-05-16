@@ -1,5 +1,6 @@
 import styles from './ModalCatalogo.module.css';
 import useFetch from '../../useFetch';
+import PropTypes from 'prop-types';
 
 const ModalCatalogo = ({ tmdbId, onClose }) => {
   const {
@@ -7,7 +8,6 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
     loading,
     error,
   } = useFetch(`https://localhost:7282/Items/${tmdbId}?sizeParams=w780`);
-  console.log(json);
   return (
     <div className={styles.modal}>
       {loading && <h1> loading</h1>}
@@ -43,6 +43,11 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
       )}
     </div>
   );
+};
+
+ModalCatalogo.propTypes = {
+  tmdbId: PropTypes.number,
+  onClose: PropTypes.func,
 };
 
 export default ModalCatalogo;

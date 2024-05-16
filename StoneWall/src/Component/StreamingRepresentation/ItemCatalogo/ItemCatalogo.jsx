@@ -2,23 +2,18 @@ import styles from './ItemCatalogo.module.css';
 import PropTypes from 'prop-types';
 import useFetch from '../../useFetch';
 
-const ItemCatalogo = ({ sendData, open }) => {
+const ItemCatalogo = ({ sendData, open, urlFetch }) => {
   function handleClick(tmdbId) {
     sendData(tmdbId, !open);
   }
-  const {
-    data: json,
-    loading,
-    error,
-  } = useFetch(
-    'https://localhost:7282/Streamings/apple?sizeParams=w300_and_h450_bestv2&language=pt-BR&pageNumber=1&offset=50',
-  );
+  const { data, loading, error } = useFetch(urlFetch);
+  console.log(loading);
   return (
     <>
       {!error && (
         <div className={styles.containerItemCat}>
-          {json
-            ? json.map((item, index) => {
+          {data
+            ? data.map((item, index) => {
                 return (
                   <img
                     key={index}
@@ -41,6 +36,7 @@ const ItemCatalogo = ({ sendData, open }) => {
 ItemCatalogo.propTypes = {
   sendData: PropTypes.func,
   open: PropTypes.bool,
+  urlFetch: PropTypes.string,
 };
 
 export default ItemCatalogo;

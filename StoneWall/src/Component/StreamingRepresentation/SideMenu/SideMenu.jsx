@@ -5,6 +5,7 @@ const SideMenu = () => {
   return (
     <div className={styles.menu}>
       <p className={styles.logo}>STONEWALL</p>
+      <button className={styles.buttonMenu}></button>
       <div className={styles.itemsMenu}>
         <a href="">FILMES/SÉRIES</a>
         <a href="">AUDIO</a>

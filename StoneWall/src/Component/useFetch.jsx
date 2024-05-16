@@ -8,10 +8,15 @@ function useFetch(url) {
   useEffect(() => {
     setLoading('loading...');
     fetch(url)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Something went wrong');
+      })
       .then((json) => setData(json))
-      .catch(() => {
-        setError(true);
+      .catch((er) => {
+        setError(er);
       })
       .finally(() => {
         setLoading(false);
