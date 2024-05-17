@@ -1,13 +1,24 @@
 import styles from './ItemCatalogo.module.css';
 import PropTypes from 'prop-types';
 import useFetch from '../../useFetch';
+import { useEffect, useState } from 'react';
 
-const ItemCatalogo = ({ sendData, open, urlFetch }) => {
+const ItemCatalogo = ({ sendData, open, urlFetch, setInfinity }) => {
+  const [data, setData] = useState('');
+  const [loading, setLoading] = useState('');
+  const [error, setError] = useState('');
   function handleClick(tmdbId) {
     sendData(tmdbId, !open);
   }
-  const { data, loading, error } = useFetch(urlFetch);
-  console.log(loading);
+  useFetch(urlFetch, setData, setLoading, setError);
+  useEffect(() => {
+    if (data != null) {
+      if (error || data.length < 30) {
+        setInfinity(false);
+      }
+    }
+  }, [error, data, setInfinity]);
+  console.log(data);
   return (
     <>
       {!error && (
@@ -37,6 +48,7 @@ ItemCatalogo.propTypes = {
   sendData: PropTypes.func,
   open: PropTypes.bool,
   urlFetch: PropTypes.string,
+  setInfinity: PropTypes.func,
 };
 
 export default ItemCatalogo;

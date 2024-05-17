@@ -1,21 +1,28 @@
 import styles from './ModalCatalogo.module.css';
 import useFetch from '../../useFetch';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 const ModalCatalogo = ({ tmdbId, onClose }) => {
-  const {
-    data: json,
-    loading,
-    error,
-  } = useFetch(`https://localhost:7282/Items/${tmdbId}?sizeParams=w780`);
+  const [data, setData] = useState('');
+  const [loading, setLoading] = useState('');
+  const [error, setError] = useState('');
+
+  useFetch(
+    `https://localhost:7282/Items/${tmdbId}?sizeParams=w780`,
+    setData,
+    setLoading,
+    setError,
+  );
   return (
     <div className={styles.modal}>
       {loading && <h1> loading</h1>}
-      {!loading && (
+      {error && <h1>{error.message}</h1>}
+      {!loading && data && (
         <>
-          <img src={json.backdropPath} alt="" className={styles.imagemModal} />
+          <img src={data.backdropPath} alt="" className={styles.imagemModal} />
           <div className={styles.modalTexts}>
-            <h1 className={styles.filmName}>{json.title}</h1>
+            <h1 className={styles.filmName}>{data.title}</h1>
             <button
               className={styles.buttonClose}
               onClick={() => {
@@ -24,9 +31,9 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
             >
               X
             </button>
-            <p>{json.overview}</p>
+            <p>{data.overview}</p>
             <div className={styles.streamingItems}>
-              {json.streamings.map((x, indexStreaming) => (
+              {data.streamings.map((x, indexStreaming) => (
                 <div key={indexStreaming} className={styles.singleStreaming}>
                   <a href={x.link}>
                     <img
