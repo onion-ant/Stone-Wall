@@ -55,7 +55,8 @@ namespace StoneWall.Services
             .AsNoTracking()
             .Where(It => It.Streamings.Count >= itemParams.atLeast)
             .Include(It => It.Streamings)
-            .OrderByDescending(It => It.Popularity);
+            .OrderByDescending(It => It.Popularity)
+            .ThenBy(It => It.TmdbId);
 
             if (itemParams.itemType != null)
             {
@@ -77,19 +78,20 @@ namespace StoneWall.Services
                 double popularityCursor = double.Parse(cursor.Split(';')[0]);
                 int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
                 query = query
-                .Where(It => It.Popularity < popularityCursor);
+                .Where(It => It.Popularity < popularityCursor || It.Popularity == popularityCursor && It.TmdbId > tmdbidCursor);
             }
 
             var pagedItems = await CursorList<Item>.ToCursorListAsync(query,limit);
-
-            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
-
-            pagedItems.NextCursor = nextCursor;
 
             if (!pagedItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
+
+            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
+
+            pagedItems.NextCursor = nextCursor;
+
             return pagedItems;
         }
     }
