@@ -88,7 +88,7 @@ namespace StoneWall.Services
                 double popularityCursor = double.Parse(cursor.Split(';')[0]);
                 int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
                 query = query
-                .Where(It => It.Item.Popularity < popularityCursor);
+                .Where(Is => Is.Item.Popularity < popularityCursor || Is.Item.Popularity == popularityCursor && Is.Item.TmdbId > tmdbidCursor);
             }
 
             var streamingItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
@@ -161,7 +161,7 @@ namespace StoneWall.Services
                 double popularityCursor = double.Parse(cursor.Split(';')[0]);
                 int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
                 query = query
-                .Where(It => It.Item.Popularity < popularityCursor);
+                .Where(Is => Is.Item.Popularity < popularityCursor || Is.Item.Popularity == popularityCursor && Is.Item.TmdbId > tmdbidCursor);
             }
 
             var exclusiveItemsPaged = await CursorList<ItemStreaming>.ToCursorListAsync(query, limit);
