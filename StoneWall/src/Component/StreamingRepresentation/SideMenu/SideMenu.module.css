@@ -25,6 +25,7 @@ p {
   position: relative;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .buttonMenu::before {
@@ -103,12 +104,39 @@ p {
 
 @media (max-width: 700px) {
   .itemsMenu {
+    display: none;
+    position: absolute;
+    background: white;
+    width: 160px;
+    z-index: 200;
+    padding: 60px 0 20px 0;
+    box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+    z-index: 5;
+  }
+  .itemsMenu.active {
+    display: flex;
+    flex-direction: column;
+    right: 0px;
+    top: 25px;
+    animation: show-right 0.3s forwards;
+    z-index: 5;
+  }
+  .itemsMenu {
     /* flex-direction: column;
     gap: 0px; */
     display: none;
   }
+  .itemsMenu > a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--D2);
+    -webkit-text-stroke: transparent;
+    text-shadow: none;
+  }
   .buttonMenu {
     display: flex;
+    z-index: 10;
   }
   .menu {
     padding: 0px 40px;
