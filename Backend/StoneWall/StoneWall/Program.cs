@@ -39,7 +39,7 @@ namespace StoneWall
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders().WithHeaders(); ; ;
                 });
             });
             builder.Services.AddAutoMapper(typeof(ItemDTOMappingProfile));

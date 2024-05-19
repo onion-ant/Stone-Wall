@@ -2,21 +2,21 @@ import styles from './ModalCatalogo.module.css';
 import useFetch from '../../useFetch';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import Loading from '../../Loading/Loading';
 
 const ModalCatalogo = ({ tmdbId, onClose }) => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState('');
   const [error, setError] = useState('');
-
   useFetch(
     `https://localhost:7282/Items/${tmdbId}?sizeParams=w780`,
     setData,
     setLoading,
     setError,
   );
+  if (loading) return <Loading />;
   return (
     <div className={styles.modal}>
-      {loading && <h1> loading</h1>}
       {error && <h1>{error.message}</h1>}
       {!loading && data && (
         <>

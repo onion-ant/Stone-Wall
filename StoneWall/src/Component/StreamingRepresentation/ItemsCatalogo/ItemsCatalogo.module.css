@@ -1,6 +1,3 @@
-.itemCatalogo {
-  max-width: 200px;
-}
 .containerItemCat {
   display: flex;
   max-width: 1200px;
@@ -12,10 +9,4 @@
 .containerItemCat > img {
   border-radius: 7px;
   cursor: pointer;
-}
-
-@media (max-width: 500px) {
-  .itemCatalogo {
-    max-width: 300px;
-  }
 }

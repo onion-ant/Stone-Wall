@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styles from './AnalysisForm.module.css';
 
 const SearchAnalysis = ({ setSearch }) => {
   const [query, setQuery] = useState('');
@@ -6,7 +7,7 @@ const SearchAnalysis = ({ setSearch }) => {
   useEffect(() => {
     const timeOutId = setTimeout(() => setSearch(query), 500);
     return () => clearTimeout(timeOutId);
-  }, [query]);
+  }, [query, setSearch]);
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
@@ -20,8 +21,8 @@ const SearchAnalysis = ({ setSearch }) => {
         type="search"
         name="search"
         id="search"
-        className="search-input"
-        placeholder="Search user"
+        className={styles.input}
+        placeholder="Pesquisar"
         onChange={(e) => setQuery(e.target.value)}
       />
     </form>
