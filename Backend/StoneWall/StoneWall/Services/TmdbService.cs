@@ -23,10 +23,9 @@ namespace StoneWall.Services
         }
         public async Task GetItemAsync(ItemCatalog Item,TmdbParameters tmdbParams)
         {
-            string url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie/" : "https://api.themoviedb.org/3/tv/";
             try
             {
-                var request = RequestBuilder(Item.TmdbId, tmdbParams.language, url);
+                var request = RequestBuilder(Item.TmdbId, tmdbParams.language);
                 var response = await _client.SendAsync(request);
                 if( !response.IsSuccessStatusCode )
                 {
@@ -53,12 +52,12 @@ namespace StoneWall.Services
                 throw new ExternalApiException(ex.Message);
             }
         }
-        private HttpRequestMessage RequestBuilder(string? TmdbId, string language, string url)
+        private HttpRequestMessage RequestBuilder(string? TmdbId, string language)
         {
             return new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{url}{TmdbId}?language={language}"),
+                RequestUri = new Uri($"https://api.themoviedb.org/3/{TmdbId}?language={language}"),
                 Headers =
                 {
                     { "accept", "application/json" },
