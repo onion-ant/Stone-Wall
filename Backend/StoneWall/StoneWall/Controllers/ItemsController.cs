@@ -58,7 +58,7 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{tmdbId}")]
-        public async Task<ActionResult<ItemDTO>> GetDetails(int tmdbId, [FromQuery] TmdbParameters tmdbParams)
+        public async Task<ActionResult<ItemDTO>> GetDetails(string tmdbId, [FromQuery] TmdbParameters tmdbParams)
         {
             try
             {

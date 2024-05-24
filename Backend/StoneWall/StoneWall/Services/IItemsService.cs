@@ -8,7 +8,7 @@ namespace StoneWall.Services
 {
     public interface IItemsService
     {
-        public Task<CursorList<Item>> GetItemsAsync(int limit, string? cursor,ItemParameters itemParams);
-        public Task<Item> GetDetailsAsync(int tmdbId);
+        public Task<CursorList<ItemCatalog>> GetItemsAsync(int limit, string? cursor,ItemParameters itemParams);
+        public Task<ItemCatalog> GetDetailsAsync(string tmdbId);
     }
 }

@@ -5,6 +5,6 @@ namespace StoneWall.Services
 {
     public interface ITmdbService
     {
-        public Task GetItemAsync(Item Item, TmdbParameters tmdbParams);
+        public Task GetItemAsync(ItemCatalog Item, TmdbParameters tmdbParams);
     }
 }

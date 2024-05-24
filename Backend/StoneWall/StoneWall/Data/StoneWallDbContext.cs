@@ -5,9 +5,9 @@ namespace StoneWall.Data
 {
     public class StoneWallDbContext : DbContext
     {
-        public DbSet<Item> Items { get; set; }
-        public DbSet<ItemStreaming> Item_Streaming { get; set; }
-        public DbSet<StreamingServices> Streaming_Services { get; set; }
+        public DbSet<ItemCatalog> ItemsCatalog { get; set; }
+        public DbSet<ItemCatalogStreaming> ItemsCatalog_Streamings { get; set; }
+        public DbSet<Streaming> Streamings { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserStreaming> User_Streaming { get; set; }

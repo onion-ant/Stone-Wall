@@ -21,7 +21,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(Item Item,TmdbParameters tmdbParams)
+        public async Task GetItemAsync(ItemCatalog Item,TmdbParameters tmdbParams)
         {
             string url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie/" : "https://api.themoviedb.org/3/tv/";
             try
@@ -53,7 +53,7 @@ namespace StoneWall.Services
                 throw new ExternalApiException(ex.Message);
             }
         }
-        private HttpRequestMessage RequestBuilder(int? TmdbId, string language, string url)
+        private HttpRequestMessage RequestBuilder(string? TmdbId, string language, string url)
         {
             return new HttpRequestMessage
             {

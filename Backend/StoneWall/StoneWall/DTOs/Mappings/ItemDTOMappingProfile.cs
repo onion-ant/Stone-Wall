@@ -7,7 +7,7 @@ namespace StoneWall.DTOs.Mappings
     {
         public ItemDTOMappingProfile()
         {
-            CreateMap<Item, ItemDTO>();
+            CreateMap<ItemCatalog, ItemDTO>();
             CreateMap<Genre, GenreDTO>();
         }
     }

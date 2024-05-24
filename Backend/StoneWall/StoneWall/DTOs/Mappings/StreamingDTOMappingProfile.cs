@@ -7,9 +7,9 @@ namespace StoneWall.DTOs.Mappings
     {
         public StreamingDTOMappingProfile()
         {
-            CreateMap<StreamingServices,StreamingDTO>();
+            CreateMap<Streaming,StreamingDTO>();
             CreateMap<Addon, AddonDTO>();
-            CreateMap<ItemStreaming, ItemStreamingDTO>();
+            CreateMap<ItemCatalogStreaming, ItemStreamingDTO>();
         }
     }
 }

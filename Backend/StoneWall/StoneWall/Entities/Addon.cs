@@ -12,12 +12,12 @@ namespace StoneWall.Entities
     {
         [MaxLength(255)]
         [Key]
-        public string? Id { get; set; }
+        public string Id { get; set; }
         [MaxLength(50)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [MaxLength(255)]
-        public string? HomePage { get; set; }
-        [ForeignKey(nameof(StreamingServices))]
-        public string? StreamingService { get; set;}
+        public string HomePage { get; set; }
+        [ForeignKey(nameof(Streaming))]
+        public string StreamingId { get; set;}
     }
 }

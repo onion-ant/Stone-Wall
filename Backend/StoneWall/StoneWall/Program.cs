@@ -43,7 +43,7 @@ namespace StoneWall
                 });
             });
             builder.Services.AddAutoMapper(typeof(ItemDTOMappingProfile));
-            builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
+            builder.Services.AddScoped<IStreamingServicesService, StreamingService>();
             builder.Services.AddScoped<ITmdbService,TmdbService>();
             builder.Services.AddScoped<IItemsService, ItemsService>();
 

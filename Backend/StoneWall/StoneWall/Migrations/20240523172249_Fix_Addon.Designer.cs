@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoneWall.Data;
 
@@ -11,9 +12,11 @@ using StoneWall.Data;
 namespace StoneWall.Migrations
 {
     [DbContext(typeof(StoneWallDbContext))]
-    partial class StoneWallDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523172249_Fix_Addon")]
+    partial class Fix_Addon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,8 +30,8 @@ namespace StoneWall.Migrations
                     b.Property<string>("GenresId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ItemsTmdbId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("ItemsTmdbId")
+                        .HasColumnType("int");
 
                     b.HasKey("GenresId", "ItemsTmdbId");
 
@@ -44,17 +47,14 @@ namespace StoneWall.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("HomePage")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("StreamingId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -70,7 +70,6 @@ namespace StoneWall.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
@@ -81,23 +80,21 @@ namespace StoneWall.Migrations
 
             modelBuilder.Entity("StoneWall.Entities.ItemCatalog", b =>
                 {
-                    b.Property<string>("TmdbId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("OriginalTitle")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("Rating")
+                    b.Property<int?>("TmdbId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
+                    b.Property<string>("OriginalTitle")
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("Type")
+                    b.Property<double>("Popularity")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("TmdbId");
@@ -107,8 +104,8 @@ namespace StoneWall.Migrations
 
             modelBuilder.Entity("StoneWall.Entities.ItemCatalogStreaming", b =>
                 {
-                    b.Property<string>("ItemCatalogTmdbId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int?>("TmdbId")
+                        .HasColumnType("int");
 
                     b.Property<string>("StreamingId")
                         .HasColumnType("varchar(255)");
@@ -118,16 +115,10 @@ namespace StoneWall.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<double?>("Price")
-                        .HasColumnType("double");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<bool>("expiresSoon")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("ItemCatalogTmdbId", "StreamingId");
+                    b.HasKey("TmdbId", "StreamingId");
 
                     b.HasIndex("StreamingId");
 
@@ -187,7 +178,7 @@ namespace StoneWall.Migrations
                     b.Property<int>("Plan")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Rating")
+                    b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("Review")
@@ -217,22 +208,20 @@ namespace StoneWall.Migrations
                 {
                     b.HasOne("StoneWall.Entities.Streaming", null)
                         .WithMany("Addons")
-                        .HasForeignKey("StreamingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StreamingId");
                 });
 
             modelBuilder.Entity("StoneWall.Entities.ItemCatalogStreaming", b =>
                 {
-                    b.HasOne("StoneWall.Entities.ItemCatalog", "Item")
-                        .WithMany("Streamings")
-                        .HasForeignKey("ItemCatalogTmdbId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("StoneWall.Entities.Streaming", "Streaming")
                         .WithMany("Items")
                         .HasForeignKey("StreamingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StoneWall.Entities.ItemCatalog", "Item")
+                        .WithMany("Streamings")
+                        .HasForeignKey("TmdbId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
