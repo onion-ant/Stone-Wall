@@ -25,7 +25,8 @@ namespace StoneWall.Services
         {
             try
             {
-                var request = RequestBuilder(Item.TmdbId, tmdbParams.language);
+                var url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie" : "https://api.themoviedb.org/3/tv";
+                var request = RequestBuilder(Item.TmdbId, tmdbParams.language,url);
                 var response = await _client.SendAsync(request);
                 if( !response.IsSuccessStatusCode )
                 {
@@ -52,12 +53,12 @@ namespace StoneWall.Services
                 throw new ExternalApiException(ex.Message);
             }
         }
-        private HttpRequestMessage RequestBuilder(string? TmdbId, string language)
+        private HttpRequestMessage RequestBuilder(string? TmdbId, string language, string url)
         {
             return new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://api.themoviedb.org/3/{TmdbId}?language={language}"),
+                RequestUri = new Uri($"{url}/{TmdbId}?language={language}"),
                 Headers =
                 {
                     { "accept", "application/json" },

@@ -4,10 +4,10 @@ using StoneWall.Entities.Enums;
 namespace StoneWall.DTOs
 {
     public record ItemDTO(
-        int TmdbId,
+        string TmdbId,
         string Title,
         string OriginalTitle,
-        double Popularity,
+        int Rating,
         ItemType Type,
         List<ItemStreamingDTO> Streamings,
         List<GenreDTO> Genres,
