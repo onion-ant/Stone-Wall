@@ -11,7 +11,6 @@ const ItemsCatalogo = ({ urlFetch }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   useFetch(urlFetch, setData, setLoading, setError);
-  console.log(window.innerHeight);
   if (loading) return <Loading />;
   if (error) return <Error error={error} />;
   return (
