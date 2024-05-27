@@ -11,7 +11,7 @@ function useFetch(url, setData, setLoading, setError, data) {
         throw new Error('Something went wrong');
       })
       .then((json) => {
-        data ? setData(...data, json) : setData(json)
+        data ? setData([...data, ...json]) : setData(json)
         setError(false);
       })
       .catch((er) => {
