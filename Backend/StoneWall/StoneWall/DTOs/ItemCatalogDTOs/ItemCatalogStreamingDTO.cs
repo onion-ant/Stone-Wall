@@ -13,6 +13,7 @@ namespace StoneWall.DTOs.ItemCatalogDTOs
         public double? Price { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         public bool ExpiresSoon { get; set; }
+        public string Link {  get; set; }
         public StreamingType Type { get; set; }
     }
 }

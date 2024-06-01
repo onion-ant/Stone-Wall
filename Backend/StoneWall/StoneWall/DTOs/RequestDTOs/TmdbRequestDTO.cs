@@ -1,6 +1,6 @@
-﻿namespace StoneWall.Pagination
+﻿namespace StoneWall.DTOs.RequestDTOs
 {
-    public record TmdbParameters
+    public record TmdbRequestDTO
     (
         string sizeParams = "original",
         string language = "pt-BR"

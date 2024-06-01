@@ -68,7 +68,8 @@ namespace StoneWall.Extensions.Mappings
                 StreamingId = itemStreaming.StreamingId,
                 Price = itemStreaming.Price,
                 ExpiresSoon = itemStreaming.expiresSoon,
-                Type = itemStreaming.Type
+                Type = itemStreaming.Type,
+                Link = itemStreaming.Link
             };
         }
     }

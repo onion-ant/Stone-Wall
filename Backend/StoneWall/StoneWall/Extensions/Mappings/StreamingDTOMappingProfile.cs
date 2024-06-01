@@ -58,7 +58,8 @@ namespace StoneWall.Extensions.Mappings
                 Item = itemStreaming.Item.ToItemDTO(),
                 ExpiresSoon = itemStreaming.expiresSoon,
                 Price = itemStreaming.Price != null ? itemStreaming.Price : null,
-                Type = itemStreaming.Type
+                Type = itemStreaming.Type,
+                Link = itemStreaming.Link
             };
         }
     }

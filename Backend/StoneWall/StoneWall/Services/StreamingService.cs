@@ -7,6 +7,7 @@ using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Linq;
 using X.PagedList;
+using StoneWall.DTOs.RequestDTOs;
 
 namespace StoneWall.Services
 {
@@ -36,7 +37,7 @@ namespace StoneWall.Services
             }
             return addons;
         }
-        public async Task<CursorList<ItemCatalogStreaming>> GetItemsAsync(string streamingId, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams)
+        public async Task<CursorList<ItemCatalogStreaming>> GetItemsAsync(string streamingId, string? cursor, int limit, StreamingType? streamingType, ItemCatalogStreamingRequestDTO itemParams)
         {
             if (limit < 1)
             {
@@ -44,23 +45,13 @@ namespace StoneWall.Services
             }
 
             IQueryable<ItemCatalogStreaming> query = _context.ItemsCatalog_Streamings
-            .AsNoTracking()
             .Where(Is => Is.StreamingId == streamingId)
             .Include(Is => Is.Item)
-            .Select(Is => new ItemCatalogStreaming()
-            {
-                Item = new ItemCatalog()
-                {
-                    TmdbId = Is.Item.TmdbId,
-                    Genres = Is.Item.Genres,
-                    Streamings = Is.Item.Streamings,
-                    OriginalTitle = Is.Item.OriginalTitle,
-                    Title = Is.Item.Title,
-                    Type = Is.Item.Type,
-                    Rating = Is.Item.Rating,
-                },
-                Type = Is.Type
-            })
+            .ThenInclude(It=> It.Genres)
+            .Include(Is => Is.Item)
+            .ThenInclude(It => It.Streamings)
+            .Where(Is => Is.Item.Rating > itemParams.minRating)
+            .Where(Is => Is.Price > itemParams.minPrice)
             .OrderByDescending(Is => Is.Item.Rating);
 
             if (itemParams.itemType != null)
@@ -83,7 +74,17 @@ namespace StoneWall.Services
                 query = query
                .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
             }
-            if(cursor != null)
+            if (itemParams.maxPrice != 0)
+            {
+                query = query
+               .Where(Is => Is.Price <= itemParams.maxPrice);
+            }
+            if (itemParams.maxRating != 0)
+            {
+                query = query
+               .Where(Is => Is.Item.Rating <= itemParams.maxRating);
+            }
+            if (cursor != null)
             {
                 double popularityCursor = double.Parse(cursor.Split(';')[0]);
                 string tmdbidCursor = cursor.Split(';')[1];
@@ -104,7 +105,7 @@ namespace StoneWall.Services
 
             return streamingItemsPaged;
         }
-        public async Task<CursorList<ItemCatalogStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, string? cursor, int limit, StreamingType? streamingType, ItemParameters itemParams)
+        public async Task<CursorList<ItemCatalogStreaming>> CompareStreamings(string streamingExclusive, string streamingExcluded, string? cursor, int limit, StreamingType? streamingType, ItemCatalogStreamingRequestDTO itemParams)
         {
             if (limit < 1)
             {
@@ -119,21 +120,11 @@ namespace StoneWall.Services
             IQueryable<ItemCatalogStreaming> query = _context.ItemsCatalog_Streamings
             .Where(Is => Is.StreamingId == streamingExclusive && !excludedTmdbIds.Contains(Is.Item.TmdbId))
             .Include(Is => Is.Item)
-            .Select(Is => new ItemCatalogStreaming()
-                {
-                    Item = new ItemCatalog()
-                    {
-                        TmdbId = Is.Item.TmdbId,
-                        Genres = Is.Item.Genres,
-                        Streamings = Is.Item.Streamings,
-                        OriginalTitle = Is.Item.OriginalTitle,
-                        Title = Is.Item.Title,
-                        Type = Is.Item.Type,
-                        Rating = Is.Item.Rating,
-                    },
-                    Type = Is.Type,
-                    Link = Is.Link,
-                })
+            .ThenInclude(It => It.Genres)
+            .Include(Is => Is.Item)
+            .ThenInclude(It => It.Streamings)
+            .Where(Is => Is.Item.Rating > itemParams.minRating)
+            .Where(Is => Is.Price > itemParams.minPrice)
             .OrderByDescending(Is => Is.Item.Rating);
 
             if (itemParams.itemType != null)
@@ -155,6 +146,16 @@ namespace StoneWall.Services
             {
                 query = query
                .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
+            }
+            if(itemParams.maxPrice != 0)
+            {
+                query = query
+               .Where(Is => Is.Price <= itemParams.maxPrice);
+            }
+            if(itemParams.maxRating != 0)
+            {
+                query = query
+               .Where(Is => Is.Item.Rating <= itemParams.maxRating);
             }
             if (cursor != null)
             {

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using StoneWall.Data;
 using StoneWall.DTOs.ExternalApiDTOs;
+using StoneWall.DTOs.RequestDTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Net.Http.Json;
 using System.Text;
@@ -21,7 +21,7 @@ namespace StoneWall.Services
             TmdbKey = config["ApiKey"];
             _client = client;
         }
-        public async Task GetItemAsync(ItemCatalog Item,TmdbParameters tmdbParams)
+        public async Task GetItemAsync(ItemCatalog Item,TmdbRequestDTO tmdbParams)
         {
             try
             {
