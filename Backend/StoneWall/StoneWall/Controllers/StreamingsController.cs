@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using StoneWall.Data;
 using StoneWall.DTOs;
+using StoneWall.DTOs.ItemCatalogDTOs;
+using StoneWall.DTOs.StreamingDTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Extensions.Mappings;
-using StoneWall.Helpers;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
@@ -41,7 +43,7 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor,[FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor,[FromQuery] int offset = 6)
         {
             try
             {
@@ -57,7 +59,7 @@ namespace StoneWall.Controllers
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-                var streamingItemsDto = streamingItems.Select(sI => sI.ToItemStreamingDTO());
+                var streamingItemsDto = streamingItems.Select(sI => sI.ToStreamingItemCatalogDTO());
 
                 return Ok(streamingItemsDto);
             }
@@ -93,7 +95,7 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<IEnumerable<ItemStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbParameters tmdbParams,[FromQuery] ItemParameters itemParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbParameters tmdbParams,[FromQuery] ItemParameters itemParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
         {
             try
             {
@@ -108,7 +110,7 @@ namespace StoneWall.Controllers
                     exclusiveItems.HasNext
                 };
                 Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-                var exclusiveItemsDto = exclusiveItems.Select(exI => exI.ToItemStreamingDTO());
+                var exclusiveItemsDto = exclusiveItems.Select(exI => exI.ToStreamingItemCatalogDTO());
                 return Ok(exclusiveItemsDto);
             }
             catch (NotFoundException ex)

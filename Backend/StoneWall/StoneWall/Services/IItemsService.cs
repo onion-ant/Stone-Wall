@@ -1,6 +1,6 @@
 ﻿using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Helpers;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Pagination;
 using X.PagedList;
 

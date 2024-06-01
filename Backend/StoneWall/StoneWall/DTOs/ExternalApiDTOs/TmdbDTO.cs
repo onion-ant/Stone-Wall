@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StoneWall.Helpers
+namespace StoneWall.DTOs.ExternalApiDTOs
 {
-    public class TmdbJsonHelper
+    public class TmdbDTO
     {
         public string? poster_path { get; set; }
         public string? backdrop_path { get; set; }

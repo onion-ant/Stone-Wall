@@ -2,7 +2,7 @@
 using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Helpers;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Linq;

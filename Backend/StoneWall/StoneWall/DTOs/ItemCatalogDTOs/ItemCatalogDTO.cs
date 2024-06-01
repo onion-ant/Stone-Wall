@@ -1,15 +1,15 @@
 ﻿using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 
-namespace StoneWall.DTOs
+namespace StoneWall.DTOs.ItemCatalogDTOs
 {
-    public record ItemDTO(
+    public record ItemCatalogDTO(
         string TmdbId,
         string Title,
         string OriginalTitle,
         int Rating,
         ItemType Type,
-        List<ItemStreamingDTO> Streamings,
+        List<ItemCatalogStreamingDTO> Streamings,
         List<GenreDTO> Genres,
         string? Overview,
         string? PosterPath,

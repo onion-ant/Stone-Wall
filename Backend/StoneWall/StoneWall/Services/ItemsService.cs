@@ -2,7 +2,7 @@
 using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Helpers;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using X.PagedList;
@@ -23,11 +23,7 @@ namespace StoneWall.Services
             .Select(It => new ItemCatalog()
                 {
                 Title = It.Title,
-                Genres = It.Genres.Select(g=>new Genre()
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                }).ToList(),
+                Genres = It.Genres,
                 OriginalTitle = It.OriginalTitle,
                 Rating = It.Rating,
                 Streamings = It.Streamings,
@@ -55,6 +51,7 @@ namespace StoneWall.Services
             .AsNoTracking()
             .Where(It => It.Streamings.Count >= itemParams.atLeast)
             .Include(It => It.Streamings)
+            .Include (It => It.Genres)
             .OrderByDescending(It => It.Rating)
             .ThenBy(It => It.TmdbId);
 

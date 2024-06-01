@@ -1,12 +1,18 @@
 ﻿using StoneWall.DTOs;
+using StoneWall.DTOs.ItemCatalogDTOs;
 using StoneWall.Entities;
+using StoneWall.DTOs.StreamingDTOs;
 
 namespace StoneWall.Extensions.Mappings
 {
     public static class StreamingDTOMappingProfile
     {
-        public static StreamingDTO ToStreamingDTO(this Streaming streaming)
+        public static StreamingDTO? ToStreamingDTO(this Streaming streaming)
         {
+            if(streaming == null)
+            {
+                return null;
+            }
             return new StreamingDTO
             (
                 streaming.Id,
@@ -14,8 +20,12 @@ namespace StoneWall.Extensions.Mappings
                 streaming.HomePage
             );
         }
-        public static AddonDTO ToAddonDTO(this Addon addon)
+        public static AddonDTO? ToAddonDTO(this Addon addon)
         {
+            if(addon == null)
+            {
+                return null;
+            }
             return new AddonDTO
             (
                 addon.Id,
@@ -23,13 +33,15 @@ namespace StoneWall.Extensions.Mappings
                 addon.HomePage
             );
         }
-        public static ItemStreamingDTO ToItemStreamingDTO(this ItemCatalogStreaming itemStreaming)
+        public static StreamingItemCatalogDTO? ToStreamingItemCatalogDTO(this ItemCatalogStreaming itemStreaming)
         {
-            return new ItemStreamingDTO
+            if(itemStreaming == null)
+            {
+                return null;
+            }
+            return new StreamingItemCatalogDTO
             (
-                itemStreaming.Item != null ? itemStreaming.Item.ToItemDTO():null,
-                itemStreaming.StreamingId,
-                itemStreaming.ItemCatalogTmdbId,
+                itemStreaming.Item.ToItemDTO(),
                 itemStreaming.Price != null ? itemStreaming.Price : null,
                 itemStreaming.Type
             );

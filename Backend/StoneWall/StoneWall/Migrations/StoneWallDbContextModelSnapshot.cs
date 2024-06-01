@@ -34,7 +34,7 @@ namespace StoneWall.Migrations
 
                     b.HasIndex("ItemsTmdbId");
 
-                    b.ToTable("GenreItemCatalog");
+                    b.ToTable("GenreItemCatalog", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.Addon", b =>
@@ -61,7 +61,7 @@ namespace StoneWall.Migrations
 
                     b.HasIndex("StreamingId");
 
-                    b.ToTable("Addons");
+                    b.ToTable("Addons", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.Genre", b =>
@@ -76,7 +76,7 @@ namespace StoneWall.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.ItemCatalog", b =>
@@ -102,7 +102,7 @@ namespace StoneWall.Migrations
 
                     b.HasKey("TmdbId");
 
-                    b.ToTable("ItemsCatalog");
+                    b.ToTable("ItemsCatalog", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.ItemCatalogStreaming", b =>
@@ -131,7 +131,7 @@ namespace StoneWall.Migrations
 
                     b.HasIndex("StreamingId");
 
-                    b.ToTable("ItemsCatalog_Streamings");
+                    b.ToTable("ItemsCatalog_Streamings", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.Streaming", b =>
@@ -152,7 +152,7 @@ namespace StoneWall.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Streamings");
+                    b.ToTable("Streamings", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.User", b =>
@@ -173,7 +173,7 @@ namespace StoneWall.Migrations
 
                     b.HasKey("Email");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("StoneWall.Entities.UserStreaming", b =>
@@ -195,7 +195,7 @@ namespace StoneWall.Migrations
 
                     b.HasKey("UserEmail", "StreamingId");
 
-                    b.ToTable("User_Streaming");
+                    b.ToTable("User_Streaming", (string)null);
                 });
 
             modelBuilder.Entity("GenreItemCatalog", b =>

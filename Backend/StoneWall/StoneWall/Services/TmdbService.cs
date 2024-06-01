@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using StoneWall.Data;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Helpers;
 using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using System.Net.Http.Json;
@@ -25,15 +25,14 @@ namespace StoneWall.Services
         {
             try
             {
-                var url = Item.Type == ItemType.movie ? "https://api.themoviedb.org/3/movie" : "https://api.themoviedb.org/3/tv";
-                var request = RequestBuilder(Item.TmdbId, tmdbParams.language,url);
+                var request = RequestBuilder(Item.TmdbId, tmdbParams.language);
                 var response = await _client.SendAsync(request);
                 if( !response.IsSuccessStatusCode )
                 {
                     throw new ExternalApiException("Invalid item");
                 }
                 string? body = await response.Content.ReadAsStringAsync();
-                TmdbJsonHelper? itemJsonHelper = JsonConvert.DeserializeObject<TmdbJsonHelper>(body);
+                TmdbDTO? itemJsonHelper = JsonConvert.DeserializeObject<TmdbDTO>(body);
                 Item.Overview = itemJsonHelper!.overview;
                 Item.PosterPath = $"https://image.tmdb.org/t/p/{tmdbParams.sizeParams}/" + itemJsonHelper.poster_path;
                 Item.BackdropPath = $"https://image.tmdb.org/t/p/{tmdbParams.sizeParams}/" + itemJsonHelper.backdrop_path;
@@ -53,12 +52,12 @@ namespace StoneWall.Services
                 throw new ExternalApiException(ex.Message);
             }
         }
-        private HttpRequestMessage RequestBuilder(string? TmdbId, string language, string url)
+        private HttpRequestMessage RequestBuilder(string? TmdbId, string language)
         {
             return new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{url}/{TmdbId}?language={language}"),
+                RequestUri = new Uri($"https://api.themoviedb.org/3/{TmdbId}?language={language}"),
                 Headers =
                 {
                     { "accept", "application/json" },
