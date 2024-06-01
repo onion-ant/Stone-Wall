@@ -50,16 +50,8 @@ namespace StoneWall.Controllers
                 var streamingItems = await _streamingServicesService.GetItemsAsync(streamingId, cursor, offset, streamingType, itemParams);
                 var tasks = streamingItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
-                var metadata = new
-                {
-                    streamingItems.NextCursor,
-                    streamingItems.Count,
-                    streamingItems.Limit,
-                    streamingItems.HasNext
-                };
-                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-                var streamingItemsDto = streamingItems.Select(sI => sI.ToStreamingItemCatalogDTO());
+                var streamingItemsDto = streamingItems.ToStreamingItemPaginationDTO();
 
                 return Ok(streamingItemsDto);
             }
@@ -102,15 +94,7 @@ namespace StoneWall.Controllers
                 var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, cursor, offset, streamingType, itemParams);
                 var tasks = exclusiveItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
-                var metadata = new
-                {
-                    exclusiveItems.NextCursor,
-                    exclusiveItems.Count,
-                    exclusiveItems.Limit,
-                    exclusiveItems.HasNext
-                };
-                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-                var exclusiveItemsDto = exclusiveItems.Select(exI => exI.ToStreamingItemCatalogDTO());
+                var exclusiveItemsDto = exclusiveItems.ToStreamingItemPaginationDTO();
                 return Ok(exclusiveItemsDto);
             }
             catch (NotFoundException ex)

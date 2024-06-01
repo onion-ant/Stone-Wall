@@ -1,6 +1,7 @@
 ﻿using StoneWall.DTOs;
 using StoneWall.DTOs.ItemCatalogDTOs;
 using StoneWall.Entities;
+using StoneWall.Pagination;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
@@ -42,6 +43,19 @@ namespace StoneWall.Extensions.Mappings
                 genre.Id,
                 genre.Name
             );
+        }
+        public static ItemCatalogPaginationDTO? ToItemPaginationDTO(this CursorList<ItemCatalog> items)
+        {
+            if (items == null)
+            {
+                return null;
+            }
+            return new ItemCatalogPaginationDTO
+            {
+                Items = items.Select(item => item.ToItemDTO()).ToList(),
+                NextCursor = items.NextCursor,
+                HasNext = items.HasNext
+            };
         }
         public static ItemCatalogStreamingDTO? ToItemCatalogStreamingDTO(this ItemCatalogStreaming itemStreaming)
         {

@@ -2,6 +2,7 @@
 using StoneWall.DTOs.ItemCatalogDTOs;
 using StoneWall.Entities;
 using StoneWall.DTOs.StreamingDTOs;
+using StoneWall.Pagination;
 
 namespace StoneWall.Extensions.Mappings
 {
@@ -32,6 +33,19 @@ namespace StoneWall.Extensions.Mappings
                 addon.Name,
                 addon.HomePage
             );
+        }
+        public static StreamingItemCatalogPaginationDTO? ToStreamingItemPaginationDTO(this CursorList<ItemCatalogStreaming> items)
+        {
+            if (items == null)
+            {
+                return null;
+            }
+            return new StreamingItemCatalogPaginationDTO
+            {
+                Items = items.Select(item => item.ToStreamingItemCatalogDTO()).ToList(),
+                NextCursor = items.NextCursor,
+                HasNext = items.HasNext
+            };
         }
         public static StreamingItemCatalogDTO? ToStreamingItemCatalogDTO(this ItemCatalogStreaming itemStreaming)
         {

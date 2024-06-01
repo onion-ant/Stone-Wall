@@ -32,15 +32,7 @@ namespace StoneWall.Controllers
                 var items = await _itemsService.GetItemsAsync(offset, cursor, itemParams);
                 var tasks = items.Select(item => _tmdbService.GetItemAsync(item,tmdbParams)).ToList();
                 await Task.WhenAll(tasks);
-                var metadata = new
-                {
-                    items.NextCursor,
-                    items.Count,
-                    items.Limit,
-                    items.HasNext
-                };
-                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-                var itemsDto = items.Select(item=>item.ToItemDTO());
+                var itemsDto = items.ToItemPaginationDTO();
                 return Ok(itemsDto);
             }
             catch (NotFoundException ex)
