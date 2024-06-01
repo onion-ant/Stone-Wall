@@ -50,11 +50,12 @@ namespace StoneWall.Extensions.Mappings
                 return null;
             }
             return new ItemCatalogStreamingDTO
-            (
-                itemStreaming.StreamingId,
-                itemStreaming.Price,
-                itemStreaming.Type
-            );
+            {
+                StreamingId = itemStreaming.StreamingId,
+                Price = itemStreaming.Price,
+                ExpiresSoon = itemStreaming.expiresSoon,
+                Type = itemStreaming.Type
+            };
         }
     }
 }
