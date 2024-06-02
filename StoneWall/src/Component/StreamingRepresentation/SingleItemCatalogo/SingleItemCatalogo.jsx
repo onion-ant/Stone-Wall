@@ -46,7 +46,7 @@ const SingleItemCatalogo = ({ posterPath, tmdbId }) => {
 
 SingleItemCatalogo.propTypes = {
   posterPath: PropTypes.string,
-  tmdbId: PropTypes.number,
+  tmdbId: PropTypes.string,
 };
 
 export default SingleItemCatalogo;

@@ -11,6 +11,7 @@ const ItemsCatalogo = ({ urlFetch }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   useFetch(urlFetch, setData, setLoading, setError);
+  console.log(data);
   if (loading) return <Loading />;
   if (error) return <Error error={error} />;
   return (
@@ -18,7 +19,7 @@ const ItemsCatalogo = ({ urlFetch }) => {
       {error && <h1>{error.message}</h1>}
       <div className={styles.containerItemCat}>
         {data
-          ? data.map((item, index) => {
+          ? data.items.map((item, index) => {
               return (
                 <SingleItemCatalogo
                   key={index}

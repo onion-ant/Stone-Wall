@@ -27,12 +27,12 @@ const CarouselSection = () => {
       .then((x) => x.json())
       .then((xs) => {
         setStreamings(
-          xs.map((x) => {
+          xs.items.map((x) => {
             return x.streamings;
           }),
         );
         setImages(
-          xs.map((x) => {
+          xs.items.map((x) => {
             return x.posterPath;
           }),
         );
@@ -80,7 +80,7 @@ const CarouselSection = () => {
                 style={{ backgroundImage: `url(${image})` }}
               >
                 <div className={'streamingsItem'}>
-                  {streamings[0].map((x, indexStreaming) => (
+                  {streamings[index].map((x, indexStreaming) => (
                     <div key={indexStreaming} className={styles.streaming}>
                       <img
                         src={`../../Assets/${x.streamingId}Square.svg`}

@@ -8,6 +8,7 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState('');
   const [error, setError] = useState('');
+  tmdbId = encodeURIComponent(tmdbId);
   useFetch(
     `https://localhost:7282/Items/${tmdbId}?sizeParams=w780`,
     setData,
@@ -33,17 +34,20 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
             </button>
             <p>{data.overview}</p>
             <div className={styles.streamingItems}>
-              {data.streamings.map((x, indexStreaming) => (
-                <div key={indexStreaming} className={styles.singleStreaming}>
-                  <a href={x.link}>
-                    <img
-                      src={`../../Assets/${x.streamingId}Square.svg`}
-                      alt=""
-                    />
-                    <p>{x.type.toUpperCase()}</p>
-                  </a>
-                </div>
-              ))}
+              {data.streamings.map((x, indexStreaming) => {
+                console.log(x);
+                return (
+                  <div key={indexStreaming} className={styles.singleStreaming}>
+                    <a href={x.link}>
+                      <img
+                        src={`../../Assets/${x.streamingId}Square.svg`}
+                        alt=""
+                      />
+                      <p>{x.type.toUpperCase()}</p>
+                    </a>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>
@@ -53,7 +57,7 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
 };
 
 ModalCatalogo.propTypes = {
-  tmdbId: PropTypes.number,
+  tmdbId: PropTypes.string,
   onClose: PropTypes.func,
 };
 
