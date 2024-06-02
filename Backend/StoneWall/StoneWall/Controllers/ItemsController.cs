@@ -6,10 +6,10 @@ using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Extensions.Mappings;
 using StoneWall.DTOs.ExternalApiDTOs;
-using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
 using System.Web;
+using StoneWall.DTOs.RequestDTOs;
 
 namespace StoneWall.Controllers
 {
@@ -25,7 +25,7 @@ namespace StoneWall.Controllers
             _tmdbService = tmdbService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemCatalogDTO>>> Get([FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemCatalogDTO>>> Get([FromQuery] ItemCatalogStreamingRequestDTO itemParams, [FromQuery] TmdbRequestDTO tmdbParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{tmdbId}")]
-        public async Task<ActionResult<ItemCatalogDTO>> GetDetails(string tmdbId, [FromQuery] TmdbParameters tmdbParams)
+        public async Task<ActionResult<ItemCatalogDTO>> GetDetails(string tmdbId, [FromQuery] TmdbRequestDTO tmdbParams)
         {
             try
             {

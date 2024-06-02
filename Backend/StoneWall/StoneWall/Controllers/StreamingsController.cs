@@ -10,10 +10,10 @@ using StoneWall.Entities;
 using StoneWall.Entities.Enums;
 using StoneWall.Extensions.Mappings;
 using StoneWall.DTOs.ExternalApiDTOs;
-using StoneWall.Pagination;
 using StoneWall.Services;
 using StoneWall.Services.Exceptions;
 using System.Linq;
+using StoneWall.DTOs.RequestDTOs;
 
 namespace StoneWall.Controllers
 {
@@ -43,7 +43,7 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("{streamingId}")]
-        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemParameters itemParams, [FromQuery] TmdbParameters tmdbParams, [FromQuery] string? cursor,[FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> GetItems(string streamingId, [FromQuery] StreamingType? streamingType, [FromQuery] ItemCatalogStreamingRequestDTO itemParams, [FromQuery] TmdbRequestDTO tmdbParams, [FromQuery] string? cursor,[FromQuery] int offset = 6)
         {
             try
             {
@@ -87,12 +87,12 @@ namespace StoneWall.Controllers
             }
         }
         [HttpGet("/compare/{streamingExclusive}-{streamingExcluded}")]
-        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbParameters tmdbParams,[FromQuery] ItemParameters itemParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
+        public async Task<ActionResult<IEnumerable<ItemCatalogStreamingDTO>>> Compare(string streamingExclusive, string streamingExcluded, [FromQuery] StreamingType? streamingType, [FromQuery] TmdbRequestDTO tmdbParams,[FromQuery] ItemCatalogStreamingRequestDTO itemParams, [FromQuery] string? cursor, [FromQuery] int offset = 6)
         {
             try
             {
                 var exclusiveItems = await _streamingServicesService.CompareStreamings(streamingExclusive, streamingExcluded, cursor, offset, streamingType, itemParams);
-                var tasks = exclusiveItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToList();
+                var tasks = exclusiveItems.Select(item => _tmdbService.GetItemAsync(item.Item,tmdbParams)).ToArray();
                 await Task.WhenAll(tasks);
                 var exclusiveItemsDto = exclusiveItems.ToStreamingItemPaginationDTO();
                 return Ok(exclusiveItemsDto);

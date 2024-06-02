@@ -1,10 +1,10 @@
-﻿using StoneWall.Entities;
-using StoneWall.Pagination;
+﻿using StoneWall.DTOs.RequestDTOs;
+using StoneWall.Entities;
 
 namespace StoneWall.Services
 {
     public interface ITmdbService
     {
-        public Task GetItemAsync(ItemCatalog Item, TmdbParameters tmdbParams);
+        public Task GetItemAsync(ItemCatalog Item, TmdbRequestDTO tmdbParams);
     }
 }
