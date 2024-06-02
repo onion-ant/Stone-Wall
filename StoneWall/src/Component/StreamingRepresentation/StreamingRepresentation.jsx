@@ -37,8 +37,8 @@ const StreamingRepresentation = () => {
       <div className={`${styles.catalogo}`}>
         {data && (
           <div className={styles.selects}>
-            <Select setItem={setSelectedStreaming} jsonOptions={data} />
             <Select setItem={setStreamingType} jsonOptions={signatureOptions} />
+            <Select setItem={setSelectedStreaming} jsonOptions={data} />
             <SearchAnalysis setSearch={setSearch} />
           </div>
         )}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-function useFetch(url, setData, setLoading, setError, data) {
+function useFetch(url, setData, setLoading, setError, setNextCursor) {
   useEffect(() => {
     setLoading ? setLoading(true) : '';
     fetch(url)
@@ -11,7 +11,8 @@ function useFetch(url, setData, setLoading, setError, data) {
         throw new Error('Something went wrong');
       })
       .then((json) => {
-        data ? setData([...data, ...json]) : setData(json)
+        json.items ? setData(json.items) : setData(json)
+        setNextCursor && setNextCursor(json.nextCursor)
         setError(false);
       })
       .catch((er) => {

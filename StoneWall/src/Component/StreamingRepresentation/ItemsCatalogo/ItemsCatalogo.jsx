@@ -10,7 +10,17 @@ const ItemsCatalogo = ({ urlFetch }) => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  useFetch(urlFetch, setData, setLoading, setError);
+  const [NextCursor, setNextCursor] = useState('');
+  useFetch(urlFetch, setData, setLoading, setError, setNextCursor);
+  function handleClick() {
+    urlFetch = urlFetch + '&cursor=' + encodeURIComponent(NextCursor);
+    fetch(urlFetch)
+      .then((x) => x.json())
+      .then((json) => {
+        setData([...data, ...json.items]);
+        setNextCursor(json.nextCursor);
+      });
+  }
   console.log(data);
   if (loading) return <Loading />;
   if (error) return <Error error={error} />;
@@ -19,7 +29,7 @@ const ItemsCatalogo = ({ urlFetch }) => {
       {error && <h1>{error.message}</h1>}
       <div className={styles.containerItemCat}>
         {data
-          ? data.items.map((item, index) => {
+          ? data.map((item, index) => {
               return (
                 <SingleItemCatalogo
                   key={index}
@@ -31,6 +41,7 @@ const ItemsCatalogo = ({ urlFetch }) => {
               );
             })
           : ''}
+        <button onClick={handleClick}>teste</button>
       </div>
     </>
   );
