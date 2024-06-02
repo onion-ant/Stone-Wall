@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoneWall.Entities
 {
-    public class Item
+    public class ItemCatalog
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int? TmdbId { get; set; }
+        public string TmdbId { get; set; }
         [MaxLength(255)]
-        public string? Title { get; set; }
+        public string Title { get; set; }
         [MaxLength(255)]
-        public string? OriginalTitle { get; set; }
-        public double Popularity { get; set; }
-        public ItemType? Type { get; set; }
-        public List<ItemStreaming>? Streamings { get; set; }
+        public string OriginalTitle { get; set; }
+        public int Rating { get; set; }
+        public ItemType Type { get; set; }
+        public List<ItemCatalogStreaming>? Streamings { get; set; }
         public List<Genre>? Genres { get; set; }
         [NotMapped]
         public string? Overview { get; set; }

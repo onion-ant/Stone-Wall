@@ -2,7 +2,7 @@
 using StoneWall.Data;
 using StoneWall.Entities;
 using StoneWall.Entities.Enums;
-using StoneWall.Helpers;
+using StoneWall.DTOs.ExternalApiDTOs;
 using StoneWall.Pagination;
 using StoneWall.Services.Exceptions;
 using X.PagedList;
@@ -17,19 +17,15 @@ namespace StoneWall.Services
             _context = context;
         }
 
-        public async Task<Item> GetDetailsAsync(int tmdbId)
+        public async Task<ItemCatalog> GetDetailsAsync(string tmdbId)
         {
-            var item = await _context.Items.AsNoTracking()
-            .Select(It => new Item()
+            var item = await _context.ItemsCatalog.AsNoTracking()
+            .Select(It => new ItemCatalog()
                 {
                 Title = It.Title,
-                Genres = It.Genres.Select(g=>new Genre()
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                }).ToList(),
+                Genres = It.Genres,
                 OriginalTitle = It.OriginalTitle,
-                Popularity = It.Popularity,
+                Rating = It.Rating,
                 Streamings = It.Streamings,
                 Type = It.Type,
                 TmdbId  = It.TmdbId,
@@ -44,18 +40,19 @@ namespace StoneWall.Services
             return item;
         }
 
-        public async Task<CursorList<Item>> GetItemsAsync(int limit, string? cursor, ItemParameters itemParams)
+        public async Task<CursorList<ItemCatalog>> GetItemsAsync(int limit, string? cursor, ItemParameters itemParams)
         {
             if (limit < 1)
             {
                 throw new PageException($"Invalid {nameof(limit)}");
             }
 
-            IQueryable<Item> query = _context.Items
+            IQueryable<ItemCatalog> query = _context.ItemsCatalog
             .AsNoTracking()
             .Where(It => It.Streamings.Count >= itemParams.atLeast)
             .Include(It => It.Streamings)
-            .OrderByDescending(It => It.Popularity)
+            .Include (It => It.Genres)
+            .OrderByDescending(It => It.Rating)
             .ThenBy(It => It.TmdbId);
 
             if (itemParams.itemType != null)
@@ -76,19 +73,19 @@ namespace StoneWall.Services
             if(cursor != null)
             {
                 double popularityCursor = double.Parse(cursor.Split(';')[0]);
-                int tmdbidCursor = int.Parse(cursor.Split(';')[1]);
+                string tmdbidCursor = cursor.Split(';')[1];
                 query = query
-                .Where(It => It.Popularity < popularityCursor || It.Popularity == popularityCursor && It.TmdbId > tmdbidCursor);
+                .Where(It => It.Rating < popularityCursor);
             }
 
-            var pagedItems = await CursorList<Item>.ToCursorListAsync(query,limit);
+            var pagedItems = await CursorList<ItemCatalog>.ToCursorListAsync(query,limit);
 
             if (!pagedItems.Any())
             {
                 throw new NotFoundException($"Theres no registered item with this options");
             }
 
-            string nextCursor = pagedItems.Last().Popularity.ToString() + ';' + pagedItems.Last().TmdbId;
+            string nextCursor = pagedItems.Last().Rating.ToString() + ';' + pagedItems.Last().TmdbId;
 
             pagedItems.NextCursor = nextCursor;
 

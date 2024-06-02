@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using StoneWall.Data;
-using StoneWall.DTOs.Mappings;
 using StoneWall.Entities;
 using StoneWall.Extensions;
+using StoneWall.Extensions.Mappings;
 using StoneWall.Services;
 using System.Text.Json.Serialization;
 
@@ -42,8 +42,7 @@ namespace StoneWall
                     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
-            builder.Services.AddAutoMapper(typeof(ItemDTOMappingProfile));
-            builder.Services.AddScoped<IStreamingServicesService, StreamingServicesService>();
+            builder.Services.AddScoped<IStreamingServicesService, StreamingService>();
             builder.Services.AddScoped<ITmdbService,TmdbService>();
             builder.Services.AddScoped<IItemsService, ItemsService>();
 
