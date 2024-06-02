@@ -47,10 +47,11 @@ namespace StoneWall.Services
             IQueryable<ItemCatalogStreaming> query = _context.ItemsCatalog_Streamings
             .Where(Is => Is.StreamingId == streamingId)
             .Include(Is => Is.Item)
-            .ThenInclude(It=> It.Genres)
+            .ThenInclude(It => It.Genres)
             .Include(Is => Is.Item)
             .ThenInclude(It => It.Streamings)
-            .OrderByDescending(Is => Is.Item.Rating);
+            .OrderByDescending(Is => Is.Item.Rating)
+            .ThenBy(Is => Is.Item.TmdbId);
 
             if (itemParams.itemType != null)
             {
@@ -111,7 +112,8 @@ namespace StoneWall.Services
             .ThenInclude(It => It.Genres)
             .Include(Is => Is.Item)
             .ThenInclude(It => It.Streamings)
-            .OrderByDescending(Is => Is.Item.Rating);
+            .OrderByDescending(Is => Is.Item.Rating)
+            .ThenBy(Is => Is.Item.TmdbId);
 
             if (itemParams.itemType != null)
             {
