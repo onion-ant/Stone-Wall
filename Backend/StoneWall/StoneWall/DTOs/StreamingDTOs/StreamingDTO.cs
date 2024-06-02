@@ -1,7 +1,7 @@
 ﻿using StoneWall.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace StoneWall.DTOs
+namespace StoneWall.DTOs.StreamingDTOs
 {
     public record StreamingDTO(
         string Id,

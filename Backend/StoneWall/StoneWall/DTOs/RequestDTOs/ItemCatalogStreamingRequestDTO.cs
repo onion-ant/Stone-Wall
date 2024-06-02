@@ -1,12 +1,12 @@
 ﻿using StoneWall.Entities.Enums;
 
-namespace StoneWall.Pagination
+namespace StoneWall.DTOs.RequestDTOs
 {
-    public record ItemParameters
+    public record ItemCatalogStreamingRequestDTO
     (
         string? name,
         string? genreId,
         ItemType? itemType,
-        int? atLeast = 0
+        int atLeast = 0
     );
 }
