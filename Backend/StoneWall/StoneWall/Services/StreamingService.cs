@@ -50,8 +50,6 @@ namespace StoneWall.Services
             .ThenInclude(It=> It.Genres)
             .Include(Is => Is.Item)
             .ThenInclude(It => It.Streamings)
-            .Where(Is => Is.Item.Rating > itemParams.minRating)
-            .Where(Is => Is.Price > itemParams.minPrice)
             .OrderByDescending(Is => Is.Item.Rating);
 
             if (itemParams.itemType != null)
@@ -73,16 +71,6 @@ namespace StoneWall.Services
             {
                 query = query
                .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
-            }
-            if (itemParams.maxPrice != 0)
-            {
-                query = query
-               .Where(Is => Is.Price <= itemParams.maxPrice);
-            }
-            if (itemParams.maxRating != 0)
-            {
-                query = query
-               .Where(Is => Is.Item.Rating <= itemParams.maxRating);
             }
             if (cursor != null)
             {
@@ -123,8 +111,6 @@ namespace StoneWall.Services
             .ThenInclude(It => It.Genres)
             .Include(Is => Is.Item)
             .ThenInclude(It => It.Streamings)
-            .Where(Is => Is.Item.Rating > itemParams.minRating)
-            .Where(Is => Is.Price > itemParams.minPrice)
             .OrderByDescending(Is => Is.Item.Rating);
 
             if (itemParams.itemType != null)
@@ -146,16 +132,6 @@ namespace StoneWall.Services
             {
                 query = query
                .Where(It => It.Item.Title.ToLower().Contains(itemParams.name.ToLower()) || It.Item.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
-            }
-            if(itemParams.maxPrice != 0)
-            {
-                query = query
-               .Where(Is => Is.Price <= itemParams.maxPrice);
-            }
-            if(itemParams.maxRating != 0)
-            {
-                query = query
-               .Where(Is => Is.Item.Rating <= itemParams.maxRating);
             }
             if (cursor != null)
             {

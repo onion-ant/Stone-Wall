@@ -7,10 +7,6 @@ namespace StoneWall.DTOs.RequestDTOs
         string? name,
         string? genreId,
         ItemType? itemType,
-        double maxPrice,
-        int maxRating,
-        int minRating = 0,
-        double minPrice = 0,
         int atLeast = 0
     );
 }

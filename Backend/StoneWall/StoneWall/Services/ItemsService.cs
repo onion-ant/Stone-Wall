@@ -43,7 +43,6 @@ namespace StoneWall.Services
             IQueryable<ItemCatalog> query = _context.ItemsCatalog
             .AsNoTracking()
             .Where(It => It.Streamings.Count >= itemParams.atLeast)
-            .Where(It => It.Rating > itemParams.minRating)
             .Include(It => It.Streamings)
             .Include(It => It.Genres)
             .OrderByDescending(It => It.Rating)
@@ -63,11 +62,6 @@ namespace StoneWall.Services
             {
                 query = query
                .Where(It => It.Title.ToLower().Contains(itemParams.name.ToLower()) || It.OriginalTitle.ToLower().Contains(itemParams.name.ToLower()));
-            }
-            if (itemParams.maxRating != 0)
-            {
-                query = query
-                .Where(It => It.Rating <= itemParams.maxRating);
             }
             if (cursor != null)
             {
