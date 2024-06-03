@@ -35,7 +35,6 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
             <p>{data.overview}</p>
             <div className={styles.streamingItems}>
               {data.streamings.map((x, indexStreaming) => {
-                console.log(x);
                 return (
                   <div key={indexStreaming} className={styles.singleStreaming}>
                     <a href={x.link}>
