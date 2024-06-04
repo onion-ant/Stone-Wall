@@ -10,45 +10,46 @@ const ItemsCatalogo = ({ urlFetch }) => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [NextCursor, setNextCursor] = useState('');
+  const [nextCursor, setNextCursor] = useState('');
+  const [infinity, setInfinity] = useState(true);
   useFetch(urlFetch, setData, setLoading, setError, setNextCursor);
-  function handleClick() {
-    console.log(NextCursor);
-    urlFetch = urlFetch + '&cursor=' + encodeURIComponent(NextCursor);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  function fetchMoreItems() {
+    console.log(nextCursor);
+    urlFetch = urlFetch + '&cursor=' + encodeURIComponent(nextCursor);
     setLoading(true);
-    // debugger;
     fetch(urlFetch)
       .then((x) => x.json())
       .then((json) => {
+        // debugger;
         setData([...data, ...json.items]);
         setNextCursor(json.nextCursor);
       })
       .finally(setLoading(false));
   }
-  const handleScroll = () => {
-    // console.log('scrollHeight', document.documentElement.scrollHeight);
-    // console.log('scrollTop', document.documentElement.scrollTop);
-    // console.log('innerHeight', window.innerHeight);
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      setTimeout(() => {
-        console.log('aaaa');
-      }, 1000);
+
+  useEffect(() => {
+    let wait = false;
+    function infiniteScroll() {
+      if (infinity) {
+        const scroll = window.scrollY;
+        const heigth = document.body.offsetHeight - window.innerHeight;
+        if (scroll > heigth * 0.9 && !wait) {
+          fetchMoreItems();
+          wait = true;
+          setTimeout(() => {
+            wait = false;
+          }, 5000);
+        }
+      }
     }
-  };
-
-  useEffect(() => {
-    const intersectionObserver = new IntersectionObserver();
-    intersectionObserver.observe(document.querySelector('#sentinela'));
-    return () => intersectionObserver.disconnect();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('wheel', infiniteScroll);
+    window.addEventListener('scroll', infiniteScroll);
+    return () => {
+      window.removeEventListener('wheel', infiniteScroll);
+      window.removeEventListener('scroll', infiniteScroll);
+    };
+  }, [infinity, fetchMoreItems]);
 
   if (loading) return <Loading />;
   if (error) return <Error error={error} />;
@@ -69,8 +70,6 @@ const ItemsCatalogo = ({ urlFetch }) => {
               );
             })
           : ''}
-        <button onClick={handleClick}>teste</button>
-        <p id="sentinela">teste</p>
       </div>
       {loading && <Loading />}
     </>

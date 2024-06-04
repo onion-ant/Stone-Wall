@@ -20,16 +20,16 @@ const StreamingRepresentation = () => {
   ];
   let url;
   if (search && !selectedStreaming && !streamingType) {
-    url = `https://localhost:7282/Items?offset=30&name=${search}`;
+    url = `https://localhost:7282/Items?offset=60&name=${search}`;
   } else {
     url =
       selectedStreaming || streamingType || search
         ? `https://localhost:7282/Streamings/${selectedStreaming}${
             streamingType ? '?streamingType=' + streamingType + '&' : '?'
-          }sizeParams=w300_and_h450_bestv2&language=pt-BR&pageNumber=1&offset=30&${
+          }sizeParams=w300_and_h450_bestv2&language=pt-BR&pageNumber=1&offset=60&${
             search ? 'name=' + search : ''
           }`
-        : 'https://localhost:7282/Items?offset=30';
+        : 'https://localhost:7282/Items?offset=60';
   }
   return (
     <div className={styles.background}>
@@ -37,8 +37,16 @@ const StreamingRepresentation = () => {
       <div className={`${styles.catalogo}`}>
         {data && (
           <div className={styles.selects}>
-            <Select setItem={setStreamingType} jsonOptions={signatureOptions} />
-            <Select setItem={setSelectedStreaming} jsonOptions={data} />
+            <Select
+              setItem={setStreamingType}
+              jsonOptions={signatureOptions}
+              texto={'Selecione a forma'}
+            />
+            <Select
+              setItem={setSelectedStreaming}
+              jsonOptions={data}
+              texto={'Selecione um Streaming'}
+            />
             <SearchAnalysis setSearch={setSearch} />
           </div>
         )}

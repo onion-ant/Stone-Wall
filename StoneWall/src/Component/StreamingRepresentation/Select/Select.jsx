@@ -1,7 +1,7 @@
 import styles from './Select.module.css';
 import PropTypes from 'prop-types';
 
-const Select = ({ setItem, jsonOptions }) => {
+const Select = ({ setItem, jsonOptions, texto }) => {
   return (
     jsonOptions &&
     setItem && (
@@ -9,9 +9,7 @@ const Select = ({ setItem, jsonOptions }) => {
         onChange={(e) => setItem(e.target.value)}
         className={styles.select}
       >
-        <option value="">
-          Selecione uma opção:{' '}
-        </option>
+        <option value="">{texto} </option>
         {jsonOptions.map((option, index) => (
           <option key={index} value={option.id}>
             {option.name}
