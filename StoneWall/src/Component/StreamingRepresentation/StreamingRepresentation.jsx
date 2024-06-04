@@ -47,6 +47,11 @@ const StreamingRepresentation = () => {
               jsonOptions={data}
               texto={'Selecione um Streaming'}
             />
+            <Select
+              setItem={setSelectedStreaming}
+              jsonOptions={data}
+              texto={'Selecione um Streaming'}
+            />
             <SearchAnalysis setSearch={setSearch} />
           </div>
         )}

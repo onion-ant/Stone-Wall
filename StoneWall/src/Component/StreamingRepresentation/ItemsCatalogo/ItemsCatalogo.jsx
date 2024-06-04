@@ -15,17 +15,23 @@ const ItemsCatalogo = ({ urlFetch }) => {
   useFetch(urlFetch, setData, setLoading, setError, setNextCursor);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function fetchMoreItems() {
-    console.log(nextCursor);
+    console.log(loading);
     urlFetch = urlFetch + '&cursor=' + encodeURIComponent(nextCursor);
-    setLoading(true);
-    fetch(urlFetch)
-      .then((x) => x.json())
-      .then((json) => {
-        // debugger;
-        setData([...data, ...json.items]);
-        setNextCursor(json.nextCursor);
-      })
-      .finally(setLoading(false));
+    setInfinity(false);
+    setTimeout(() => {
+      setLoading(true);
+      fetch(urlFetch)
+        .then((x) => x.json())
+        .then((json) => {
+          // debugger;
+          setData([...data, ...json.items]);
+          setNextCursor(json.nextCursor);
+        })
+        .finally(() => {
+          setInfinity(true);
+          setLoading(true);
+        });
+    }, 500);
   }
 
   useEffect(() => {
@@ -51,7 +57,6 @@ const ItemsCatalogo = ({ urlFetch }) => {
     };
   }, [infinity, fetchMoreItems]);
 
-  if (loading) return <Loading />;
   if (error) return <Error error={error} />;
   return (
     <>
