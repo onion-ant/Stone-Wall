@@ -12,26 +12,27 @@ const ItemsCatalogo = ({ urlFetch }) => {
   const [error, setError] = useState('');
   const [nextCursor, setNextCursor] = useState('');
   const [infinity, setInfinity] = useState(true);
+  useEffect(() => {
+    setData(null);
+  }, [urlFetch]);
   useFetch(urlFetch, setData, setLoading, setError, setNextCursor);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function fetchMoreItems() {
-    console.log(loading);
+    loading;
     urlFetch = urlFetch + '&cursor=' + encodeURIComponent(nextCursor);
     setInfinity(false);
-    setTimeout(() => {
-      setLoading(true);
-      fetch(urlFetch)
-        .then((x) => x.json())
-        .then((json) => {
-          // debugger;
-          setData([...data, ...json.items]);
-          setNextCursor(json.nextCursor);
-        })
-        .finally(() => {
-          setInfinity(true);
-          setLoading(true);
-        });
-    }, 500);
+    setLoading(true);
+    fetch(urlFetch)
+      .then((x) => x.json())
+      .then((json) => {
+        // debugger;
+        setData([...data, ...json.items]);
+        setNextCursor(json.nextCursor);
+      })
+      .finally(() => {
+        setInfinity(true);
+        setLoading(true);
+      });
   }
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const ItemsCatalogo = ({ urlFetch }) => {
             })
           : ''}
       </div>
-      {loading && <Loading />}
+      <div className={styles.loading}>{loading && <Loading />}</div>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './SideMenu.module.css';
+import { Link } from 'react-router-dom';
 
 const SideMenu = () => {
   const ref = React.useRef(false);
@@ -31,12 +32,14 @@ const SideMenu = () => {
   }, []);
   return (
     <div className={styles.menu}>
-      <p className={styles.logo}>STONEWALL</p>
+      <p className={styles.logo}>
+        <a href="/">STONEWALL</a>
+      </p>
       <button className={styles.buttonMenu} ref={refButton}></button>
       <div className={styles.itemsMenu} ref={ref}>
-        <a href="">FILMES/SÉRIES</a>
-        <a href="">AUDIO</a>
-        <a href="">JOGO</a>
+        <Link to="/Analysis">ANÁLISE</Link>
+        <Link to="/Comparision">COMPARAÇÃO</Link>
+        <a href="">ALEATÓRIO</a>
       </div>
     </div>
   );

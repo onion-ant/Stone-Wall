@@ -1,10 +1,10 @@
 .select {
-  background: var(--L1);
-  border: none;
+  background: transparent;
+  border: 2px solid var(--D2);
   font-size: 16px;
   font-weight: bold;
   font-family: 'Kanit';
   padding: 0px 20px;
-  color: white;
+  color: var(--D2);
   border-radius: 7px;
 }

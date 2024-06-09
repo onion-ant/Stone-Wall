@@ -22,3 +22,7 @@
   border-radius: 12px;
   cursor: pointer;
 }
+
+.loading {
+  padding: 20px 0px;
+}

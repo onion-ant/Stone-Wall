@@ -16,12 +16,11 @@ const SearchAnalysis = ({ setSearch }) => {
     setSearch(formJson.search);
   }
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit} className={styles.input}>
       <input
         type="search"
         name="search"
         id="search"
-        className={styles.input}
         placeholder="Pesquisar"
         onChange={(e) => setQuery(e.target.value)}
       />

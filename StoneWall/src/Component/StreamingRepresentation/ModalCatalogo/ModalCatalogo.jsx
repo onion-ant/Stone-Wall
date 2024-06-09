@@ -30,7 +30,7 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
                 onClose();
               }}
             >
-              X
+              <img src="../../Assets/close.svg" alt="" />
             </button>
             <p>{data.overview}</p>
             <div className={styles.streamingItems}>

@@ -1,0 +1,7 @@
+.background {
+  background-image: url('../../../Assets/StoneWallBackground.svg');
+  display: flex;
+  position: relative;
+  overflow-y: hidden;
+  height: 100vh;
+}

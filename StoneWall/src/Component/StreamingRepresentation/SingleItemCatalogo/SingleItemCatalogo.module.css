@@ -2,6 +2,41 @@
   max-width: 200px;
 }
 
+.spinner {
+  height: 300px;
+  width: 200px;
+  background: red;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: #dddbdd;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(8%, rgba(130, 130, 130, 0.2)),
+    color-stop(18%, rgba(130, 130, 130, 0.3)),
+    color-stop(33%, rgba(130, 130, 130, 0.2))
+  );
+  background: linear-gradient(
+    to right,
+    rgba(130, 130, 130, 0.2) 8%,
+    rgba(130, 130, 130, 0.3) 18%,
+    rgba(130, 130, 130, 0.2) 33%
+  );
+  background-size: 800px 100px;
+  animation: wave-squares 0.5s infinite ease-out;
+}
+
+@keyframes wave-squares {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
 .modal {
   display: flex;
   align-items: center;

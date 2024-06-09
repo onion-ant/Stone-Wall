@@ -20,7 +20,7 @@ const Analise = () => {
       >
         FILMES/SÉRIES
         <div className={styles.innerOptions}>
-          <Link to="/Streaming">Analisar Streaming</Link>
+          <Link to="/Analysis">Analisar Streaming</Link>
           <Link to="/">Comparar Streamings</Link>
           <Link to="/">Buscar Filme</Link>
         </div>
