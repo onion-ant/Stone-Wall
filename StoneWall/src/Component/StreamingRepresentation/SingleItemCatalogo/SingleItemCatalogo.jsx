@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import styles from './SingleItemCatalogo.module.css';
 import ModalCatalogo from '../ModalCatalogo/ModalCatalogo';
 import PropTypes from 'prop-types';
 
 const SingleItemCatalogo = ({ posterPath, tmdbId }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState('');
+  const [loading, setLoading] = useState(true);
   const modalRef = useRef();
   function handleClick() {
     setIsOpen(!isOpen);
@@ -24,9 +24,6 @@ const SingleItemCatalogo = ({ posterPath, tmdbId }) => {
       }
     }
   }
-  useEffect(() => {
-    setLoading(true);
-  }, []);
   return (
     <>
       <img
