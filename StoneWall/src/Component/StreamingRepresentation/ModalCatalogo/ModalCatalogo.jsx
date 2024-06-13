@@ -8,6 +8,7 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
   const [data, setData] = useState('');
   const [loading, setLoading] = useState('');
   const [error, setError] = useState('');
+  const [imgLoaded, setImgLoaded] = useState(false);
   tmdbId = encodeURIComponent(tmdbId);
   useFetch(
     `https://localhost:7282/Items/${tmdbId}?sizeParams=w780`,
@@ -15,43 +16,70 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
     setLoading,
     setError,
   );
-  if (loading) return <Loading />;
   return (
-    <div className={styles.modal}>
-      {error && <h1>{error.message}</h1>}
-      {!loading && data && (
-        <>
-          <img src={data.backdropPath} alt="" className={styles.imagemModal} />
-          <div className={styles.modalTexts}>
-            <h1 className={styles.filmName}>{data.title}</h1>
-            <button
-              className={styles.buttonClose}
-              onClick={() => {
-                onClose();
-              }}
-            >
-              <img src="../../Assets/close.svg" alt="" />
-            </button>
-            <p>{data.overview}</p>
-            <div className={styles.streamingItems}>
-              {data.streamings.map((x, indexStreaming) => {
-                return (
-                  <div key={indexStreaming} className={styles.singleStreaming}>
-                    <a href={x.link}>
-                      <img
-                        src={`../../Assets/${x.streamingId}Square.svg`}
-                        alt=""
-                      />
-                      <p>{x.type.toUpperCase()}</p>
-                    </a>
-                  </div>
-                );
-              })}
+    <>
+      {!imgLoaded && <Loading />}
+      <div
+        className={styles.modal}
+        style={{
+          display: imgLoaded ? 'block' : 'none',
+          opacity: imgLoaded ? 1 : 0,
+          width: '100%',
+        }}
+      >
+        {error && <h1>{error.message}</h1>}
+        {!loading && data && (
+          <>
+            {
+              <img
+                src={data.backdropPath}
+                alt=""
+                className={styles.imagemModal}
+                onLoad={() => {
+                  setImgLoaded(true);
+                }}
+              />
+            }
+            <div className={styles.modalTexts}>
+              <h1 className={styles.filmName}>{data.title}</h1>
+              <button
+                className={styles.buttonClose}
+                onClick={() => {
+                  onClose();
+                }}
+              >
+                <img src="../../Assets/close.svg" alt="" />
+              </button>
+              <p>{data.overview}</p>
+              <div className={styles.streamingItems}>
+                {data.streamings.map((x, indexStreaming) => {
+                  return (
+                    <div
+                      key={indexStreaming}
+                      className={styles.singleStreaming}
+                    >
+                      <a href={x.link}>
+                        <img
+                          src={`../../Assets/${x.streamingId}Square.svg`}
+                          alt=""
+                        />
+                        <p>{x.type.toUpperCase()}</p>
+                      </a>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+      {/* <div
+        className={styles.spinner}
+        style={{
+          opacity: !imgLoaded ? 1 : 0,
+        }}
+      ></div> */}
+    </>
   );
 };
 

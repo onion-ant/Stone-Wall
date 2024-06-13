@@ -12,6 +12,7 @@
   flex-direction: column;
   overflow: auto;
   border-radius: 7px;
+  animation: entry 0.4s;
 }
 
 /* .modal::-webkit-scrollbar-track {
@@ -91,6 +92,52 @@
 .modalTexts > p {
   color: white;
   margin-bottom: 20px;
+}
+
+.spinner {
+  /* transform: scale(0.8); */
+  height: 80dvh;
+  width: 100dvw;
+  border-radius: 7px;
+  max-width: 760px;
+  max-height: 760px;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #dddbdd;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(8%, rgba(157, 69, 199, 0.2)),
+    color-stop(18%, rgba(157, 69, 199, 0.3)),
+    color-stop(33%, rgba(157, 69, 199, 0.2))
+  );
+  background: linear-gradient(
+    to right,
+    rgba(157, 69, 199, 0.5) 8%,
+    rgba(157, 69, 199, 0.6) 18%,
+    rgba(157, 69, 199, 0.5) 33%
+  );
+  background-size: 800px 100px;
+  animation: wave-squares 1s infinite ease-out;
+}
+
+@keyframes entry {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes wave-squares {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
 }
 @media (max-width: 900px) {
   .modal {
