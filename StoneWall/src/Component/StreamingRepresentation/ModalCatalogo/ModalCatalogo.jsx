@@ -6,14 +6,12 @@ import Loading from '../../Loading/Loading';
 
 const ModalCatalogo = ({ tmdbId, onClose }) => {
   const [data, setData] = useState('');
-  const [loading, setLoading] = useState('');
   const [error, setError] = useState('');
   const [imgLoaded, setImgLoaded] = useState(false);
   tmdbId = encodeURIComponent(tmdbId);
   useFetch(
     `https://localhost:7282/Items/${tmdbId}?sizeParams=w780`,
     setData,
-    setLoading,
     setError,
   );
   return (
@@ -28,8 +26,12 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
         }}
       >
         {error && <h1>{error.message}</h1>}
-        {!loading && data && (
-          <>
+        {data && (
+          <div
+            onClick={() => {
+              onClose();
+            }}
+          >
             {
               <img
                 src={data.backdropPath}
@@ -42,12 +44,7 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
             }
             <div className={styles.modalTexts}>
               <h1 className={styles.filmName}>{data.title}</h1>
-              <button
-                className={styles.buttonClose}
-                onClick={() => {
-                  onClose();
-                }}
-              >
+              <button className={styles.buttonClose}>
                 <img src="../../Assets/close.svg" alt="" />
               </button>
               <p>{data.overview}</p>
@@ -70,15 +67,9 @@ const ModalCatalogo = ({ tmdbId, onClose }) => {
                 })}
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
-      {/* <div
-        className={styles.spinner}
-        style={{
-          opacity: !imgLoaded ? 1 : 0,
-        }}
-      ></div> */}
     </>
   );
 };

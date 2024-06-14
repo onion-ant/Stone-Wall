@@ -6,9 +6,9 @@ import Select from '../StreamingRepresentation/Select/Select';
 import SearchAnalysis from '../StreamingRepresentation/AnalysisForm/SearchAnalysis';
 import ItemsCatalogo from '../StreamingRepresentation/ItemsCatalogo/ItemsCatalogo';
 
-const StreamingRepresentation = () => {
-  const [selectedStreaming1, setSelectedStreaming1] = useState('');
-  const [selectedStreaming2, setSelectedStreaming2] = useState('');
+const StreamingRepresentation = ({ streaming1, streaming2 }) => {
+  const [selectedStreaming1, setSelectedStreaming1] = useState(streaming1);
+  const [selectedStreaming2, setSelectedStreaming2] = useState(streaming2);
   const [streamingType, setStreamingType] = useState('');
   const [data, setData] = useState('');
   const [search, setSearch] = useState('');
